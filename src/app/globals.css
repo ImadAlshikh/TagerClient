@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@theme inline {
+  /* Colors */
+  /* Primary */
+  --color-primary: #2563eb; /* أزرق للثقة والاحترافية */
+  --color-primary-dark: #1d4ed8;
+
+  /* Secondary / Background */
+  --color-bg: #f9fafb; /* خلفية الصفحة */
+  --color-card-bg: #ffffff; /* خلفية الكارد */
+  --color-text: #1f2937; /* نصوص رئيسية */
+  --color-border: #e5e7eb; /* الحدود والفواصل */
+
+  /* Accent / Call to Action */
+  --color-accent-orange: #f97316; /* أزرار CTA وعروض */
+  --color-accent-green: #10b981; /* إشعارات نجاح */
+
+  /* Optional Dark Mode */
+  --color-bg-dark: #111827;
+  --color-text-dark: #f9fafb;
+
+  /* Fonts */
+  --font-roboto: var(--font-roboto);
+}
