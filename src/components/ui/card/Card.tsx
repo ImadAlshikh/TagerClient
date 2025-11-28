@@ -6,11 +6,11 @@ export default function MobileCard() {
       {/*change it to img */}
       <div className="img bg-border rounded-md aspect-square min-w-32! md:w-full! animate-pulse "></div>
       <div className="flex flex-col">
-        <h3 className="title font-semibold">this is a title for</h3>
-    <div className="description line-clamp-2">
-      and this is a description for this cardand this is a description for
-      this car and this is a desc r i p t i on for this cardand this is a
-      description for this card
+        <h3 className="title font-semibold text-accent-green"></h3>
+        <div className="description line-clamp-2">
+          and this is a description for this cardand this is a description for
+          this car and this is a desc r i p t i on for this cardand this is a
+          description for this card
         </div>
         <div className="flex  justify-between items-start  py-2">
           <div className="author flex items-center gap-1 ">
