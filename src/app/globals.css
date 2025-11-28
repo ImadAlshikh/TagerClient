@@ -23,3 +23,9 @@
   /* Fonts */
   --font-roboto: var(--font-roboto);
 }
+
+@layer base {
+  * {
+    color: var(--color-text);
+  }
+}

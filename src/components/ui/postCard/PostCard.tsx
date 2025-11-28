@@ -1,12 +1,23 @@
 import React from "react";
 
-export default function Card() {
+export default function Card({
+  title,
+  description,
+  price,
+  author,
+}: {
+  title?: string;
+  description?: string;
+  price?: number;
+  author?: any;
+}) {
   return (
     <div className="flex md:flex-col gap-4 max-md:max-h-40 md:max-w-64 bg-white border border-border rounded-md p-2">
-      {/*change it to img */}
-      <div className="img bg-border rounded-md aspect-square min-w-32! md:w-full! animate-pulse "></div>
+      <div className="img bg-border rounded-md aspect-square min-w-32! md:w-full! animate-pulse " />
       <div className="flex flex-col">
-        <h3 className="title font-semibold text-accent-green"></h3>
+        <h3 className="title font-semibold text-accent-green">
+          this is a title
+        </h3>
         <div className="description line-clamp-2">
           and this is a description for this cardand this is a description for
           this car and this is a desc r i p t i on for this cardand this is a
@@ -14,7 +25,7 @@ export default function Card() {
         </div>
         <div className="flex  justify-between items-start  py-2">
           <div className="author flex items-center gap-1 ">
-            <div className="author-img bg-border rounded-full aspect-square w-6"></div>
+            <div className="author-img bg-border rounded-full aspect-square w-6" />
             <div className="text-sm font-light">Imad Alshikh</div>
           </div>
           <div className="price-contact flex flex-col gap-1 items-center justify-batween">

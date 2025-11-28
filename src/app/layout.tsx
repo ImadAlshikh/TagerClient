@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
+import Sidebar from "@/components/layout/sidebars/Sidebar";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -17,9 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`w-full bg-bg ${robotoFont.className}`}>
-        <Header />
-        <main className={`container mx-auto mb-5`}>{children}</main>
+      <body className={`w-full flex bg-bg ${robotoFont.className}`}>
+        <div className="flex flex-col w-full bg-bg">
+          <Header />
+          <main className={`container mx-auto mb-5`}>{children}</main>
+        </div>
+        <Sidebar />
       </body>
     </html>
   );
