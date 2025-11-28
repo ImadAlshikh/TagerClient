@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function MobileCard() {
+export default function Card() {
   return (
     <div className="flex md:flex-col gap-4 max-md:max-h-40 md:max-w-64 bg-white border border-border rounded-md p-2">
       {/*change it to img */}

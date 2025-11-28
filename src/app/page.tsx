@@ -1,4 +1,4 @@
-import MobileCard from "@/components/ui/card/Card";
+import Card from "@/components/ui/postCard/PostCard";
 import Hero from "@/components/layout/hero/Hero";
 import NavigationBar from "@/components/ui/navigation/NavigationBar";
 
@@ -8,7 +8,7 @@ export default function Home() {
       <Hero />
       <div className="w-full flex flex-wrap gap-1 justify-center ">
         {Array.from({ length: 20 }).map((l, i) => (
-          <MobileCard key={i} />
+          <Card key={i} />
         ))}
       </div>
       <NavigationBar pagesCount={5} />
