@@ -16,14 +16,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" className="h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={`w-full relative bg-bg ${robotoFont.className}`}>
+      <body
+        className={`w-full h-full flex flex-col  relative bg-bg ${robotoFont.className}`}
+      >
         <Header />
-        <div className="flex ">
-          <main className={`container mx-auto mb-5`}>{children}</main>
+        <div className="flex h-full">
+          <main className={`container mx-auto mb-5 h-full`}>{children}</main>
           {/* <Sidebar /> */}
         </div>
       </body>

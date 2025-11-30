@@ -10,7 +10,7 @@ export default function SearchBar() {
         placeholder="Search..."
         className="hidden md:block px-2 py-1  rounded-full focus:outline-0"
       />
-      <IoSearch size={22} />
+      <IoSearch size={22} aria-label="search button" />
     </div>
   );
 }
