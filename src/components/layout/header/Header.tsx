@@ -21,19 +21,21 @@ export default function Header() {
             <UserProfile />
           ) : (
             <div className="flex items-center gap-0">
-              <button
+              <Link
+                href={"/login"}
                 type="button"
                 className="bg-primary hover:bg-primary-dark text-white rounded-full px-3 py-1 font-bold flex-1"
               >
                 Login
-              </button>
+              </Link>
               <span className="text-3xl">/</span>
-              <button
+              <Link
+                href={"/signin"}
                 type="button"
                 className="bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
               >
                 Signin
-              </button>
+              </Link>
             </div>
           )}
 

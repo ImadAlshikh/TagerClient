@@ -1,5 +1,4 @@
-"use client";
-import { FcGoogle } from "react-icons/fc";
+import GoogleAuthButton from "@/components/ui/buttons/GoogleAuthButton";
 
 export default function page() {
   return (
@@ -61,16 +60,7 @@ export default function page() {
               <span>or continuo with</span>
               <hr className="bg-text flex-1" />
             </div>
-            <button
-              type="button"
-              onClick={() =>
-                (window.location.href = "http://localhost:3001/auth/google")
-              }
-              className="rounded-md border hover:bg-bg border-border p-2 flex items-center"
-            >
-              <FcGoogle size={24} />
-              <span className="grow">Signin With Google</span>
-            </button>
+            <GoogleAuthButton />
           </div>
         </form>
       </div>

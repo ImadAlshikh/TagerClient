@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Card({
@@ -12,7 +13,10 @@ export default function Card({
   author?: any;
 }) {
   return (
-    <div className="flex md:flex-col gap-4 max-md:max-h-40 md:max-w-64 bg-white border border-border rounded-md p-2">
+    <Link
+      href={"/product/hello"}
+      className="flex md:flex-col gap-4 max-md:max-h-40 md:max-w-64 bg-white border border-border rounded-md p-2"
+    >
       <div className="img bg-border rounded-md aspect-square min-w-32! md:w-full! animate-pulse " />
       <div className="flex flex-col">
         <h3 className="title font-semibold text-accent-green">
@@ -39,6 +43,6 @@ export default function Card({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -24,10 +24,8 @@ export default function RootLayout({
         className={`w-full h-full flex flex-col  relative bg-bg ${robotoFont.className}`}
       >
         <Header />
-        <div className="flex h-full">
-          <main className={`container mx-auto mb-5 h-full`}>{children}</main>
-          {/* <Sidebar /> */}
-        </div>
+
+        <main className={`container mx-auto mb-5 pt-4 h-full`}>{children}</main>
       </body>
     </html>
   );

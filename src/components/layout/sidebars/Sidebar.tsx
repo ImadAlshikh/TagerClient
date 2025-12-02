@@ -42,12 +42,12 @@ export default function Sidebar({ visible }: { visible: boolean }) {
   }, []);
 
   const sections: { name: string; icon?: ReactElement; color?: string }[] = [
-    { name: "search", icon: <IoSearch size={18} /> },
-    { name: "explore", icon: <MdExplore size={18} /> },
-    { name: "settings", icon: <IoMdSettings size={18} /> },
-    { name: "profile", icon: <CgProfile size={18} /> },
+    { name: "Search", icon: <IoSearch size={18} /> },
+    { name: "Explore", icon: <MdExplore size={18} /> },
+    { name: "Settings", icon: <IoMdSettings size={18} /> },
+    { name: "Profile", icon: <CgProfile size={18} /> },
     {
-      name: "logout",
+      name: "Logout",
       icon: <FiLogOut color="red" size={18} />,
       color: "red",
     },
@@ -64,7 +64,7 @@ export default function Sidebar({ visible }: { visible: boolean }) {
       {sections.map((section, i) => (
         <div
           key={i}
-          className={`px-2 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg  ${
+          className={`px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg  ${
             section.color?.length ? `text-red-500` : ""
           }`}
         >
