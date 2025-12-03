@@ -1,6 +1,6 @@
 import ContactButton from "@/components/ui/buttons/ContactButton";
 import { MdAccessTime } from "react-icons/md";
-import KeywordNode from "@/components/ui/nodes/KeywordNode";
+import TagNode from "@/components/ui/nodes/TagNode";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -31,13 +31,13 @@ export default async function page({ params }: { params: { id: string } }) {
             <div className="price text-primary text-lg font-bold">168$</div>
           </div>
           <ContactButton />
-          <div className="keywords flex flex-col gap-2">
-            <span className="font-bold">Keywords</span>
+          <div className="tags flex flex-col gap-2">
+            <span className="font-bold">Tags</span>
             <div className="flex gap-1 px-2 flex-wrap">
               {"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe enim cumque ipsa nisi rem magni, voluptates dicta molestias suscipit ad."
                 .split(" ")
-                .map((word) => (
-                  <KeywordNode category={word} />
+                .map((word, index) => (
+                  <TagNode key={index} category={word} />
                 ))}
             </div>
           </div>

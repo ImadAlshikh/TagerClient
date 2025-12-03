@@ -11,7 +11,7 @@ export default function page() {
             <h2 className="text-primary font-bold text-2xl">Login</h2>
             <div className="text-lg">Welcome back!</div>
           </div>
-          <div className="flex flex-col gap-4 w-90">
+          <div className="flex flex-col gap-4 w-90 max-w-full">
             <div className="flex flex-col">
               <label htmlFor="email">Email</label>
               <input

@@ -6,12 +6,12 @@ export default function page() {
       <div className="flex flex-col md:flex-row h-full">
         <div className="hidden md:block banner flex-1 bg-border animate-pulse rounded-md  min-h-full"></div>
 
-        <form className="login-form flex flex-col justify-center items-center md:flex-1 bg-white border border-border p-4  m-10 rounded-md">
+        <form className="signin-form flex flex-col justify-center items-center md:flex-1 bg-white border border-border p-4  m-10 rounded-md">
           <div className="flex flex-col items-center">
             <h2 className="text-primary font-bold text-2xl">Signin</h2>
             <div className="text-lg">Welcome — let’s sign you in</div>
           </div>
-          <div className="flex flex-col gap-4 w-90">
+          <div className="flex flex-col gap-4 w-90 max-w-full">
             <div className="flex flex-col">
               <label htmlFor="email">Name</label>
               <input

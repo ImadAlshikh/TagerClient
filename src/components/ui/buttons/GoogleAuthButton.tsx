@@ -1,4 +1,5 @@
 "use client";
+import { useUserStore } from "@/stores/useUserStore";
 import { FcGoogle } from "react-icons/fc";
 
 export default function GoogleAuthButton() {
