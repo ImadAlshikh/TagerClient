@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function NotFound() {
@@ -10,9 +11,12 @@ export default function NotFound() {
       <div className="text-lg">
         the page you want not found. please check the url or try again later
       </div>
-      <button className="bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto">
+      <Link
+        href={"/"}
+        className="bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto"
+      >
         Home page
-      </button>
+      </Link>
     </div>
   );
 }

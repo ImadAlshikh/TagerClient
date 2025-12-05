@@ -3,41 +3,35 @@ import { IoMdSettings } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import { ReactElement, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 export default function UserProfile() {
   const { user, logout } = useUserStore();
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const router = useRouter();
 
   const sections: {
     name: string;
     icon?: ReactElement;
     color?: string;
     onClick?: () => void;
+    href?: string;
   }[] = [
     {
       name: "Profile",
       icon: <CgProfile size={18} />,
-      onClick: () => router.push("/profile"),
+      href: "/profile",
     },
     {
       name: "Settings",
       icon: <IoMdSettings size={18} />,
-      onClick: () => router.push("/settings"),
+      href: "/settings",
     },
 
     {
       name: "Logout",
       icon: <FiLogOut color="red" size={18} />,
       color: "red",
-      onClick: async () => {
-        logout();
-        await axios.delete("http://localhost:3001/users/logout", {
-          withCredentials: true,
-        });
-      },
     },
   ];
 
@@ -53,22 +47,35 @@ export default function UserProfile() {
       />
       {showMenu && (
         <div className="absolute p-2 z-10 left-1/2 -translate-x-1/2  bg-white border border-border rounded-md top-full">
-          {sections.map((section, i) => (
-            <button
-              key={i}
-              className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg  ${
-                section.color?.length ? `text-red-500` : ""
-              }`}
-              onClick={section.onClick}
-            >
-              <div>{section.icon}</div>
-              <div
-                className={`${section.color && `text-${section.color}-500`}`}
-              >
-                {section.name}
-              </div>
-            </button>
-          ))}
+          <Link
+            href={"/profile"}
+            className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
+            }`}
+          >
+            <CgProfile size={18} />
+            <div>Profile</div>
+          </Link>
+          <Link
+            href={"/settings"}
+            className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
+            }`}
+          >
+            <IoMdSettings size={18} />
+            <div>Settings</div>
+          </Link>
+          <div
+            onClick={async () => {
+              logout();
+              await axios.delete("http://localhost:3001/users/logout", {
+                withCredentials: true,
+              });
+            }}
+            className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
+            }`}
+          >
+            <FiLogOut color="red" size={18} />
+            <div className="text-red-500">Logout</div>
+          </div>
         </div>
       )}
     </div>

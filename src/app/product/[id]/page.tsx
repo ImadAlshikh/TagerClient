@@ -7,7 +7,7 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <div>
       <div className="bg-white p-4 gap-4 rounded-md flex flex-col items-center md:flex-row md:items-start">
-        <div className="rounded-md w-full md:w-150 aspect-square bg-border " />
+        <div className="rounded-md w-full md:min-w-100 md:max-w-100 aspect-square bg-border " />
         <div className="flex flex-col gap-3 px-2 md:px-10">
           <h2 className="text-accent-green font-bold text-lg">
             Lorem ipsum dolor, sit amet consectetur adipisicing.

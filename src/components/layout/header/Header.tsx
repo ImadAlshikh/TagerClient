@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { user, setUser, logout } = useUserStore();
+  const { user, setUser, logout, setLoading } = useUserStore();
 
   useEffect(() => {
     axios
@@ -20,12 +20,19 @@ export default function Header() {
       .then((res) => {
         console.log("res:", res);
         if (!res.data.success) {
-          return logout();
+          return () => {
+            logout();
+            setLoading(false);
+          };
         }
         setUser(res.data.data);
         localStorage.setItem("userPic", res.data.data?.picture);
+        setLoading(false);
       })
-      .catch((e) => logout());
+      .catch((e) => {
+        logout();
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {

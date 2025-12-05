@@ -25,7 +25,7 @@
 }
 
 @layer base {
-  * {
+  *:not(svg):not(svg *) {
     color: var(--color-text);
   }
 }
