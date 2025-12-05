@@ -28,4 +28,7 @@
   *:not(svg):not(svg *) {
     color: var(--color-text);
   }
+  button {
+    cursor: pointer;
+  }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -24,8 +25,11 @@ export default function RootLayout({
         className={`w-full h-full flex flex-col  relative bg-bg ${robotoFont.className}`}
       >
         <Header />
-
-        <main className={`container mx-auto mb-5 pt-4 h-full`}>{children}</main>
+        <QueryProvider>
+          <main className={`container mx-auto mb-5 pt-4 h-full`}>
+            {children}
+          </main>
+        </QueryProvider>
       </body>
     </html>
   );

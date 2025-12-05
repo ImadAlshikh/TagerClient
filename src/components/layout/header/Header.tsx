@@ -3,7 +3,7 @@ import SearchBar from "@/components/ui/search/SearchBar";
 import UserProfile from "./UserProfile";
 import { useUserStore } from "@/stores/useUserStore";
 import { CiMenuBurger } from "react-icons/ci";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../sidebars/Sidebar";
 import Link from "next/link";
 import axios from "axios";
@@ -18,7 +18,6 @@ export default function Header() {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("res:", res);
         if (!res.data.success) {
           return () => {
             logout();
@@ -33,10 +32,6 @@ export default function Header() {
         logout();
         setLoading(false);
       });
-  }, []);
-
-  useEffect(() => {
-    console.log("user:", user);
   }, []);
 
   return (
