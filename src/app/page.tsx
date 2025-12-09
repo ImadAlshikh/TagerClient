@@ -4,11 +4,20 @@ import Hero from "@/components/layout/hero/Hero";
 import NavigationBar from "@/components/ui/navigation/NavigationBar";
 import AddPostButton from "@/components/ui/buttons/AddPostButton";
 import { usePosts } from "@/cache/usePosts";
+import { PostType } from "@/utils/validator";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { data, isLoading, isFetching } = usePosts();
+  const [posts, setPosts] = useState<PostType[]>();
 
-  console.log(data);
+  useEffect(() => {
+    if (posts !== data?.data.data) {
+      setPosts(data?.data.data);
+    }
+    return () => {};
+  }, [isFetching]);
+
   return (
     <div className="flex bg-bg flex-col gap-4 items-center">
       <AddPostButton />
@@ -19,8 +28,8 @@ export default function Home() {
         </div>
       ) : (
         <div className="w-full flex flex-wrap gap-1 justify-center ">
-          {data?.data?.data.map((a: any, i: any) => (
-            <Card key={i} />
+          {posts?.map((post: PostType) => (
+            <Card post={post} key={post.id} />
           ))}
         </div>
       )}

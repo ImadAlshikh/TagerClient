@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
 import { QueryProvider } from "@/providers/QueryProvider";
+import Sidebar from "@/components/layout/sidebars/Sidebar";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -24,11 +25,14 @@ export default function RootLayout({
       <body
         className={`w-full h-full flex flex-col  relative bg-bg ${robotoFont.className}`}
       >
-        <Header />
         <QueryProvider>
-          <main className={`container mx-auto mb-5 pt-4 h-full`}>
-            {children}
-          </main>
+          <Header />
+          <div className="flex ">
+            <main className={`container mx-auto  pt-4  flex-1 h-full`}>
+              {children}
+            </main>
+            <Sidebar />
+          </div>
         </QueryProvider>
       </body>
     </html>

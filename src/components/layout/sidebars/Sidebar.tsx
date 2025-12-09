@@ -1,49 +1,47 @@
 "use client";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoChatbubblesSharp } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { MdExplore } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
+import { useUiStore } from "@/stores/useUiStore";
 
-export default function Sidebar({ visible }: { visible: boolean }) {
-  const [visiblity, setVisiblity] = useState<boolean>(visible);
+export default function Sidebar() {
+  const { showSidebar } = useUiStore();
   const sidebarRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setVisiblity(visible);
-  }, [visible]);
-
-  useEffect(() => {
-    if (visiblity) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [visiblity]);
-
-  useEffect(() => {
-    const checkOutClick = (e: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        e.target instanceof Node &&
-        !(
-          e.target instanceof HTMLElement &&
-          e.target.classList.contains("menu-button")
-        ) &&
-        !sidebarRef.current.contains(e.target)
-      ) {
-        setVisiblity(false);
-      }
-    };
-
-    addEventListener("mousedown", checkOutClick);
-    return () => removeEventListener("mousedown", checkOutClick);
+    // if (visiblity) {
+    //   document.body.style.overflow = "hidden";
+    // } else {
+    //   document.body.style.overflow = "auto";
+    // }
   }, []);
+
+  // useEffect(() => {
+  //   const checkOutClick = (e: MouseEvent) => {
+  //     if (
+  //       sidebarRef.current &&
+  //       e.target instanceof Node &&
+  //       !(
+  //         e.target instanceof HTMLElement &&
+  //         e.target.classList.contains("menu-button")
+  //       ) &&
+  //       !sidebarRef.current.contains(e.target)
+  //     ) {
+  //       setVisiblity(false);
+  //     }
+  //   };
+
+  //   addEventListener("mousedown", checkOutClick);
+  //   return () => removeEventListener("mousedown", checkOutClick);
+  // }, []);
 
   const sections: { name: string; icon?: ReactElement; color?: string }[] = [
     { name: "Search", icon: <IoSearch size={18} /> },
     { name: "Explore", icon: <MdExplore size={18} /> },
+    { name: "Chats", icon: <IoChatbubblesSharp size={18} /> },
     { name: "Settings", icon: <IoMdSettings size={18} /> },
     { name: "Profile", icon: <CgProfile size={18} /> },
     {
@@ -56,8 +54,8 @@ export default function Sidebar({ visible }: { visible: boolean }) {
   return (
     <aside
       ref={sidebarRef}
-      className={`side-bar visible md:hidden absolute overflow-hidden  h-full duration-500 ltr:right-0 rtl:-left-[50%] transition-all  select-none top-full p-4 flex flex-col ltr:border-l rtl:border-r z-10 border-border bg-white w-80! min-h-screen ${
-        visiblity ? "ltr: translate-x-0" : "ltr:translate-x-full"
+      className={`side-bar absolute md:static overflow-hidden  h-full duration-500 ltr:riht-0 rtl:-eft-[50%] transition-all select-none top-full p-4 flex flex-col ltr:border-l rtl:border-r z-10 border-border bg-white w-80! min-h-screen ${
+        showSidebar ? "ltr: translate-x-0" : "ltr:translate-x-full"
       }`}
     >
       <h2 className="text-primary font-bold text-xl">Tager</h2>

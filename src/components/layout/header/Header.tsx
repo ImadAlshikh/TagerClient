@@ -10,9 +10,10 @@ import axios from "axios";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { user, setUser, logout, setLoading } = useUserStore();
+  const { user, setUser, logout, loading, setLoading } = useUserStore();
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("http://localhost:3001/users/profile", {
         withCredentials: true,
@@ -35,14 +36,14 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="select-none  w-full bg-white overflow-x-clip relative border-b p-2 text-text border-border">
+    <header className="select-none h-14 w-full bg-white overflow-x-clip relative border-b p-2 text-text border-border">
       <div className="header-container container mx-auto flex justify-between items-center ">
         <Link href={"/"} className="text-primary font-bold text-2xl">
           Tager
         </Link>
         <div className="flex items-center gap-1">
           <SearchBar />
-          {user === undefined ? (
+          {loading ? (
             <div className="w-8  aspect-square! bg-border animate-pulse rounded-full" />
           ) : (
             <>
@@ -74,7 +75,7 @@ export default function Header() {
             <CiMenuBurger className="menu-button md:hidden" size={24} />
           </button>
         </div>
-        <Sidebar visible={showMenu} />
+        {/* <Sidebar visible={showMenu} /> */}
       </div>
     </header>
   );

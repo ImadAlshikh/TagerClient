@@ -30,15 +30,25 @@ export const postSchema = z.object({
   id: z.cuid().optional(),
   title: z.string().nonempty(),
   description: z.string().max(500).optional(),
-  picture: z.string().optional(),
+  picture: z.union([z.string().optional(), z.file().optional()]),
   price: z.number().nonnegative(),
   discount: z.number().max(100).nonnegative().optional(),
   type: z.string().nonempty(),
   saleType: z.enum(saleType).optional(),
+  tags: z.union([z.string().array(), z.string(), z.any()]),
   stock: z.number().optional(),
   status: z.enum(postStatus).optional(),
   country: z.string().optional(),
   address: z.string().optional(),
+  owner: z.union([
+    z.object({
+      name: z.string().optional(),
+      surname: z.string().optional(),
+      picture: z.string().optional(),
+    }),
+    z.null(),
+    z.undefined(),
+  ]),
   ownerId: z.cuid(),
 });
 export type PostType = z.infer<typeof postSchema>;
@@ -48,6 +58,7 @@ export const messageSchema = z.object({
   text: z.string(),
   senderId: z.cuid(),
   postId: z.cuid(),
+  chatId: z.cuid(),
 });
 export type MessageType = z.infer<typeof messageSchema>;
 

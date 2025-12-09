@@ -39,7 +39,7 @@ export default function UserProfile() {
     <div
       onMouseEnter={() => setShowMenu(true)}
       onMouseLeave={() => setShowMenu(false)}
-      className="relative"
+      className="relative z-50"
     >
       <img
         src={user?.picture}
