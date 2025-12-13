@@ -36,7 +36,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="select-none h-14 w-full bg-white overflow-x-clip relative border-b p-2 text-text border-border">
+    <header className="select-none fixed z-50 h-14 w-full bg-white overflow-x-clip  border-b p-2 text-text border-border">
       <div className="header-container container mx-auto flex justify-between items-center ">
         <Link href={"/"} className="text-primary font-bold text-2xl">
           Tager

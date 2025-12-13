@@ -1,7 +1,7 @@
 import { PostType } from "@/utils/validator";
 import Link from "next/link";
 
-export default function Card({ post }: { post: PostType }) {
+export default function PostCard({ post }: { post: PostType }) {
   return (
     <Link
       href={`/product/${post.id}`}
@@ -9,24 +9,23 @@ export default function Card({ post }: { post: PostType }) {
     >
       <div className="relative">
         <img
-          src={post?.picture ?? "./placeholder.svg"}
-          className="img max-h-full! bg-border rounded-xs overflow-hidden aspect-square min-w-36! max-w-36"
+          src={post?.picture ?? "./postPlaceholder.svg"}
+          className="img max-h-full! bg-border rounded-md overflow-hidden aspect-square min-w-36! max-w-36"
         />
         {post.discount ? (
-          <div className="absolute top-0  right-0 text-center bg-accent-green px-2 rounded-md text-sm text-white">
+          <div className="absolute top-0  right-0 text-center bg-accent-green  px-2 rounded-md text-sm text-white">
             {post?.discount}%
           </div>
         ) : null}
 
-        <div className="w-full h-full absolute top-0 transition-opacity duration-250 rounded-xs bg-black opacity-0 group-hover:opacity-20"></div>
+        <div className="w-full h-full absolute top-0 transition-opacity duration-250 rounded-md bg-black opacity-0 group-hover:opacity-20"></div>
       </div>
       <div className="flex flex-col h-full grow justify-between">
         <div className="flex flex-col">
-          {" "}
           <h3 className="title font-semibold text-accent-green">
             {post.title}
           </h3>
-          <div className="description max-w-full wrap-break-word line-clamp-2">
+          <div className="description text-gray-500 max-w-full wrap-break-word line-clamp-2">
             {post.description}
           </div>
         </div>
@@ -37,7 +36,7 @@ export default function Card({ post }: { post: PostType }) {
               src={post.owner?.picture || "./userPlaceholder.svg"}
               className="author-img bg-border rounded-full aspect-square w-6"
             />
-            <div className="text-sm font-light">
+            <div className="text-sm font-light text-gray-500">
               {post.owner!.name!}{" "}
               {post.owner?.surname !== "null" && post.owner?.surname}
             </div>

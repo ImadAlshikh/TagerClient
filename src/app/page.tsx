@@ -1,40 +1,49 @@
 "use client";
-import Card from "@/components/ui/postCard/PostCard";
+import PostCard from "@/components/ui/cards/PostCard";
 import Hero from "@/components/layout/hero/Hero";
 import NavigationBar from "@/components/ui/navigation/NavigationBar";
 import AddPostButton from "@/components/ui/buttons/AddPostButton";
 import { usePosts } from "@/cache/usePosts";
 import { PostType } from "@/utils/validator";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { data, isLoading, isFetching } = usePosts();
-  const [posts, setPosts] = useState<PostType[]>();
+  const { data: posts, isLoading, isFetching } = usePosts();
 
-  useEffect(() => {
-    if (posts !== data?.data.data) {
-      setPosts(data?.data.data);
-    }
-    return () => {};
-  }, [isFetching]);
+  if (isLoading) {
+    return (
+      <div className="text-primary w-full h-screen grid place-content-center font-bold text-2xl">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="text-primary w-full h-[calc(100vh-78px)] flex items-center justify-center font-bold text-2xl">
+        No Post Found
+      </div>
+    );
+  }
 
   return (
-    <div className="flex bg-bg flex-col gap-4 items-center">
-      <AddPostButton />
-      <Hero />
-      {isLoading ? (
-        <div className="text-primary w-full h-full font-bold text-2xl grid place-content-center">
-          Loading...{" "}
-        </div>
-      ) : (
-        <div className="w-full flex flex-wrap gap-1 justify-center ">
-          {posts?.map((post: PostType) => (
-            <Card post={post} key={post.id} />
-          ))}
+    <div className="relative">
+      {isFetching && (
+        <div className="fixed top-2 right-2 text-sm text-primary">
+          Updating...
         </div>
       )}
 
-      <NavigationBar pagesCount={5} />
+      <div className="flex p-4 bg-bg flex-col gap-4 items-center">
+        <Hero />
+
+        <div className="w-full flex flex-wrap gap-1 justify-center">
+          {posts.map((post: PostType) => (
+            <PostCard post={post} key={post.id} />
+          ))}
+        </div>
+
+        <NavigationBar pagesCount={5} />
+      </div>
     </div>
   );
 }

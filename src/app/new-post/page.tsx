@@ -34,7 +34,9 @@ export default function page() {
   const { user } = useUserStore();
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imagePreview, setImagePreview] = useState<string>("./placeholder.svg");
+  const [imagePreview, setImagePreview] = useState<string>(
+    "./postPlaceholder.svg"
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [errorFields, setErrorFields] = useState<
     { path: string; message: string }[]
@@ -56,6 +58,8 @@ export default function page() {
       ownerId: user.id,
       price: Number(data.price),
       discount: Number(data.discount),
+      tags: (data.tags as string).trim(),
+      categoryName: (data.categoryName as string).toLowerCase(),
     });
     if (!parsedData.success) {
       const errors: { path: string; message: string }[] =
@@ -168,13 +172,13 @@ export default function page() {
                   0/500
                 </div>
               </div>
-              <div className="type flex flex-col col-span-2">
-                <label htmlFor="type" className="font-bold">
-                  Type*
+              <div className="categoryName flex flex-col col-span-2">
+                <label htmlFor="categoryName" className="font-bold">
+                  Category*
                 </label>
                 <select
-                  name="type"
-                  id="type"
+                  name="categoryName"
+                  id="categoryName"
                   className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
                 >
                   {typeOptions.map(({ value, label }, index) => (
@@ -183,10 +187,12 @@ export default function page() {
                     </option>
                   ))}
                 </select>
-                {errorFields.filter((error) => error.path === "type") && (
+                {errorFields.filter(
+                  (error) => error.path === "categoryName"
+                ) && (
                   <span className="text-sm text-red-500">
                     {
-                      errorFields.find((error) => error.path === "type")
+                      errorFields.find((error) => error.path === "categoryName")
                         ?.message
                     }
                   </span>

@@ -16,31 +16,34 @@ export default async function page({ params }: { params: { id: string } }) {
   if (res.status !== 200) return notFound();
   post = res.data.data;
   return (
-    <div>
+    <div className="p-4">
       <div className="bg-white p-4 gap-4 rounded-md flex flex-col items-center md:flex-row md:items-start">
         <div className="relative hover:scale-102 transition-all duration-250 w-full md:min-w-100 md:max-w-100 aspect-square">
           <img
-            src={post.picture || "/placeholder.svg"}
+            src={post.picture ?? "/postPlaceholder.svg"}
             className="rounded-md w-full md:min-w-100 md:max-w-100 aspect-square bg-border "
           />
           {post.discount ? (
-            <div className="absolute top-0 right-0 text-center bg-accent-green px-2 rounded-md text-sm text-white">
+            <div className="absolute top-0 right-0 text-center bg-accent-green px-2  rounded-md text-sm text-white">
               {post?.discount}%
             </div>
           ) : null}
         </div>
         <div className="flex flex-col w-full gap-3 px-2 md:px-10">
-          <div className="flex items-center justify-between">
-            <h2 className="text-accent-green font-bold text-lg">
-              {post.title}
-            </h2>
-            <HiOutlineExclamationCircle
-              className="cursor-pointer"
-              size={22}
-              strokeWidth={2}
-            />
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-accent-green font-bold text-lg">
+                {post.title}
+              </h2>
+              <HiOutlineExclamationCircle
+                className="cursor-pointer"
+                size={22}
+                strokeWidth={2}
+              />
+            </div>
+            <h3 className="px-1 w-[70%]">{post.description}</h3>
           </div>
-          <h3 className="px-1 w-[70%]">{post.description}</h3>
+
           <div className="flex justify-around items-center ">
             <div className="author flex items-center gap-1">
               <img

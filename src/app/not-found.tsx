@@ -1,9 +1,8 @@
 import Link from "next/link";
-import React from "react";
 
 export default function NotFound() {
   return (
-    <div className="w-full h-full grid place-content-center gap-2">
+    <div className="w-full h-[calc(100vh-72px)] grid place-content-center gap-2">
       <div className="text-primary font-bold text-4xl text-center">404</div>
       <div className="text-primary font-bold text-xl text-center">
         Ooops...this page not found

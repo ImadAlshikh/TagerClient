@@ -4,6 +4,8 @@ import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
 import { QueryProvider } from "@/providers/QueryProvider";
 import Sidebar from "@/components/layout/sidebars/Sidebar";
+import ScrollToTop from "@/hooks/ScrollToTop";
+import AddPostButton from "@/components/ui/buttons/AddPostButton";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -23,15 +25,15 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body
-        className={`w-full h-full flex flex-col  relative bg-bg ${robotoFont.className}`}
+        className={`w-full min-h-full flex flex-col overflow-x-hidden  relative bg-bg ${robotoFont.className}`}
       >
         <QueryProvider>
+          <AddPostButton />
+          <ScrollToTop />
           <Header />
-          <div className="flex ">
-            <main className={`container mx-auto  pt-4  flex-1 h-full`}>
-              {children}
-            </main>
+          <div className="flex mt-14! relative">
             <Sidebar />
+            <main className={`pt-4 flex-1 h-full`}>{children}</main>
           </div>
         </QueryProvider>
       </body>
