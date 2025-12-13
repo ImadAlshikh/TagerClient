@@ -16,6 +16,19 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { user } = useUserStore();
   const { data, isFetching } = useChat(id);
+  const userData =
+    user?.id === data?.userId
+      ? {
+          name: data?.post.owner.name,
+          surname: data?.post.owner.surname,
+          picture: data?.post.owner.picture,
+        }
+      : {
+          name: data?.user?.name,
+          surname: data?.user?.surname,
+          picture: data?.user?.picture,
+        };
+  console.log("U:", userData);
   const searchParams = useSearchParams();
   const postId = searchParams.get("postId");
   if (!postId) return notFound();
@@ -105,8 +118,11 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       <div className="-mt-4  flex flex-col">
         <div className="head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1">
           <BiSolidLeftArrow size={18} onClick={() => router.push("/chats")} />
-          <div className="w-8 h-8 bg-border rounded-full" />
-          <div>Imad Alshikh</div>
+          <img
+            src={userData.picture || "/userPlaceholder.svg"}
+            className="w-8 h-8 bg-border rounded-full"
+          />
+          <div>{userData.name + " " + (userData.surname ?? "")}</div>
         </div>
 
         <div className="body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24">

@@ -19,7 +19,9 @@ export default function page() {
     const res = await axios.post("http://localhost:3001/users/signin", data, {
       withCredentials: true,
     });
-    if (res.data.success) setUser(res.data.data);
+    if (res.data.success) {
+      setUser(res.data.data);
+    }
   };
 
   return (

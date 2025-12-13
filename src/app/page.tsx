@@ -11,7 +11,8 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="text-primary w-full h-screen grid place-content-center font-bold text-2xl">
+      <div className="text-primary w-full h-[calc(100vh-78px)] grid place-content-center font-bold text-2xl">
+        <AddPostButton />
         Loading...
       </div>
     );
@@ -20,6 +21,7 @@ export default function Home() {
   if (!posts || posts.length === 0) {
     return (
       <div className="text-primary w-full h-[calc(100vh-78px)] flex items-center justify-center font-bold text-2xl">
+        <AddPostButton />
         No Post Found
       </div>
     );
@@ -29,11 +31,13 @@ export default function Home() {
     <div className="relative">
       {isFetching && (
         <div className="fixed top-2 right-2 text-sm text-primary">
+          <AddPostButton />
           Updating...
         </div>
       )}
 
       <div className="flex p-4 bg-bg flex-col gap-4 items-center">
+        <AddPostButton />
         <Hero />
 
         <div className="w-full flex flex-wrap gap-1 justify-center">

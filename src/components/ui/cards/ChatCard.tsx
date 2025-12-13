@@ -27,7 +27,7 @@ export default function ChatCard({
     >
       <div className="relative aspect-square! min-h-22 max-w-22">
         <img
-          src={user.picture || "./userPlaceholder.svg"}
+          src={user.picture || "/userPlaceholder.svg"}
           alt=""
           className="aspect-square! w-full rounded-full border-2 border-accent-green"
         />

@@ -28,7 +28,6 @@ export default function RootLayout({
         className={`w-full min-h-full flex flex-col overflow-x-hidden  relative bg-bg ${robotoFont.className}`}
       >
         <QueryProvider>
-          <AddPostButton />
           <ScrollToTop />
           <Header />
           <div className="flex mt-14! relative">

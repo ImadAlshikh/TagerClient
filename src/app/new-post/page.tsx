@@ -211,10 +211,10 @@ export default function page() {
                   className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
                   onChange={(e) => {
                     if (!e.target.value) {
-                      e.target.value = "0";
+                      e.target.value = "";
                     }
                     if (Number(e.target.value) < 0) {
-                      e.target.value = "0";
+                      e.target.value = "";
                     }
 
                     const priceDiv = document.getElementById(
@@ -263,10 +263,10 @@ export default function page() {
                   className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
                   onChange={(e) => {
                     if (!e.target.value) {
-                      e.target.value = "0";
+                      e.target.value = "";
                     }
                     if (Number(e.target.value) < 0) {
-                      e.target.value = "0";
+                      e.target.value = "";
                     } else if (Number(e.target.value) > 100) {
                       e.target.value = "100";
                     }
