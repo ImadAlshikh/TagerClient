@@ -4,7 +4,6 @@ import UserProfile from "./UserProfile";
 import { useUserStore } from "@/stores/useUserStore";
 import { CiMenuBurger } from "react-icons/ci";
 import { useEffect, useState } from "react";
-import Sidebar from "../sidebars/Sidebar";
 import Link from "next/link";
 import axios from "axios";
 
@@ -25,7 +24,7 @@ export default function Header() {
             setLoading(false);
           };
         }
-        setUser(res.data.data);
+      setUser({ ...res.data.data, picture: res.data.data.picture.secureUrl });
         localStorage.setItem("userPic", res.data.data?.picture);
         setLoading(false);
       })

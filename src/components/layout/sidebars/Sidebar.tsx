@@ -5,11 +5,10 @@ import { IoMdSettings } from "react-icons/io";
 import { MdExplore } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut, FiPlus } from "react-icons/fi";
-import { useUiStore } from "@/stores/useUiStore";
 import Link from "next/link";
 
 export default function Sidebar() {
-  const { showSidebar } = useUiStore();
+  const showSidebar = true;
   const sidebarRef = useRef<HTMLElement>(null);
 
   // useEffect(() => {

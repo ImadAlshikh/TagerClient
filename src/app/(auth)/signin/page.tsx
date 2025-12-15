@@ -1,17 +1,13 @@
 "use client";
 import GoogleAuthButton from "@/components/ui/buttons/GoogleAuthButton";
-import { useUiStore } from "@/stores/useUiStore";
 import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
-import { useEffect } from "react";
-import { object } from "zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect } from "react";
 export default function page() {
-  const { setShowSidebar } = useUiStore();
-  useEffect(() => {
-    setShowSidebar(false);
-    return () => setShowSidebar(true);
-  }, []);
+
   const { setUser } = useUserStore();
+  const router = useRouter();
   const handleSignin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -20,12 +16,13 @@ export default function page() {
       withCredentials: true,
     });
     if (res.data.success) {
-      setUser(res.data.data);
+      setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
+      return router.push("/profile");
     }
   };
 
   return (
-    <div className="h-full">
+    <div className="h-[calc(100vh-72px)]">
       <div className="flex flex-col md:flex-row h-full">
         <div className="hidden md:block banner flex-1 bg-border animate-pulse rounded-md  min-h-full"></div>
 

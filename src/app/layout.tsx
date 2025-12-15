@@ -30,10 +30,7 @@ export default function RootLayout({
         <QueryProvider>
           <ScrollToTop />
           <Header />
-          <div className="flex mt-14! relative">
-            <Sidebar />
-            <main className={`pt-4 flex-1 h-full`}>{children}</main>
-          </div>
+          <main className={`mt-14 h-full`}>{children}</main>
         </QueryProvider>
       </body>
     </html>

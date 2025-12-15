@@ -3,9 +3,11 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useUserStore } from "@/stores/useUserStore";
 import { useLayoutEffect, useRef, useState } from "react";
+import axios from "axios";
 
 export default function page() {
   const { user } = useUserStore();
+  console.log(user);
   const [imagePreview, setImagePreview] = useState(user?.picture);
   const fileInputRef = useRef<HTMLInputElement>(null);
   useLayoutEffect(() => {
@@ -20,8 +22,19 @@ export default function page() {
     }
   };
 
-  const handleSave = async () => {
-    
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    const res = await axios.put(
+      "http://localhost:3001/users/profile",
+      formData,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    console.log(res.data);
   };
 
   return (
@@ -33,7 +46,7 @@ export default function page() {
         <span className="font-bold text-primary text-xl">Profile</span>
       </div>
       <div className="bg-white rounded-md p-4">
-        <div className="flex gap-4 w-full">
+        <form onSubmit={handleSave} className="flex gap-4 w-full">
           <div className="rounded-full  relative group bg-border md:flex-1 aspect-square! w-34  h-34">
             <input
               type="file"
@@ -62,6 +75,7 @@ export default function page() {
               <div>Name*</div>
               <input
                 type="text"
+                name="name"
                 className="border rounded-md   border-border px-2 py-1  h-fit"
                 placeholder="Name"
                 defaultValue={user?.name}
@@ -71,6 +85,7 @@ export default function page() {
               <div>Surname</div>
               <input
                 type="text"
+                name="surname"
                 className="border rounded-md   border-border px-2 py-1  h-fit"
                 placeholder="Surname"
                 defaultValue={user?.surname}
@@ -80,6 +95,7 @@ export default function page() {
               <div>Phone</div>
               <input
                 type="text"
+                name="phone"
                 className="border rounded-md   border-border px-2 py-1  h-fit"
                 placeholder="Phone"
                 defaultValue={user?.phone}
@@ -89,16 +105,20 @@ export default function page() {
               <div>Address</div>
               <input
                 type="text"
+                name="address"
                 className="border rounded-md   border-border px-2 py-1  h-fit"
                 placeholder="Address"
                 defaultValue={user?.address}
               />
             </div>
-            <button className="bg-primary hover:bg-primary-dark text-white rounded-full px-8 py-1 w-fit col-span-2 place-self-end">
+            <button
+              type="submit"
+              className="bg-primary hover:bg-primary-dark text-white rounded-full px-8 py-1 w-fit col-span-2 place-self-end"
+            >
               Save
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

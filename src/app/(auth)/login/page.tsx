@@ -1,16 +1,11 @@
 "use client";
 import GoogleAuthButton from "@/components/ui/buttons/GoogleAuthButton";
-import { useUiStore } from "@/stores/useUiStore";
 import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 export default function page() {
-  const { setShowSidebar } = useUiStore();
-  useEffect(() => {
-    setShowSidebar(false);
-    return () => setShowSidebar(true);
-  }, []);
+
 
   const { setUser } = useUserStore();
 
@@ -23,7 +18,8 @@ export default function page() {
       signal: ctrl.signal,
       withCredentials: true,
     });
-    if (res.data.success) setUser(res.data.data);
+    if (res.data.success)
+      setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
   };
 
   return (
