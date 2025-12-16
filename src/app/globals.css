@@ -31,4 +31,10 @@
   button {
     cursor: pointer;
   }
+  img {
+    -webkit-user-drag: none;
+  }
+  a{
+    -webkit-user-drag: none;
+  }
 }

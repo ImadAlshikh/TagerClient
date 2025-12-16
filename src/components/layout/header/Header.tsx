@@ -24,8 +24,12 @@ export default function Header() {
             setLoading(false);
           };
         }
-      setUser({ ...res.data.data, picture: res.data.data.picture.secureUrl });
-        localStorage.setItem("userPic", res.data.data?.picture);
+        console.log("from header:", {
+          ...res.data.data,
+          picture: res.data.data.picture?.secureUrl,
+        });
+        setUser({ ...res.data.data, picture: res.data.data.picture.secureUrl });
+
         setLoading(false);
       })
       .catch((e) => {

@@ -37,7 +37,14 @@ export default function page() {
               postId={chat.postId}
               title={chat.post.title}
               picture={chat.post?.picture}
-              user={user?.id === chat.user.id ? chat.post.owner : chat.user}
+              user={
+                user?.id === chat.user.id
+                  ? {
+                      ...chat.post.owner,
+                      picture: chat.post.owner.picture.secureUrl,
+                    }
+                  : { ...chat.user, picture: chat.user.picture.secureUrl }
+              }
               unReadedMessages={chat.messages.length}
               lastMessage={chat.lastMessage}
               isLastMessageFromYou={

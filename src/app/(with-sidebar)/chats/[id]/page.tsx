@@ -21,14 +21,14 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       ? {
           name: data?.post.owner.name,
           surname: data?.post.owner.surname,
-          picture: data?.post.owner.picture,
+          picture: data?.post.owner.picture.secureUrl,
         }
       : {
           name: data?.user?.name,
           surname: data?.user?.surname,
-          picture: data?.user?.picture,
+          picture: data?.user?.picture.secureUrl,
         };
-  console.log("U:", userData);
+
   const searchParams = useSearchParams();
   const postId = searchParams.get("postId");
   if (!postId) return notFound();
@@ -62,18 +62,9 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
     };
   }, [id, user]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
-      try {
-        // const res = await axios.get(`http://localhost:3001/chats/${id}`, {
-        //   withCredentials: true,
-        // });
-        if (messages !== data.messages) {
-          setMessges(data.messages);
-        }
-      } catch (error) {
-        // window.location.href = "/not-found";
-      }
+      setMessges(data.messages);
     })();
     return () => {};
   }, [isFetching]);
@@ -115,25 +106,37 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <ProtectedRoute>
-      <div className="-mt-4  flex flex-col">
+      <div className="flex flex-col">
         <div className="head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1">
           <BiSolidLeftArrow size={18} onClick={() => router.push("/chats")} />
           <img
             src={userData.picture || "/userPlaceholder.svg"}
             className="w-8 h-8 bg-border rounded-full"
           />
-          <div>{userData.name + " " + (userData.surname ?? "")}</div>
+          {userData.name ? (
+            <div>{userData.name + " " + (userData.surname ?? "")}</div>
+          ) : (
+            <div className="w-24 h-4 rounded-md bg-border animate-pulse"></div>
+          )}
         </div>
 
         <div className="body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24">
-          {messages?.map((msg, i) => (
-            <MessageNode
-              key={i}
-              text={msg.text}
-              time={msg.created_at}
-              isOwner={msg.senderId === user?.id}
-            />
-          ))}
+          {messages.length ? (
+            <>
+              {messages?.map((msg, i) => (
+                <MessageNode
+                  key={i}
+                  text={msg.text}
+                  time={msg.created_at}
+                  isOwner={msg.senderId === user?.id}
+                />
+              ))}
+            </>
+          ) : (
+            <div className="w-full grid place-content-center">
+              No there messages yet
+            </div>
+          )}
           <div ref={bottomRef}></div>
         </div>
 

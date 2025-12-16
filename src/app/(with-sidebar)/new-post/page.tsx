@@ -2,10 +2,11 @@
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
-import React, { use, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { postSchema } from "@/utils/validator";
 import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
+import { calcDiscountedCents, formatMoney, toCents } from "@/utils/money";
 
 const typeOptions: { value: string; label: string }[] = [
   { value: "", label: "-- Select --" },
@@ -38,6 +39,7 @@ export default function page() {
     "./postPlaceholder.svg"
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const [priceCents, setPriceCents] = useState<number>(0);
   const [errorFields, setErrorFields] = useState<
     { path: string; message: string }[]
   >([]);
@@ -52,15 +54,17 @@ export default function page() {
   const submitPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!formRef.current || !user) return null;
     const formData = new FormData(formRef.current);
-    const data = Object.fromEntries(formData.entries());
+    formData.set("price", priceCents.toString());
+    var data = Object.fromEntries(formData.entries());
     const parsedData = postSchema.safeParse({
       ...data,
       ownerId: user.id,
-      price: Number(data.price),
       discount: Number(data.discount),
+      price: Number(data.price),
       tags: (data.tags as string).trim(),
       categoryName: (data.categoryName as string).toLowerCase(),
     });
+    console.log(parsedData.data, (data.tags as string).trim());
     if (!parsedData.success) {
       const errors: { path: string; message: string }[] =
         parsedData.error.issues.map((issue) => ({
@@ -68,6 +72,7 @@ export default function page() {
           message: issue.message,
         }));
       setLoading(false);
+      console.log(errors);
       return setErrorFields(errors);
     }
     setLoading(true);
@@ -89,7 +94,7 @@ export default function page() {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 p-4">
         <div className="flex items-center gap-1 px-2">
           <Link href={"/"}>
             <FaArrowLeft size={18} />
@@ -101,6 +106,26 @@ export default function page() {
           ref={formRef}
           onSubmit={(e) => {
             e.preventDefault();
+          }}
+          onChange={(e) => {
+            const form = e.currentTarget;
+            const price = Number(
+              (form.elements.namedItem("price") as HTMLInputElement).value || 0
+            );
+            const discount = Number(
+              (form.elements.namedItem("discount") as HTMLInputElement).value ||
+                0
+            );
+            const priceCents = toCents(price);
+            const discountedCents = calcDiscountedCents(priceCents, discount);
+            setPriceCents(priceCents);
+
+            document.getElementById("price-preview")!.textContent =
+              formatMoney(priceCents);
+            document.getElementById("discount-preview")!.textContent =
+              discount + "%";
+            document.getElementById("discountedPrice-preview")!.textContent =
+              formatMoney(discountedCents);
           }}
         >
           <div className="bg-white p-4 rounded-md gap-4 flex flex-col md:flex-row ">
@@ -124,7 +149,7 @@ export default function page() {
               <img
                 src={imagePreview}
                 draggable={false}
-                className="select-none bg-cover h-full"
+                className="select-none h-full object-cover"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:flex-2">
@@ -209,36 +234,6 @@ export default function page() {
                   min={0}
                   placeholder="Price"
                   className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
-                  onChange={(e) => {
-                    if (!e.target.value) {
-                      e.target.value = "";
-                    }
-                    if (Number(e.target.value) < 0) {
-                      e.target.value = "";
-                    }
-
-                    const priceDiv = document.getElementById(
-                      "price-preview"
-                    ) as HTMLDivElement;
-                    const discountedPriceDiv = document.getElementById(
-                      "discountedPrice-preview"
-                    ) as HTMLElement;
-                    const discountInput = document.getElementById(
-                      "discount"
-                    ) as HTMLInputElement;
-
-                    if (priceDiv && discountedPriceDiv) {
-                      priceDiv.textContent = e.target.value + "$";
-                      const discountedPrice =
-                        Number(e.target.value) *
-                        (1 - Number(discountInput.value) / 100);
-
-                      discountedPriceDiv.textContent =
-                        discountedPrice == 0
-                          ? "Free"
-                          : discountedPrice.toString() + "$";
-                    }
-                  }}
                 />
                 {errorFields.filter((error) => error.path === "price") && (
                   <span className="text-sm text-red-500">
@@ -261,39 +256,6 @@ export default function page() {
                   max={100}
                   placeholder="Discount"
                   className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
-                  onChange={(e) => {
-                    if (!e.target.value) {
-                      e.target.value = "";
-                    }
-                    if (Number(e.target.value) < 0) {
-                      e.target.value = "";
-                    } else if (Number(e.target.value) > 100) {
-                      e.target.value = "100";
-                    }
-                    const priceDiv = document.getElementById(
-                      "price-preview"
-                    ) as HTMLDivElement;
-                    const discountedPriceDiv = document.getElementById(
-                      "discountedPrice-preview"
-                    ) as HTMLElement;
-                    const discountDiv = document.getElementById(
-                      "discount-preview"
-                    ) as HTMLElement;
-                    const priceInput = document.getElementById(
-                      "price"
-                    ) as HTMLInputElement;
-                    if (priceDiv && discountedPriceDiv) {
-                      discountDiv.textContent = e.target.value + "%";
-                      const discountedPrice =
-                        Number(priceInput.value) *
-                        (1 - Number(e.target.value) / 100);
-
-                      discountedPriceDiv.textContent =
-                        discountedPrice == 0
-                          ? "Free"
-                          : discountedPrice.toString() + "$";
-                    }
-                  }}
                 />
                 {errorFields.filter((error) => error.path === "discount") && (
                   <span className="text-sm text-red-500">
@@ -307,9 +269,7 @@ export default function page() {
               <div className="tags flex flex-col col-span-2">
                 <label htmlFor="tags" className="font-bold">
                   Tags
-                  <span className="text-sm font-normal">
-                    (not:split each tag with whitespace)
-                  </span>
+                  <span className="text-sm font-normal">(space saparated)</span>
                 </label>
                 <textarea
                   name="tags"

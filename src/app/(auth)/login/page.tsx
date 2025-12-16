@@ -5,8 +5,6 @@ import axios from "axios";
 import { useEffect, useLayoutEffect } from "react";
 
 export default function page() {
-
-
   const { setUser } = useUserStore();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,7 +17,11 @@ export default function page() {
       withCredentials: true,
     });
     if (res.data.success)
-      setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
+      console.log("from login:", {
+        ...res.data.data,
+        picture: res.data.data.picture?.secureUrl,
+      });
+    setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
   };
 
   return (

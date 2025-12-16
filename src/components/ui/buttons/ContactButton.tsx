@@ -11,8 +11,8 @@ export default function ContactButton({
   ownerId: string;
 }) {
   const { user } = useUserStore();
-  if (!user) return;
   const router = useRouter();
+  if (!user) return;
   const contact = async () => {
     const res = await axios.post(
       "http://localhost:3001/chats",

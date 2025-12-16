@@ -1,10 +1,13 @@
 import { PostType } from "@/utils/validator";
 import Link from "next/link";
+import { MdAccessTime } from "react-icons/md";
 
+import { formatRelativeDate } from "@/utils/Date";
+import { formatMoney, calcDiscountedCents } from "@/utils/money";
 export default function PostCard({ post }: { post: PostType }) {
   return (
     <Link
-      href={`/product/${post.id}`}
+      href={`/post/${post.id}`}
       className="flex md:flex-co gap-4 w-full max-h-50 md:in-h-95! md:mx-h-95! md:w64 bg-white border border-border rounded-md p-2 hover:scale-101 transition-all group duration-250"
     >
       <div className="relative">
@@ -31,31 +34,37 @@ export default function PostCard({ post }: { post: PostType }) {
         </div>
 
         <div className="flex  w-full items-end justify-between  py-2">
-          <div className="author flex items-center gap-1 ">
-            <img
-              src={post.owner?.picture || "./userPlaceholder.svg"}
-              className="author-img bg-border rounded-full aspect-square w-6"
-            />
-            <div className="text-sm font-light text-gray-500">
-              {post.owner!.name!}{" "}
-              {post.owner?.surname !== "null" && post.owner?.surname}
+          <div className="flex gap-4 items-center">
+            <div className="author flex items-center gap-1 ">
+              <img
+                src={post.owner?.picture?.secureUrl || "./userPlaceholder.svg"}
+                className="author-img bg-border rounded-full aspect-square w-6"
+              />
+              <div className="text-sm font-light text-gray-500">
+                {post.owner!.name!}{" "}
+                {post.owner?.surname !== "null" && post.owner?.surname}
+              </div>
+            </div>
+            <div className="time flex text-sm font-light text-gray-500 items-center">
+              <MdAccessTime size={18} />
+              <span className="text-gray-500">
+                {formatRelativeDate(post.created_at!)}
+              </span>
             </div>
           </div>
           <div className="price-contact flex flex-col items-end justify-batween">
             {post.discount ? (
               <>
                 <div className="price text-gray-500 text-xs line-through">
-                  {post.price}$
+                  {formatMoney(post.price)}
                 </div>
                 <div className="price text-primary font-bold">
-                  {post.price * (1 - post?.discount! / 100) == 0
-                    ? "Free"
-                    : post.price * (1 - post?.discount! / 100) + "$"}
+                  {formatMoney(calcDiscountedCents(post.price, post.discount!))}
                 </div>
               </>
             ) : (
               <div className="price text-primary font-bold">
-                {post.price ? post.price + "$" : "Free"}
+                {formatMoney(calcDiscountedCents(post.price, post.discount!))}
               </div>
             )}
           </div>

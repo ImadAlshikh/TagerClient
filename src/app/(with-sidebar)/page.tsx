@@ -5,6 +5,7 @@ import NavigationBar from "@/components/ui/navigation/NavigationBar";
 import AddPostButton from "@/components/ui/buttons/AddPostButton";
 import { usePosts } from "@/cache/usePosts";
 import { PostType } from "@/utils/validator";
+import PostsContainer from "@/components/layout/containers/PostsContainer";
 
 export default function Home() {
   const { data: posts, isLoading, isFetching } = usePosts();
@@ -28,7 +29,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {isFetching && (
         <div className="fixed top-2 right-2 text-sm text-primary">
           <AddPostButton />
@@ -36,17 +37,12 @@ export default function Home() {
         </div>
       )}
 
-      <div className="flex p-4 bg-bg flex-col gap-4 items-center">
+      <div className="flex w-full p-4 bg-bg flex-col gap-4 items-center">
         <AddPostButton />
         <Hero />
 
-        <div className="w-full flex flex-wrap gap-1 justify-center">
-          {posts.map((post: PostType) => (
-            <PostCard post={post} key={post.id} />
-          ))}
-        </div>
+        <PostsContainer posts={posts} />
 
-        <NavigationBar pagesCount={5} />
       </div>
     </div>
   );
