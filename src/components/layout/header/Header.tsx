@@ -24,10 +24,6 @@ export default function Header() {
             setLoading(false);
           };
         }
-        console.log("from header:", {
-          ...res.data.data,
-          picture: res.data.data.picture?.secureUrl,
-        });
         setUser({ ...res.data.data, picture: res.data.data.picture.secureUrl });
 
         setLoading(false);

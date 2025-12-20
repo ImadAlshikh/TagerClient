@@ -1,7 +1,7 @@
 import { PostType } from "@/utils/validator";
 import Link from "next/link";
 import { MdAccessTime } from "react-icons/md";
-
+import { TbCategory2 } from "react-icons/tb";
 import { formatRelativeDate } from "@/utils/Date";
 import { formatMoney, calcDiscountedCents } from "@/utils/money";
 export default function PostCard({ post }: { post: PostType }) {
@@ -13,7 +13,7 @@ export default function PostCard({ post }: { post: PostType }) {
       <div className="relative">
         <img
           src={post?.picture ?? "./postPlaceholder.svg"}
-          className="img max-h-full! bg-border rounded-md overflow-hidden aspect-square min-w-36! max-w-36"
+          className="img max-h-full! bg-border rounded-md overflow-hidden aspect-square  min-w-36! max-w-36"
         />
         {post.discount ? (
           <div className="absolute top-0  right-0 text-center bg-accent-green  px-2 rounded-md text-sm text-white">
@@ -41,7 +41,7 @@ export default function PostCard({ post }: { post: PostType }) {
                 className="author-img bg-border rounded-full aspect-square w-6"
               />
               <div className="text-sm font-light text-gray-500">
-                {post.owner!.name!}{" "}
+                {post.owner!.name!}
                 {post.owner?.surname !== "null" && post.owner?.surname}
               </div>
             </div>
@@ -50,6 +50,10 @@ export default function PostCard({ post }: { post: PostType }) {
               <span className="text-gray-500">
                 {formatRelativeDate(post.created_at!)}
               </span>
+            </div>
+            <div className="category flex text-sm font-light text-gray-500 items-center">
+              <TbCategory2 size={18} />
+              <span className="text-gray-500">{post.categoryName}</span>
             </div>
           </div>
           <div className="price-contact flex flex-col items-end justify-batween">

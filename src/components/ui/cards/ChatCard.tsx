@@ -20,7 +20,6 @@ export default function ChatCard({
   lastMessage: any;
   isLastMessageFromYou: boolean;
 }) {
-  console.log(user.picture);
   return (
     <Link
       href={`/chats/${chatId}?postId=${postId}`}

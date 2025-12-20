@@ -6,43 +6,56 @@ import AddPostButton from "@/components/ui/buttons/AddPostButton";
 import { usePosts } from "@/cache/usePosts";
 import { PostType } from "@/utils/validator";
 import PostsContainer from "@/components/layout/containers/PostsContainer";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
-  const { data: posts, isLoading, isFetching } = usePosts();
+  const [cursor, setCursor] = useState<string | undefined>();
+  const [loadedPosts, setLoadedPosts] = useState<PostType[]>([]);
+  const [postsCount, setPostsCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const limit = 10;
 
-  if (isLoading) {
-    return (
-      <div className="text-primary w-full h-[calc(100vh-78px)] grid place-content-center font-bold text-2xl">
-        <AddPostButton />
-        Loading...
-      </div>
-    );
-  }
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const res = await axios.get(
+        `http://localhost:3001/posts?limit=${limit}&cursor=${cursor}`
+      );
+      if (res.data.success) {
+        setLoadedPosts(res.data.data.posts);
+        setCursor(res.data.data.posts.at(-1).created_at);
+        setPostsCount(res.data.data.postsCount);
+      }
+      setLoading(false);
+    })();
+  }, []);
 
-  if (!posts || posts.length === 0) {
-    return (
-      <div className="text-primary w-full h-[calc(100vh-78px)] flex items-center justify-center font-bold text-2xl">
-        <AddPostButton />
-        No Post Found
-      </div>
+  const showMore = async () => {
+    setLoading(true);
+    const res = await axios.get(
+      `http://localhost:3001/posts?limit=${limit}&cursor=${cursor}`
     );
-  }
+    if (res.data.success) {
+      setLoadedPosts((prev) => [...prev, ...res.data.data.posts]);
+      setCursor(res.data.data.posts.at(-1).created_at);
+      setPostsCount(res.data.data.postsCount);
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="relative w-full">
-      {isFetching && (
-        <div className="fixed top-2 right-2 text-sm text-primary">
-          <AddPostButton />
-          Updating...
-        </div>
-      )}
-
       <div className="flex w-full p-4 bg-bg flex-col gap-4 items-center">
         <AddPostButton />
         <Hero />
 
-        <PostsContainer posts={posts} />
-
+        <PostsContainer
+          showMore={showMore}
+          loadedPosts={loadedPosts}
+          postsCount={postsCount}
+          loading={loading}
+        />
       </div>
     </div>
   );

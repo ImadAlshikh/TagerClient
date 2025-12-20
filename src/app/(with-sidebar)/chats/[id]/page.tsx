@@ -47,7 +47,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   useEffect(() => {
     if (!user) return;
-    socket.emit("join-chat", id);
+    socket.emit("join-chat", { chatId: id, userId: user!.id });
 
     const listener = (msg: any) => {
       if (msg.senderId !== user?.id) {
@@ -59,6 +59,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
     return () => {
       socket.off("new-msg", listener);
+      socket.emit("leave-chat", id);
     };
   }, [id, user]);
 

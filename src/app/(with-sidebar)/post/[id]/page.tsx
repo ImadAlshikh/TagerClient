@@ -18,12 +18,11 @@ export default async function page({ params }: { params: { id: string } }) {
   });
   if (res.status !== 200) return notFound();
   post = res.data.data;
-  console.log("p", post);
 
   return (
     <div className="p-4">
       <div className="bg-white p-4 gap-4 rounded-md flex flex-col items-center md:flex-row md:items-start">
-        <div className="relative hover:scale-102 transition-all duration-250 md:max-w-100 aspect-square">
+        <div className="relative hover:scale-102 transition-all duration-250 md:max-w-80 aspect-square">
           <img
             src={post.picture ?? "/postPlaceholder.svg"}
             className="rounded-md aspect-square bg-border "

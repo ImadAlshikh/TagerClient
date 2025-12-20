@@ -10,7 +10,12 @@ export default function SearchBar() {
       if (!value.length) {
         return router.push("/");
       }
-      router.push(`/search?${value.split(" ").map((word) => `q=${word}&`)}`);
+      router.push(
+        `/search?${value
+          .split(" ")
+          .map((word) => `q=${word}&`)
+          .join("")}`
+      );
     }
   };
   return (

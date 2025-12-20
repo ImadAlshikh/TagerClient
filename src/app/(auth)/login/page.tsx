@@ -17,10 +17,7 @@ export default function page() {
       withCredentials: true,
     });
     if (res.data.success)
-      console.log("from login:", {
-        ...res.data.data,
-        picture: res.data.data.picture?.secureUrl,
-      });
+ 
     setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
   };
 

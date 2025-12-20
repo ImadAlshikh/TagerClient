@@ -36,7 +36,6 @@ export default function page() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log(res.data);
       if (!res.data.success) {
         setError(res.data.message);
       }

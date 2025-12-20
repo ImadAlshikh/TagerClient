@@ -10,22 +10,35 @@ export default async function page({
 }: {
   searchParams: SearchParams;
 }) {
+  let posts;
   const { q } = await searchParams;
+  console.log(q);
   const searchQuery = Array.isArray(q) ? q : q ? [q] : [];
-  const res = await axios.post(`http://localhost:3001/posts/search`, {
-    query: searchQuery,
-  });
-  const posts = res.data.data;
+  try {
+    const res = await axios.get(
+      `http://localhost:3001/posts/search?query=${searchQuery}`
+    );
+    console.log(res);
+    posts = res.data.data;
+  } catch (error) {}
+
   return (
-    <div className="p-4 flex flex-col">
-      <h2 className="px-2 max-w-full line-clamp-1">
-        Search results for{" "}
-        <span className="font-semibold">{searchQuery.join(",")}</span>
-      </h2>
-      <div className="w-full flex flex-wrap gap-1 justify-center ">
-        {posts?.map((post: PostType) => (
-          <PostCard post={post} key={post.id} />
-        ))}
+    <div className="flex w-full gap-4 p-4">
+      <div className=" flex w-full flex-col">
+        <div className="flex justify-between items-center ">
+          <h2 className="px-2 max-w-[70%] line-clamp-1 ">
+            Search results for
+            <span className="font-semibold px-2 ">
+              {searchQuery.join(", ")}
+            </span>
+          </h2>
+          <div className="flex">order by:</div>
+        </div>
+        <div className="w-full flex flex-wrap gap-1 justify-center ">
+          {posts?.map((post: PostType) => (
+            <PostCard post={post} key={post.id} />
+          ))}
+        </div>
       </div>
     </div>
   );

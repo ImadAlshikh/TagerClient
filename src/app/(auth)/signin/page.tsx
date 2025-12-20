@@ -16,10 +16,7 @@ export default function page() {
       withCredentials: true,
     });
     if (res.data.success) {
-          console.log("from signin:", {
-            ...res.data.data,
-            picture: res.data.data.picture?.secureUrl,
-          });
+  
       setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
       return router.push("/profile");
     }

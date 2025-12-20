@@ -64,7 +64,6 @@ export default function page() {
       tags: (data.tags as string).trim(),
       categoryName: (data.categoryName as string).toLowerCase(),
     });
-    console.log(parsedData.data, (data.tags as string).trim());
     if (!parsedData.success) {
       const errors: { path: string; message: string }[] =
         parsedData.error.issues.map((issue) => ({
@@ -72,7 +71,7 @@ export default function page() {
           message: issue.message,
         }));
       setLoading(false);
-      console.log(errors);
+   
       return setErrorFields(errors);
     }
     setLoading(true);
@@ -151,6 +150,17 @@ export default function page() {
                 draggable={false}
                 className="select-none h-full object-cover"
               />
+              <div
+                onClick={() => {
+                  setImagePreview("./postPlaceholder.svg");
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                  }
+                }}
+                className="text-center w-full! hover:text-primary cursor-pointer"
+              >
+                Delete
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:flex-2">
               <div className="title flex flex-col col-span-2">
