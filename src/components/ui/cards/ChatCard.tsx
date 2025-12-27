@@ -27,9 +27,9 @@ export default function ChatCard({
     >
       <div className="relative aspect-square! min-h-22 max-w-22">
         <img
-          src={user.picture || "./userPlaceholder.svg"}
+          src={picture || "./postPlaceholder.svg"}
           alt=""
-          className="aspect-square! w-full rounded-full border-2 border-accent-green"
+          className="aspect-square! w-full rounded-md border border-accent-green"
         />
       </div>
 
@@ -43,9 +43,7 @@ export default function ChatCard({
 
       <div className="flex flex-col w-full justify-">
         <div className="flex flex-col">
-          <div className="title text-accent-green font-semibold">
-            {user.name} {user.surame !== "null" && user.surame}
-          </div>
+          <div className="title text-accent-green font-medium">{title}</div>
           <div className="w-[70%] flex items-end gap-5">
             <div className="last-msg max-w-[50%] text-gray-500 wrap-break-word line-clamp-1">
               {isLastMessageFromYou ? "you" : user.name}
@@ -61,11 +59,13 @@ export default function ChatCard({
           </div>
           <div className="flex items-center gap-1">
             <img
-              src={picture || "./postPlaceholder.svg"}
+              src={user.picture || "./userPlaceholder.svg"}
               alt=""
-              className="w-10 border-2  border-accent-green  rounded-md aspect-square"
+              className="w-10 border  border-accent-green  rounded-full aspect-square"
             />
-            <div className="text-gray-500">{title}</div>
+            <div className="text-gray-500">
+              {user.name} {user.surame !== "null" && user.surame}
+            </div>
           </div>
         </div>
       </div>

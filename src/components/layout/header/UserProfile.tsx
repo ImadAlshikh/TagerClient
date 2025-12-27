@@ -1,15 +1,16 @@
-import { useUserStore } from "@/stores/useUserStore";
 import { IoMdSettings } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import { ReactElement, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { useUser } from "@/cache/useUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UserProfile() {
-  const { user, logout } = useUserStore();
+  const { data: user } = useUser();
   const [showMenu, setShowMenu] = useState<boolean>(false);
-
+  const queryClient = useQueryClient();
   const sections: {
     name: string;
     icon?: ReactElement;
@@ -43,7 +44,7 @@ export default function UserProfile() {
     >
       <img
         src={user?.picture || "./userPlaceholder.svg"}
-        className="w-8  aspect-square! bg-border rounded-full"
+        className="size-8 bg-border rounded-full"
       />
       {showMenu && (
         <div className="absolute p-2 z-10 left-1/2 -translate-x-1/2  bg-white border border-border rounded-md top-full">
@@ -65,10 +66,15 @@ export default function UserProfile() {
           </Link>
           <div
             onClick={async () => {
-              logout();
-              await axios.delete("http://localhost:3001/users/logout", {
-                withCredentials: true,
-              });
+              const res = await axios.delete(
+                "http://localhost:3001/users/logout",
+                {
+                  withCredentials: true,
+                }
+              );
+              if (res.data.success) {
+                queryClient.setQueryData(["user"], null);
+              }
             }}
             className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
             }`}

@@ -6,6 +6,8 @@ interface User {
   surname: string;
   picture?: string;
   phone?: string;
+  posts?: any;
+  wallet?: any;
   address?: string;
   created_at?: string;
 }

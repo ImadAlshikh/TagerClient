@@ -30,7 +30,7 @@ export const postSchema = z.object({
   id: z.cuid().optional(),
   title: z.string().nonempty(),
   description: z.string().max(500).optional(),
-  picture: z.union([z.string().optional(), z.file().optional()]),
+  picture: z.any().optional(),
   price: z.number().nonnegative(),
   discount: z.number().max(100).nonnegative().optional(),
   categoryName: z.string().nonempty(),

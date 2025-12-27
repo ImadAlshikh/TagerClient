@@ -3,7 +3,6 @@ import { MdAccessTime } from "react-icons/md";
 import { TbCategory2 } from "react-icons/tb";
 import { PostType } from "@/utils/validator";
 import { notFound } from "next/navigation";
-import axios from "axios";
 import TagNode from "@/components/ui/nodes/TagNode";
 import ReportButton from "@/components/ui/buttons/ReportButton";
 import { formatRelativeDate } from "@/utils/Date";
@@ -12,19 +11,20 @@ import { calcDiscountedCents, formatMoney } from "@/utils/money";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  let post: PostType;
-  const res = await axios.get(`http://localhost:3001/posts/${id}`, {
-    withCredentials: true,
-  });
-  if (res.status !== 200) return notFound();
-  post = res.data.data;
+  const res = await fetch(`http://localhost:3001/posts/${id}`, {
+    next: { revalidate: 120, tags: [`post-${id}`] },
+    credentials: "include",
+  }).then((res) => res.json());
+  console.log(res);
+  if (!res?.success) return notFound();
+  const post: PostType = res.data;
 
   return (
     <div className="p-4">
       <div className="bg-white p-4 gap-4 rounded-md flex flex-col items-center md:flex-row md:items-start">
-        <div className="relative hover:scale-102 transition-all duration-250 md:max-w-80 aspect-square">
+        <div className="relative hover:scale-102 transition-all duration-250 md:size-60 aspect-square">
           <img
-            src={post.picture ?? "/postPlaceholder.svg"}
+            src={post.picture?.secureUrl ?? "/postPlaceholder.svg"}
             className="rounded-md aspect-square bg-border "
           />
           {post.discount ? (
@@ -36,7 +36,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <div className="flex flex-col w-full gap-3 px-2 md:px-10">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-accent-green font-bold text-lg">
+              <h2 className="text-accent-green font-medium text-lg">
                 {post.title}
               </h2>
               <ReportButton reportedId={post?.id} />
@@ -67,17 +67,20 @@ export default async function page({ params }: { params: { id: string } }) {
             <div className="price-contact flex flex-col items-end justify-batween">
               {post.discount ? (
                 <>
+                  <div className="price text-accent-green text-xs">
+                    {post.discount}%
+                  </div>
                   <div className="price text-gray-500 text-xs line-through">
                     {formatMoney(post.price)}
                   </div>
-                  <div className="price text-primary font-bold">
+                  <div className="price text-primary font-semibold">
                     {formatMoney(
                       calcDiscountedCents(post.price, post.discount!)
                     )}
                   </div>
                 </>
               ) : (
-                <div className="price text-primary font-bold">
+                <div className="price text-primary font-semibold">
                   {formatMoney(calcDiscountedCents(post.price, post.discount!))}
                 </div>
               )}
@@ -86,7 +89,7 @@ export default async function page({ params }: { params: { id: string } }) {
           <ContactButton id={id} ownerId={post.ownerId} />
 
           <div className="tags flex flex-col gap-2">
-            <span className="font-bold">Tags</span>
+            <span className="font-semibold">Tags</span>
             <div className="flex gap-1 px-2 flex-wrap">
               {post.tags?.map((word: string, index: number) =>
                 word.length ? <TagNode key={index} category={word} /> : null

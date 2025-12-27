@@ -4,9 +4,10 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
 import React, { useRef, useState } from "react";
 import { postSchema } from "@/utils/validator";
-import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
 import { calcDiscountedCents, formatMoney, toCents } from "@/utils/money";
+import { useUser } from "@/cache/useUser";
+import { useRouter } from "next/navigation";
 
 const typeOptions: { value: string; label: string }[] = [
   { value: "", label: "-- Select --" },
@@ -32,7 +33,7 @@ const typeOptions: { value: string; label: string }[] = [
 ];
 
 export default function page() {
-  const { user } = useUserStore();
+  const { data: user } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string>(
@@ -43,6 +44,24 @@ export default function page() {
   const [errorFields, setErrorFields] = useState<
     { path: string; message: string }[]
   >([]);
+  const [error, setError] = useState<string>();
+  const router = useRouter();
+
+  const handleDropFile = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    if (
+      !droppedFile ||
+      !droppedFile.type.startsWith("image/") ||
+      !fileInputRef.current
+    )
+      return;
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(droppedFile);
+    fileInputRef.current.files = dataTransfer.files;
+    const preview = URL.createObjectURL(droppedFile);
+    setImagePreview(preview);
+  };
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,7 +90,7 @@ export default function page() {
           message: issue.message,
         }));
       setLoading(false);
-   
+
       return setErrorFields(errors);
     }
     setLoading(true);
@@ -84,21 +103,28 @@ export default function page() {
       });
 
       if (!res.data.success) {
+        return setError(res.data.error || "Invalid data");
       }
       setLoading(false);
-    } catch (e) {
+      router.push(`/post/${res.data.data.id}`);
+    } catch (e: any) {
       setLoading(false);
+      return setError(e.response.data.error || "Invalid data");
     }
   };
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col gap-2 p-4">
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDropFile}
+        className="flex flex-col gap-2 p-4"
+      >
         <div className="flex items-center gap-1 px-2">
           <Link href={"/"}>
             <FaArrowLeft size={18} />
           </Link>
-          <span className="font-bold text-primary text-xl">New Post</span>
+          <span className="font-medium text-text text-xl">New Post</span>
         </div>
 
         <form
@@ -127,8 +153,8 @@ export default function page() {
               formatMoney(discountedCents);
           }}
         >
-          <div className="bg-white p-4 rounded-md gap-4 flex flex-col md:flex-row ">
-            <div className="rounded-md relative group bg-border md:flex-1 aspect-square! w-full h-full">
+          <div className="bg-white p-4 rounded-md gap-4 flex flex-col md:flex-row items-center md:items-start">
+            <div className="rounded-md relative group  aspect-square! size-full md:size-60 h-full flex flex-col justify-center">
               <input
                 type="file"
                 name="picture"
@@ -150,17 +176,19 @@ export default function page() {
                 draggable={false}
                 className="select-none h-full object-cover"
               />
-              <div
-                onClick={() => {
-                  setImagePreview("./postPlaceholder.svg");
-                  if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
-                  }
-                }}
-                className="text-center w-full! hover:text-primary cursor-pointer"
-              >
-                Delete
-              </div>
+              {fileInputRef.current?.value && (
+                <div
+                  onClick={() => {
+                    setImagePreview("./postPlaceholder.svg");
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = "";
+                    }
+                  }}
+                  className="text-center w-full! hover:text-primary cursor-pointer absolute top-full"
+                >
+                  Delete
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:flex-2">
               <div className="title flex flex-col col-span-2">
@@ -329,6 +357,11 @@ export default function page() {
                   >
                     Post
                   </button>
+                  {error && (
+                    <span className="text-accent-red text-sm absolute bottom-3 right-8 ">
+                      {error}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

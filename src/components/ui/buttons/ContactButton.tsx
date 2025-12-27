@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@/cache/useUser";
 import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ export default function ContactButton({
   id: string;
   ownerId: string;
 }) {
-  const { user } = useUserStore();
+  const { data: user } = useUser();
   const router = useRouter();
   if (!user) return;
   const contact = async () => {

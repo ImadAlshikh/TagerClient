@@ -1,5 +1,6 @@
 "use client";
 import { useChats } from "@/cache/useChats";
+import { useUser } from "@/cache/useUser";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import ChatCard from "@/components/ui/cards/ChatCard";
 import { useUserStore } from "@/stores/useUserStore";
@@ -22,13 +23,15 @@ interface PostCardType {
 }
 
 export default function page() {
-  const { user } = useUserStore();
-  const { data: chats, isLoading } = useChats(user?.id);
+  const { data: user, isLoading: userLoading } = useUser();
+  console.log(user);
+  const { data: chats, isLoading } = useChats();
+  console.log(chats);
 
   return (
     <ProtectedRoute>
       <div className="flex flex-col gap-2 p-4">
-        <div className="text-xl font-bold text-primary">Chats</div>
+        <span className="font-medium text-text text-xl">Chats</span>
         {chats?.length ? (
           chats?.map((chat: any) => (
             <ChatCard
@@ -41,9 +44,9 @@ export default function page() {
                 user?.id === chat.user.id
                   ? {
                       ...chat.post.owner,
-                      picture: chat.post.owner.picture.secureUrl,
+                      picture: chat.post.owner.picture?.secureUrl,
                     }
-                  : { ...chat.user, picture: chat.user.picture.secureUrl }
+                  : { ...chat.user, picture: chat.user.picture?.secureUrl }
               }
               unReadedMessages={chat.messages.length}
               lastMessage={chat.lastMessage}
@@ -52,7 +55,7 @@ export default function page() {
               }
             />
           ))
-        ) : isLoading && !chats ? (
+        ) : isLoading ? (
           <div className="text-primary w-full h-[calc(100vh-150px)] font-bold text-2xl grid place-content-center">
             Loading...
           </div>

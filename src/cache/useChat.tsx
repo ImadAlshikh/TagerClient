@@ -12,8 +12,7 @@ export const useChat = (chatId: string) => {
         return res.data.data;
       }
     },
-    staleTime: 1000 * 3,
-    gcTime: 1000 * 60 * 3,
+    staleTime: 0,
     enabled: !!chatId,
     placeholderData: keepPreviousData,
   });

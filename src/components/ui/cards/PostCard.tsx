@@ -12,8 +12,8 @@ export default function PostCard({ post }: { post: PostType }) {
     >
       <div className="relative">
         <img
-          src={post?.picture ?? "./postPlaceholder.svg"}
-          className="img max-h-full! bg-border rounded-md overflow-hidden aspect-square  min-w-36! max-w-36"
+          src={post?.picture?.secureUrl ?? "./postPlaceholder.svg"}
+          className="img max-h-full! bg-border rounded-md overflow-hidden  size-36 object-cover"
         />
         {post.discount ? (
           <div className="absolute top-0  right-0 text-center bg-accent-green  px-2 rounded-md text-sm text-white">
@@ -21,13 +21,11 @@ export default function PostCard({ post }: { post: PostType }) {
           </div>
         ) : null}
 
-        <div className="w-full h-full absolute top-0 transition-opacity duration-250 rounded-md bg-black opacity-0 group-hover:opacity-20"></div>
+        <div className="size-full absolute top-0 transition-opacity duration-250 rounded-md bg-black opacity-0 group-hover:opacity-20"></div>
       </div>
-      <div className="flex flex-col h-full grow justify-between">
+      <div className="flex flex-col min-h-full grow justify-between">
         <div className="flex flex-col">
-          <h3 className="title font-semibold text-accent-green">
-            {post.title}
-          </h3>
+          <h3 className="title font-medium text-accent-green">{post.title}</h3>
           <div className="description text-gray-500 max-w-full wrap-break-word line-clamp-2">
             {post.description}
           </div>
@@ -41,7 +39,7 @@ export default function PostCard({ post }: { post: PostType }) {
                 className="author-img bg-border rounded-full aspect-square w-6"
               />
               <div className="text-sm font-light text-gray-500">
-                {post.owner!.name!}
+                {post.owner!.name!}{" "}
                 {post.owner?.surname !== "null" && post.owner?.surname}
               </div>
             </div>
@@ -62,12 +60,12 @@ export default function PostCard({ post }: { post: PostType }) {
                 <div className="price text-gray-500 text-xs line-through">
                   {formatMoney(post.price)}
                 </div>
-                <div className="price text-primary font-bold">
+                <div className="price text-primary font-semibold">
                   {formatMoney(calcDiscountedCents(post.price, post.discount!))}
                 </div>
               </>
             ) : (
-              <div className="price text-primary font-bold">
+              <div className="price text-primary font-semibold">
                 {formatMoney(calcDiscountedCents(post.price, post.discount!))}
               </div>
             )}

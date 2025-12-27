@@ -1,25 +1,23 @@
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { PostType } from "@/utils/validator";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function usePosts({
-  nextCursor,
-  limit,
-}: {
-  nextCursor?: string;
-  limit?: number;
-} = {}) {
-  return useQuery({
-    queryKey: ["posts", nextCursor],
-    queryFn: async () => {
+const LIMIT = 10;
+
+export function usePosts() {
+  return useInfiniteQuery({
+    queryKey: ["posts"],
+    queryFn: async ({ pageParam }) => {
       const res = await axios.get(
-        `http://localhost:3001/posts?limit=${limit}&cursor=${nextCursor}`
+        `http://localhost:3001/posts?limit=${LIMIT}&cursor=${pageParam}`
       );
-      if (res.data.success) {
-        return res.data.data;
-      }
+      return res.data.data;
     },
-    staleTime: 1000 * 30,
-    gcTime: 1000 * 60 * 3,
-    placeholderData: keepPreviousData,
+    getNextPageParam: (lastPage: any) => {
+      const posts: PostType[] = lastPage.posts;
+      if (!posts.length) return undefined;
+      return posts.at(-1)?.created_at;
+    },
+    initialPageParam: undefined,
   });
 }

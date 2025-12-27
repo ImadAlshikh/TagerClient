@@ -1,21 +1,19 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useChats = (userId?: string) => {
+export const useChats = () => {
   return useQuery({
-    queryKey: ["chats", userId],
+    queryKey: ["chats"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:3001/chats/by-user/${userId}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`http://localhost:3001/chats/by-user`, {
+        withCredentials: true,
+      });
+      console.log("from :", res);
       if (res.data.success) {
         return res.data.data;
       }
     },
-    staleTime: 1000 * 3,
-    gcTime: 1000 * 60 * 3,
-    enabled: !!userId,
+
     placeholderData: keepPreviousData,
   });
 };

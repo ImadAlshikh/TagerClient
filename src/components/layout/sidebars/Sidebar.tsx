@@ -11,17 +11,17 @@ export default function Sidebar() {
   const showSidebar = true;
   const sidebarRef = useRef<HTMLElement>(null);
 
-  const sections: { name: string; icon?: ReactElement; color?: string }[] = [
-    { name: "Search", icon: <IoSearch size={18} /> },
-    { name: "Explore", icon: <MdExplore size={18} /> },
-    { name: "Chats", icon: <IoChatbubblesSharp size={18} /> },
-    { name: "Settings", icon: <IoMdSettings size={18} /> },
-    { name: "Profile", icon: <CgProfile size={18} /> },
-    {
-      name: "Logout",
-      icon: <FiLogOut color="red" size={18} />,
-      color: "red",
-    },
+  const sections: {
+    url: string;
+    name: string;
+    icon?: ReactElement;
+    color?: string;
+  }[] = [
+    // { url: "/search", name: "Search", icon: <IoSearch size={18} /> },
+    { url: "/explore", name: "Explore", icon: <MdExplore size={18} /> },
+    { url: "/chats", name: "Chats", icon: <IoChatbubblesSharp size={18} /> },
+    { url: "/settings", name: "Settings", icon: <IoMdSettings size={18} /> },
+    { url: "/profile", name: "Profile", icon: <CgProfile size={18} /> },
   ];
 
   return (
@@ -31,55 +31,70 @@ export default function Sidebar() {
         showSidebar ? "ltr: translate-x-0" : "ltr:-translate-x-full hidden"
       }`}
     >
-      <div className="sticky top-18">
-        <Link href={"/"} className="text-primary font-bold text-xl">
-          Tager
-        </Link>
-        <Link
-          href="/explore"
-          className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
-        >
-          <MdExplore size={18} />
-          <span>Explore</span>
-        </Link>
-        <Link
-          href="/chats"
-          className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
-        >
-          <IoChatbubblesSharp size={18} />
-          <span>Chats</span>
-        </Link>
-        <Link
-          href="/new-post"
-          className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
-        >
-          <div className="bg-text rounded-full">
-            <FiPlus size={18} color="white" />
-          </div>
+      {/* <div className="sticky top-18"> */}
+      {/* <Link href={"/"} className="text-primary font-bold text-xl">
+        Tager
+      </Link>
+      <Link
+        href="/explore"
+        className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
+      >
+        <MdExplore size={18} />
+        <span>Explore</span>
+      </Link>
+      <Link
+        href="/chats"
+        className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
+      >
+        <IoChatbubblesSharp size={18} />
+        <span>Chats</span>
+      </Link>
+      <Link
+        href="/new-post"
+        className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
+      >
+        <div className="bg-text rounded-full">
+          <FiPlus size={18} color="white" />
+        </div>
 
-          <span>New Post</span>
-        </Link>
-        <Link
-          href="/settings"
-          className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
-        >
-          <IoMdSettings size={18} />
-          <span>Settings</span>
-        </Link>
-        <Link
-          href="/profile"
-          className="md:hidden px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
-        >
-          <CgProfile size={18} />
-          <span>Profile</span>
-        </Link>
-        {/* <Link
+        <span>New Post</span>
+      </Link>
+      <Link
+        href="/settings"
+        className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
+      >
+        <IoMdSettings size={18} />
+        <span>Settings</span>
+      </Link>
+      <Link
+        href="/profile"
+        className="md:hidden px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg"
+      >
+        <CgProfile size={18} />
+        <span>Profile</span>
+      </Link> */}
+      {/* <Link
           href=""
           className="md:hidden px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg text-red-500"
         >
           <FiLogOut size={18} color="red" />
           <span className="text-inherit">Logout</span>
         </Link> */}
+      {/* </div> */}
+      <div className="sticky top-18">
+        <Link href={"/"} className="text-primary font-bold text-xl">
+          Tager
+        </Link>
+        {sections.map((section, i) => (
+          <Link
+            key={i}
+            href={section.url}
+            className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-border"
+          >
+            {section.icon}
+            <span>{section.name}</span>
+          </Link>
+        ))}
       </div>
     </aside>
   );

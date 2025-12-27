@@ -10,51 +10,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Home() {
-  const [cursor, setCursor] = useState<string | undefined>();
-  const [loadedPosts, setLoadedPosts] = useState<PostType[]>([]);
-  const [postsCount, setPostsCount] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const limit = 10;
+  const { data, fetchNextPage, isLoading, isFetching } = usePosts();
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const res = await axios.get(
-        `http://localhost:3001/posts?limit=${limit}&cursor=${cursor}`
-      );
-      if (res.data.success) {
-        setLoadedPosts(res.data.data.posts);
-        setCursor(res.data.data.posts.at(-1).created_at);
-        setPostsCount(res.data.data.postsCount);
-      }
-      setLoading(false);
-    })();
-  }, []);
-
-  const showMore = async () => {
-    setLoading(true);
-    const res = await axios.get(
-      `http://localhost:3001/posts?limit=${limit}&cursor=${cursor}`
-    );
-    if (res.data.success) {
-      setLoadedPosts((prev) => [...prev, ...res.data.data.posts]);
-      setCursor(res.data.data.posts.at(-1).created_at);
-      setPostsCount(res.data.data.postsCount);
-    }
-    setLoading(false);
-  };
-
+  const posts = data?.pages.flatMap((page) => page.posts);
+  const postsCount = data?.pages.flatMap((page) => page)[0].postsCount;
+  // if (!posts) return;
   return (
     <div className="relative w-full">
       <div className="flex w-full p-4 bg-bg flex-col gap-4 items-center">
         <AddPostButton />
         <Hero />
-
         <PostsContainer
-          showMore={showMore}
-          loadedPosts={loadedPosts}
+          showMore={fetchNextPage}
+          posts={posts}
           postsCount={postsCount}
-          loading={loading}
+          loading={isLoading}
         />
       </div>
     </div>

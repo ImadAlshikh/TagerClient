@@ -1,7 +1,6 @@
 "use client";
-
 import PostCard from "@/components/ui/cards/PostCard";
-import AddPostButton from "@/components/ui/buttons/AddPostButton";
+import SkeletonPostCard from "@/components/ui/cards/SekeletonPostCard";
 import { usePosts } from "@/cache/usePosts";
 import { useEffect, useState } from "react";
 import { PostType } from "@/utils/validator";
@@ -11,25 +10,24 @@ import axios from "axios";
 export default function PostsContainer({
   postsCount,
   showMore,
-  loadedPosts,
+  posts,
   loading,
 }: {
   postsCount: number;
   showMore: () => {};
-  loadedPosts: PostType[];
+  posts?: PostType[];
   loading: boolean;
 }) {
-
   return (
     <div className="w-full h-full flex flex-col items-center gap-4">
-      {loadedPosts?.length ? (
+      {posts?.length ? (
         <>
           <div className="w-full flex flex-wrap gap-1">
-            {loadedPosts?.map((post: any) => (
+            {posts?.map((post: any) => (
               <PostCard post={post} key={post.id} />
             ))}
           </div>
-          {loadedPosts.length < postsCount && (
+          {posts.length < postsCount && (
             <span
               onClick={showMore}
               className="w-full text-center cursor-pointer text-primary hover:text-primary-dark pb-4"
@@ -39,9 +37,11 @@ export default function PostsContainer({
           )}
         </>
       ) : loading ? (
-        <div className="w-full h-full grid place-content-center text-primary text-2xl font-medium">
-          Loading...
-        </div>
+        <>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonPostCard key={i} />
+          ))}
+        </>
       ) : (
         <div className="w-full h-full grid place-content-center text-primary text-2xl font-medium">
           No post found

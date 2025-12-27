@@ -3,9 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
 import { QueryProvider } from "@/providers/QueryProvider";
-import Sidebar from "@/components/layout/sidebars/Sidebar";
 import ScrollToTop from "@/hooks/ScrollToTop";
-import AddPostButton from "@/components/ui/buttons/AddPostButton";
 
 export const metadata: Metadata = {
   title: "Tager",

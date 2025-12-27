@@ -1,6 +1,8 @@
 export function formatRelativeDate(date: Date) {
   date = date instanceof Date ? date : new Date(date);
-
+  if (isNaN(date.getTime())) {
+    return null;
+  }
   const diffMs = Date.now() - date.getTime();
   const minutes = Math.floor(diffMs / (1000 * 60));
   const hours = Math.floor(minutes / 60);
@@ -14,5 +16,5 @@ export function formatRelativeDate(date: Date) {
   if (weeks < 4) return `${weeks} weeks ago`;
   if (months < 12) return `${months} months ago`;
 
-  return date.toLocaleDateString();
+  return new Intl.DateTimeFormat("en-GB").format(date);
 }

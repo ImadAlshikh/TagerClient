@@ -1,38 +1,14 @@
 "use client";
 import SearchBar from "@/components/ui/search/SearchBar";
 import UserProfile from "./UserProfile";
-import { useUserStore } from "@/stores/useUserStore";
 import { CiMenuBurger } from "react-icons/ci";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import axios from "axios";
+import { useUser } from "@/cache/useUser";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { user, setUser, logout, loading, setLoading } = useUserStore();
-
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("http://localhost:3001/users/profile", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (!res.data.success) {
-          return () => {
-            logout();
-            setLoading(false);
-          };
-        }
-        setUser({ ...res.data.data, picture: res.data.data.picture.secureUrl });
-
-        setLoading(false);
-      })
-      .catch((e) => {
-        logout();
-        setLoading(false);
-      });
-  }, []);
+  const { data: user, isLoading } = useUser();
 
   return (
     <header className="select-none fixed z-50 h-14 w-full bg-white overflow-x-clip  border-b p-2 text-text border-border">
@@ -42,12 +18,15 @@ export default function Header() {
         </Link>
         <div className="flex items-center gap-1">
           <SearchBar />
-          {loading ? (
+          {isLoading ? (
             <div className="w-8  aspect-square! bg-border animate-pulse rounded-full" />
           ) : (
             <>
-              {user?.id ? (
-                <UserProfile />
+              {user?.id?.length ? (
+                <>
+                  <div>{user.wallet?.freePoints}</div>
+                  <UserProfile />
+                </>
               ) : (
                 <div className="flex items-center gap-0">
                   <Link

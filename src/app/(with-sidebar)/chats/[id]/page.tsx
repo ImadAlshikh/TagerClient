@@ -9,13 +9,14 @@ import { useUserStore } from "@/stores/useUserStore";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import { BiSolidLeftArrow } from "react-icons/bi";
 import { useChat } from "@/cache/useChat";
+import { useUser } from "@/cache/useUser";
 
 const socket = io("http://localhost:3001");
 
 export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { user } = useUserStore();
-  const { data, isFetching } = useChat(id);
+  const { data: user } = useUser();
+  const { data, isLoading, refetch } = useChat(id);
   const userData =
     user?.id === data?.userId
       ? {
@@ -65,11 +66,11 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   useLayoutEffect(() => {
     (async () => {
-      setMessges(data.messages);
+      setMessges(data?.messages);
     })();
     return () => {};
-  }, [isFetching]);
-
+  }, [isLoading]);
+  console.log(messages);
   const sendMessage = async () => {
     if (messageInputRef.current) {
       const text = messageInputRef.current.value.trim();
@@ -94,14 +95,15 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
         },
         { withCredentials: true }
       );
+      console.log("me:", res.data.data);
       if (!res.data.success) {
         setMessges((prev) => prev.filter((msg) => msg?.tempId !== tempId));
         return;
-      } else {
-        setMessges((prev) =>
-          prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg))
-        );
       }
+      setMessges((prev) =>
+        prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg))
+      );
+      refetch();
     }
   };
 
@@ -110,19 +112,24 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       <div className="flex flex-col">
         <div className="head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1">
           <BiSolidLeftArrow size={18} onClick={() => router.push("/chats")} />
-          <img
-            src={userData.picture || "/userPlaceholder.svg"}
-            className="w-8 h-8 bg-border rounded-full"
-          />
           {userData.name ? (
-            <div>{userData.name + " " + (userData.surname ?? "")}</div>
+            <>
+              <img
+                src={userData.picture || "/userPlaceholder.svg"}
+                className="size-8 bg-border rounded-full"
+              />
+              <div>{userData.name + " " + (userData?.surname ?? "")}</div>
+            </>
           ) : (
-            <div className="w-24 h-4 rounded-md bg-border animate-pulse"></div>
+            <>
+              <div className="size-8 bg-gray-300 rounded-full animate-pulse" />
+              <div className="w-24 h-4 rounded-md bg-gray-300 animate-pulse" />
+            </>
           )}
         </div>
 
         <div className="body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24">
-          {messages.length ? (
+          {messages?.length ? (
             <>
               {messages?.map((msg, i) => (
                 <MessageNode
