@@ -109,6 +109,7 @@ export default function page() {
       router.push(`/post/${res.data.data.id}`);
     } catch (e: any) {
       setLoading(false);
+
       return setError(e.response.data.error || "Invalid data");
     }
   };
@@ -342,6 +343,10 @@ export default function page() {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-2">
+                  <div className="flex items-center gap-0.5 ">
+                    <span>cost:5</span>
+                    <img src="/coin.png" className="size-5" draggable="false" />
+                  </div>
                   <Link
                     href={"/"}
                     type="button"

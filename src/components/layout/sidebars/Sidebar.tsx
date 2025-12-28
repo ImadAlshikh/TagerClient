@@ -4,7 +4,7 @@ import { IoSearch, IoChatbubblesSharp } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { MdExplore } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
-import { FiLogOut, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -17,7 +17,7 @@ export default function Sidebar() {
     icon?: ReactElement;
     color?: string;
   }[] = [
-    // { url: "/search", name: "Search", icon: <IoSearch size={18} /> },
+    { url: "/new-post", name: "New Post", icon: <FiPlus size={18} /> },
     { url: "/explore", name: "Explore", icon: <MdExplore size={18} /> },
     { url: "/chats", name: "Chats", icon: <IoChatbubblesSharp size={18} /> },
     { url: "/settings", name: "Settings", icon: <IoMdSettings size={18} /> },

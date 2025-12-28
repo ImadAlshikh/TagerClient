@@ -19,12 +19,18 @@ export default function Header() {
         <div className="flex items-center gap-1">
           <SearchBar />
           {isLoading ? (
-            <div className="w-8  aspect-square! bg-border animate-pulse rounded-full" />
+            <div className="flex items-center">
+              <div className="h-6 w-10 bg-gray-50 animate-pulse rounded-full"></div>
+              <div className="w-8  aspect-square! bg-border animate-pulse rounded-full" />
+            </div>
           ) : (
             <>
               {user?.id?.length ? (
                 <>
-                  <div>{user.wallet?.freePoints}</div>
+                  <div className="flex items-center px-2 rounded-full bg-gray-50">
+                    <img src="/coin.png" className="size-5 rounded-full" />
+                    <span>{user.wallet?.freePoints}</span>
+                  </div>
                   <UserProfile />
                 </>
               ) : (

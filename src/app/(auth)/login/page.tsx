@@ -33,7 +33,7 @@ export default function page() {
   return (
     <div className="h-[calc(100vh-72px)] w-full mx-auto">
       <div className="flex flex-col md:flex-row h-full min-h-fit">
-        <div className="hidden md:block banner flex-1 bg-border animate-pulse rounded-md  min-h-full"></div>
+        <img src={"/login.svg"} className="hidden md:block banner bg-white flex-1 m-10 border border-border rounded-md  max-h-full"></img>
 
         <form
           onSubmit={handleLogin}

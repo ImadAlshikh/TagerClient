@@ -22,7 +22,7 @@ export default function page() {
       setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
       return router.push("/profile");
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       return setError(error.response.data.error);
     }
   };
@@ -30,7 +30,10 @@ export default function page() {
   return (
     <div className="h-[calc(100vh-72px)]">
       <div className="flex flex-col md:flex-row h-full">
-        <div className="hidden md:block banner flex-1   bg-border animate-pulse rounded-md  min-h-full"></div>
+        <img
+          src={"/signin.jpg"}
+          className="hidden md:block banner bg-white flex-1 m-10 border border-border rounded-md  max-h-full"
+        ></img>
 
         <form
           onSubmit={handleSignin}

@@ -50,7 +50,7 @@ export default function page() {
       setSaveButtonDisabled(false);
     }
   };
-
+  console.log(user);
   return (
     <ProtectedRoute>
       <div className="flex flex-col p-4">
@@ -81,28 +81,39 @@ export default function page() {
                 onSubmit={handleSave}
                 className="flex flex-col items-center md:flex-row md:items-start gap-4 w-full"
               >
-                <div className="rounded-full  relative group bg-border md:flex-1 aspect-square! w-34  h-34">
-                  <input
-                    type="file"
-                    name="picture"
-                    id="picture"
-                    ref={fileInputRef}
-                    accept="image/*"
-                    onChange={handleImagePreview}
-                    className="hidden"
-                  />
-                  <div className="absolute rounded-full bg-black opacity-0 group-hover:opacity-35 transition-opacity duration-250  w-full h-full"></div>
-                  <button
-                    onClick={() => fileInputRef?.current?.click()}
-                    className="bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-250 absolute text-white rounded-full px-2 py-1 self-center left-1/2 top-1/2 -translate-1/2"
-                  >
-                    Change
-                  </button>
-                  <img
-                    src={imagePreview}
-                    draggable={false}
-                    className="select-none bg-cover w-full h-full rounded-full border border-border"
-                  />
+                <div className="flex flex-col items-center">
+                  <div className="rounded-full  relative group bg-border md:flex-1 aspect-square! w-34  h-34">
+                    <input
+                      type="file"
+                      name="picture"
+                      id="picture"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      onChange={handleImagePreview}
+                      className="hidden"
+                    />
+                    <div className="absolute rounded-full bg-black opacity-0 group-hover:opacity-35 transition-opacity duration-250  w-full h-full"></div>
+                    <button
+                      onClick={() => fileInputRef?.current?.click()}
+                      className="bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-250 absolute text-white rounded-full px-2 py-1 self-center left-1/2 top-1/2 -translate-1/2"
+                    >
+                      Change
+                    </button>
+                    <img
+                      src={imagePreview}
+                      draggable={false}
+                      className="select-none bg-cover w-full h-full rounded-full border border-border"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-semibold">coins: </span>
+                    <div className="flex items-center">
+                      <img src="./coin.png" className="size-5" />
+                      <span className="font-semibold">
+                        {user?.wallet.freePoints + user?.wallet.paidPoints}
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex flex-col  w-full gap-2">
                   <FaEdit
