@@ -1,11 +1,11 @@
 "use client";
+import { useUser } from "@/cache/useUser";
 import GoogleAuthButton from "@/components/ui/buttons/GoogleAuthButton";
-import { useUserStore } from "@/stores/useUserStore";
+import { queryClient } from "@/providers/QueryProvider";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 export default function page() {
-  const { setUser } = useUserStore();
   const router = useRouter();
   const [error, setError] = useState<string>();
   const handleSignin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,10 +19,9 @@ export default function page() {
       if (!res.data.success) {
         setError(res.data?.error);
       }
-      setUser({ ...res.data.data, picture: res.data.data.picture?.secureUrl });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       return router.push("/profile");
     } catch (error: any) {
-      console.log(error);
       return setError(error.response.data.error);
     }
   };

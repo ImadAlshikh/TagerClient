@@ -4,6 +4,8 @@ import Header from "@/components/layout/header/Header";
 import { Roboto } from "next/font/google";
 import { QueryProvider } from "@/providers/QueryProvider";
 import ScrollToTop from "@/hooks/ScrollToTop";
+import { SocketProvider } from "@/providers/SocketProvider";
+import MessageCard from "@/components/ui/cards/MessageCard";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -25,11 +27,13 @@ export default function RootLayout({
       <body
         className={`w-full min-h-full flex flex-col overflow-x-hidden  relative bg-bg ${robotoFont.className}`}
       >
-        <QueryProvider>
-          <ScrollToTop />
-          <Header />
-          <main className={`mt-14 h-full`}>{children}</main>
-        </QueryProvider>
+        <SocketProvider>
+          <QueryProvider>
+            <ScrollToTop />
+            <Header />
+            <main className={`mt-14 h-full`}>{children}</main>
+          </QueryProvider>
+        </SocketProvider>
       </body>
     </html>
   );

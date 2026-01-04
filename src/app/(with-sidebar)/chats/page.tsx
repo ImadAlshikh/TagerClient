@@ -3,10 +3,7 @@ import { useChats } from "@/cache/useChats";
 import { useUser } from "@/cache/useUser";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import ChatCard from "@/components/ui/cards/ChatCard";
-import { useUserStore } from "@/stores/useUserStore";
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 interface PostCardType {
   id: string;
@@ -24,9 +21,7 @@ interface PostCardType {
 
 export default function page() {
   const { data: user, isLoading: userLoading } = useUser();
-  console.log(user);
   const { data: chats, isLoading } = useChats();
-  console.log(chats);
 
   return (
     <ProtectedRoute>

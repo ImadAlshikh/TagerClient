@@ -8,6 +8,7 @@ import PostCard from "@/components/ui/cards/PostCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useUser } from "@/cache/useUser";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
+import PostsContainer from "@/components/layout/containers/PostsContainer";
 
 export default function page() {
   const { data: user, isLoading, refetch } = useUser();
@@ -17,7 +18,7 @@ export default function page() {
   const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   useLayoutEffect(() => {
-    setImagePreview(user?.picture);
+    setImagePreview(user?.picture ?? "/userPlaceholder.png");
   }, [user]);
   const handleImagePreview = () => {
     if (fileInputRef.current) {
@@ -31,8 +32,8 @@ export default function page() {
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const formData = new FormData(e.currentTarget);
       setSaveButtonDisabled(true);
+      const formData = new FormData(e.currentTarget);
       const res = await axios.put(
         "http://localhost:3001/users/profile",
         formData,
@@ -50,7 +51,6 @@ export default function page() {
       setSaveButtonDisabled(false);
     }
   };
-  console.log(user);
   return (
     <ProtectedRoute>
       <div className="flex flex-col p-4">
@@ -82,7 +82,7 @@ export default function page() {
                 className="flex flex-col items-center md:flex-row md:items-start gap-4 w-full"
               >
                 <div className="flex flex-col items-center">
-                  <div className="rounded-full  relative group bg-border md:flex-1 aspect-square! w-34  h-34">
+                  <div className="rounded-full  relative group  md:flex-1 aspect-square! size-34">
                     <input
                       type="file"
                       name="picture"
@@ -102,7 +102,7 @@ export default function page() {
                     <img
                       src={imagePreview}
                       draggable={false}
-                      className="select-none bg-cover w-full h-full rounded-full border border-border"
+                      className="select-none bg-cover min-w- rounded-full border border-border"
                     />
                   </div>
                   <div className="flex items-center gap-1">
@@ -167,7 +167,7 @@ export default function page() {
                   </div>
                   <button
                     type="submit"
-                    disabled={!editMode}
+                    disabled={!editMode || saveButtonDisabled}
                     className="bg-primary hover:bg-primary-dark disabled:bg-border disabled:cursor-not-allowed disabled:text-text  text-white font-bold px-8 rounded-full py-1 col-span-2 place-self-end"
                   >
                     Save
@@ -180,17 +180,13 @@ export default function page() {
             <div className="bg-white rounded-md p-4">
               <div className="flex justify-end items-center mb-2">
                 <Link
-                  href={"/chats"}
+                  href={"/profile/posts"}
                   className="text-sm hover:underline hover:text-primary"
                 >
                   show all
                 </Link>
               </div>
-              <div className="flex flex-col">
-                {user?.posts.map((post: any) => (
-                  <PostCard post={post} key={post.id} />
-                ))}
-              </div>
+              <PostsContainer loading={isLoading} posts={user?.posts} />
             </div>
           </TabsContent>
         </Tabs>

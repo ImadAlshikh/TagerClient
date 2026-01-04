@@ -2,12 +2,15 @@
 import SearchBar from "@/components/ui/search/SearchBar";
 import UserProfile from "./UserProfile";
 import { CiMenuBurger } from "react-icons/ci";
-import { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@/cache/useUser";
+import { useUiStore } from "@/stores/useUiStore";
+import { useEffect, useState } from "react";
 
 export default function Header() {
-  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const showSideBar = useUiStore((s) => s.showSideBar);
+  const setShowSideBar = useUiStore((s) => s.setShowSideBar);
+  const toggleShowSideBar = useUiStore((s) => s.toggleShowSideBar);
   const { data: user, isLoading } = useUser();
 
   return (
@@ -27,7 +30,7 @@ export default function Header() {
             <>
               {user?.id?.length ? (
                 <>
-                  <div className="flex items-center px-2 rounded-full bg-gray-50">
+                  <div className="flex items-center px-2 rounded-full bg-gray-50 gap-0.5">
                     <img src="/coin.png" className="size-5 rounded-full" />
                     <span>{user.wallet?.freePoints}</span>
                   </div>
@@ -55,7 +58,18 @@ export default function Header() {
             </>
           )}
 
-          <button type="button" onClick={() => setShowMenu((prev) => !prev)}>
+          <button
+            type="button"
+            onClick={(e) => {
+              console.log("its", showSideBar);
+              e.stopPropagation();
+              if (showSideBar) {
+                setShowSideBar(false);
+              } else {
+                setShowSideBar(true);
+              }
+            }}
+          >
             <CiMenuBurger className="menu-button md:hidden" size={24} />
           </button>
         </div>

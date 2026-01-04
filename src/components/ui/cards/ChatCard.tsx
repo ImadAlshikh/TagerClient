@@ -14,7 +14,7 @@ export default function ChatCard({
   chatId: string;
   postId: string;
   title: string;
-  picture: string;
+  picture: any;
   user: { id: string; name: string; surame?: string; picture?: string };
   unReadedMessages: number;
   lastMessage: any;
@@ -27,7 +27,7 @@ export default function ChatCard({
     >
       <div className="relative aspect-square! min-h-22 max-w-22">
         <img
-          src={picture || "./postPlaceholder.svg"}
+          src={picture?.secureUrl || "./postPlaceholder.svg"}
           alt=""
           className="aspect-square! w-full rounded-md border border-accent-green"
         />
@@ -41,9 +41,10 @@ export default function ChatCard({
         {unReadedMessages}
       </div>
 
-      <div className="flex flex-col w-full justify-">
-        <div className="flex flex-col">
-          <div className="title text-accent-green font-medium">{title}</div>
+      {/* <div className="flex flex-col w-full justify-"> */}
+      <div className="flex flex-col w-full justify-between">
+        <div className="title text-accent-green font-medium">{title}</div>
+        {lastMessage && (
           <div className="w-[70%] flex items-end gap-5">
             <div className="last-msg max-w-[50%] text-gray-500 wrap-break-word line-clamp-1">
               {isLastMessageFromYou ? "you" : user.name}
@@ -51,24 +52,26 @@ export default function ChatCard({
               {lastMessage?.text}
             </div>
             <span className="text-gray-500 text-[9px]">
-              {new Date(lastMessage.created_at).toLocaleTimeString([], {
+              {new Date(lastMessage?.created_at).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
             </span>
           </div>
-          <div className="flex items-center gap-1">
-            <img
-              src={user.picture || "./userPlaceholder.svg"}
-              alt=""
-              className="w-10 border  border-accent-green  rounded-full aspect-square"
-            />
-            <div className="text-gray-500">
-              {user.name} {user.surame !== "null" && user.surame}
-            </div>
+        )}
+
+        <div className="flex items-center gap-1">
+          <img
+            src={user.picture || "./userPlaceholder.png"}
+            alt=""
+            className="w-10 border  border-accent-green  rounded-full aspect-square"
+          />
+          <div className="text-gray-500">
+            {user.name} {user.surame !== "null" && user.surame}
           </div>
         </div>
       </div>
+      {/* </div> */}
     </Link>
   );
 }

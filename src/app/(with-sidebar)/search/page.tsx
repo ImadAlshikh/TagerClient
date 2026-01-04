@@ -12,13 +12,11 @@ export default async function page({
 }) {
   let posts;
   const { q } = await searchParams;
-  console.log(q);
   const searchQuery = Array.isArray(q) ? q : q ? [q] : [];
   try {
     const res = await axios.get(
       `http://localhost:3001/posts/search?query=${searchQuery}`
     );
-    console.log(res);
     posts = res.data.data;
   } catch (error) {}
 

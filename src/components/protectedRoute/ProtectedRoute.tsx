@@ -1,5 +1,4 @@
 "use client";
-import { useUserStore } from "@/stores/useUserStore";
 import React, { JSX, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/cache/useUser";
@@ -21,6 +20,5 @@ export default function ProtectedRoute({
         Loading...{" "}
       </div>
     );
-  if (!user) router.push("/login");
   return <>{children}</>;
 }

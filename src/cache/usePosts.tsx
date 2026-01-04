@@ -2,7 +2,7 @@ import { PostType } from "@/utils/validator";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 export function usePosts() {
   return useInfiniteQuery({

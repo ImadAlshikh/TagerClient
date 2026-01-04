@@ -43,7 +43,7 @@ export default function UserProfile() {
       className="relative z-50"
     >
       <img
-        src={user?.picture || "./userPlaceholder.svg"}
+        src={user?.picture || "./userPlaceholder.png"}
         className="size-8 bg-border rounded-full"
       />
       {showMenu && (

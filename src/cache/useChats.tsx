@@ -8,7 +8,6 @@ export const useChats = () => {
       const res = await axios.get(`http://localhost:3001/chats/by-user`, {
         withCredentials: true,
       });
-      console.log("from :", res);
       if (res.data.success) {
         return res.data.data;
       }

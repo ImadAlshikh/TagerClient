@@ -16,7 +16,7 @@ export default function Home() {
   const postsCount = data?.pages.flatMap((page) => page)[0].postsCount;
   // if (!posts) return;
   return (
-    <div className="relative w-full">
+    <div className="relative w-full max-w-full">
       <div className="flex w-full p-4 bg-bg flex-col gap-4 items-center">
         <AddPostButton />
         <Hero />

@@ -4,15 +4,21 @@ import { MdAccessTime } from "react-icons/md";
 import { TbCategory2 } from "react-icons/tb";
 import { formatRelativeDate } from "@/utils/Date";
 import { formatMoney, calcDiscountedCents } from "@/utils/money";
-export default function PostCard({ post }: { post: PostType }) {
+export default function PostCard({
+  post,
+  isWide,
+}: {
+  post: PostType;
+  isWide?: boolean;
+}) {
   return (
     <Link
       href={`/post/${post.id}`}
-      className="flex md:flex-co gap-4 w-full max-h-50 md:in-h-95! md:mx-h-95! md:w64 bg-white border border-border rounded-md p-2 hover:scale-101 transition-all group duration-250"
+      className="flex gap-4 w-full max-h-50 bg-white border border-border rounded-md p-2 hover:scale-101 transition-all group duration-250"
     >
-      <div className="relative">
+      <div className="relative min-w-36! size-36!">
         <img
-          src={post?.picture?.secureUrl ?? "./postPlaceholder.svg"}
+          src={post?.picture?.secureUrl ?? "/postPlaceholder.svg"}
           className="img max-h-full! bg-border rounded-md overflow-hidden  size-36 object-cover"
         />
         {post.discount ? (
@@ -31,30 +37,34 @@ export default function PostCard({ post }: { post: PostType }) {
           </div>
         </div>
 
-        <div className="flex  w-full items-end justify-between  py-2">
+        <div className="flex  w-full items-end justify-between  flex-wrap  py-2">
           <div className="flex gap-4 items-center">
-            <div className="author flex items-center gap-1 ">
+            <div className="author flex items-center gap-1 flex-1">
               <img
-                src={post.owner?.picture?.secureUrl || "./userPlaceholder.svg"}
+                src={post.owner?.picture?.secureUrl || "./userPlaceholder.png"}
                 className="author-img bg-border rounded-full aspect-square w-6"
               />
-              <div className="text-sm font-light text-gray-500">
+              <div className="text-sm font-light text-gray-500 text-nowrap truncate ">
                 {post.owner!.name!}{" "}
                 {post.owner?.surname !== "null" && post.owner?.surname}
               </div>
             </div>
-            <div className="time flex text-sm font-light text-gray-500 items-center">
+            <div className="time flex text-sm font-light text-gray-500 items-center flex-1">
               <MdAccessTime size={18} />
               <span className="text-gray-500">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
-            <div className="category flex text-sm font-light text-gray-500 items-center">
+            <div
+              className={`category ${
+                isWide ? "flex" : "hidden"
+              } text-sm font-light text-gray-500 items-center`}
+            >
               <TbCategory2 size={18} />
               <span className="text-gray-500">{post.categoryName}</span>
             </div>
           </div>
-          <div className="price-contact flex flex-col items-end justify-batween">
+          <div className="price flex flex-col items-end justify-batween place-self-end flex-1">
             {post.discount ? (
               <>
                 <div className="price text-gray-500 text-xs line-through">

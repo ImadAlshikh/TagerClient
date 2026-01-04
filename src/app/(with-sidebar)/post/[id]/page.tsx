@@ -15,7 +15,6 @@ export default async function page({ params }: { params: { id: string } }) {
     next: { revalidate: 120, tags: [`post-${id}`] },
     credentials: "include",
   }).then((res) => res.json());
-  console.log(res);
   if (!res?.success) return notFound();
   const post: PostType = res.data;
 
@@ -41,26 +40,27 @@ export default async function page({ params }: { params: { id: string } }) {
               </h2>
               <ReportButton reportedId={post?.id} />
             </div>
-            <h3 className="px-1 w-[70%]">{post.description}</h3>
+            <h3 className="px-1 w-[70%] text-gray-500">{post.description}</h3>
           </div>
 
-          <div className="flex justify-around items-center ">
-            <div className="author flex items-center gap-1">
+          <div className="flex justify-end   items-center flex-wrap">
+            <div className="author flex items-center gap-1 flex-1">
               <img
-                src={post?.owner?.picture.secureUrl ?? "/userPlaceholder.svg"}
+                src={post?.owner?.picture?.secureUrl || "/userPlaceholder.png"}
                 className="rounded-full bg-border w-6 aspect-square"
               />
               <div className="text-gray-500">
-                {post?.owner?.name + " " + post?.owner?.surname}
+                {post?.owner?.name}
+                {post?.owner?.surname ? ` ${post.owner.surname}` : ""}
               </div>
             </div>
-            <div className="time flex text-gray-500 items-center gap-1">
+            <div className="time flex text-gray-500 items-center gap-1 flex-1">
               <MdAccessTime size={20} />
               <span className="text-gray-500">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
-            <div className="time flex items-center text-gray-500 gap-1">
+            <div className="time flex items-center text-gray-500 gap-1 flex-1">
               <TbCategory2 size={20} />
               <span className="text-inherit">{post.categoryName}</span>
             </div>

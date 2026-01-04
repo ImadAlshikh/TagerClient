@@ -5,24 +5,28 @@ import { notFound, useRouter, useSearchParams } from "next/navigation";
 import { IoMdSend } from "react-icons/io";
 import { io } from "socket.io-client";
 import MessageNode from "@/components/ui/nodes/MessageNode";
-import { useUserStore } from "@/stores/useUserStore";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import { BiSolidLeftArrow } from "react-icons/bi";
 import { useChat } from "@/cache/useChat";
 import { useUser } from "@/cache/useUser";
-
-const socket = io("http://localhost:3001");
+import { useChatSocket } from "@/hooks/useChatSocket";
 
 export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { data: user } = useUser();
   const { data, isLoading, refetch } = useChat(id);
+  useChatSocket(id, user?.id, (msg: any) => {
+    console.log(msg);
+    if (msg.senderId !== user?.id) {
+      setMessges((prev) => [...prev, msg]);
+    }
+  });
   const userData =
     user?.id === data?.userId
       ? {
           name: data?.post.owner.name,
           surname: data?.post.owner.surname,
-          picture: data?.post.owner.picture.secureUrl,
+          picture: data?.post.owner.picture?.secureUrl,
         }
       : {
           name: data?.user?.name,
@@ -46,23 +50,23 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (!user) return;
-    socket.emit("join-chat", { chatId: id, userId: user!.id });
+  // useEffect(() => {
+  //   if (!user || !id) return;
+  //   socket.emit("join-chat", { chatId: id, userId: user!.id });
 
-    const listener = (msg: any) => {
-      if (msg.senderId !== user?.id) {
-        setMessges((prev) => [...prev, msg]);
-      }
-    };
+  //   const listener = (msg: any) => {
+  //     if (msg.senderId !== user?.id) {
+  //       setMessges((prev) => [...prev, msg]);
+  //     }
+  //   };
 
-    socket.on("new-msg", listener);
+  //   socket.on("new-msg", listener);
 
-    return () => {
-      socket.off("new-msg", listener);
-      socket.emit("leave-chat", id);
-    };
-  }, [id, user]);
+  //   return () => {
+  //     socket.off("new-msg", listener);
+  //     socket.emit("leave-chat", id);
+  //   };
+  // }, [id, user]);
 
   useLayoutEffect(() => {
     (async () => {
@@ -70,7 +74,6 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
     })();
     return () => {};
   }, [isLoading]);
-  console.log(messages);
   const sendMessage = async () => {
     if (messageInputRef.current) {
       const text = messageInputRef.current.value.trim();
@@ -95,7 +98,6 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
         },
         { withCredentials: true }
       );
-      console.log("me:", res.data.data);
       if (!res.data.success) {
         setMessges((prev) => prev.filter((msg) => msg?.tempId !== tempId));
         return;
@@ -115,7 +117,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
           {userData.name ? (
             <>
               <img
-                src={userData.picture || "/userPlaceholder.svg"}
+                src={userData.picture || "/userPlaceholder.png"}
                 className="size-8 bg-border rounded-full"
               />
               <div>{userData.name + " " + (userData?.surname ?? "")}</div>
