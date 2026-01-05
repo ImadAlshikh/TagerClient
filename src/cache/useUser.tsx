@@ -6,7 +6,7 @@ export const useUser = () => {
     queryKey: ["user"],
     queryFn: async () => {
       try {
-        const res = await axios.get("http://localhost:3001/users/profile", {
+        const res = await axios.get("process.env.BACKEND_URL/users/profile", {
           withCredentials: true,
         });
         if (!res.data.success) {

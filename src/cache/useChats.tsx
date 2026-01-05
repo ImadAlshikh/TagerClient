@@ -5,7 +5,7 @@ export const useChats = () => {
   return useQuery({
     queryKey: ["chats"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3001/chats/by-user`, {
+      const res = await axios.get(`process.env.BACKEND_URL/chats/by-user`, {
         withCredentials: true,
       });
       if (res.data.success) {

@@ -35,7 +35,7 @@ export default function page() {
       setSaveButtonDisabled(true);
       const formData = new FormData(e.currentTarget);
       const res = await axios.put(
-        "http://localhost:3001/users/profile",
+        "process.env.BACKEND_URL/users/profile",
         formData,
         {
           withCredentials: true,

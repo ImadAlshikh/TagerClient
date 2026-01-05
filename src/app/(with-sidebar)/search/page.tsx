@@ -15,7 +15,7 @@ export default async function page({
   const searchQuery = Array.isArray(q) ? q : q ? [q] : [];
   try {
     const res = await axios.get(
-      `http://localhost:3001/posts/search?query=${searchQuery}`
+      `process.env.BACKEND_URL/posts/search?query=${searchQuery}`
     );
     posts = res.data.data;
   } catch (error) {}

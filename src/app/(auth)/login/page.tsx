@@ -21,10 +21,14 @@ export default function page() {
       const ctrl = new AbortController();
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
-      const res = await axios.post("http://localhost:3001/users/login", data, {
-        signal: ctrl.signal,
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        "process.env.BACKEND_URL/users/login",
+        data,
+        {
+          signal: ctrl.signal,
+          withCredentials: true,
+        }
+      );
       if (!res.data.success) {
         return setError({
           title: "Login Error",

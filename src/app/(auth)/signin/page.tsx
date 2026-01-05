@@ -13,9 +13,13 @@ export default function page() {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
-      const res = await axios.post("http://localhost:3001/users/signin", data, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        "process.env.BACKEND_URL/users/signin",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       if (!res.data.success) {
         setError(res.data?.error);
       }

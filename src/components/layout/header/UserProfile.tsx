@@ -67,7 +67,7 @@ export default function UserProfile() {
           <div
             onClick={async () => {
               const res = await axios.delete(
-                "http://localhost:3001/users/logout",
+                "process.env.BACKEND_URL/users/logout",
                 {
                   withCredentials: true,
                 }

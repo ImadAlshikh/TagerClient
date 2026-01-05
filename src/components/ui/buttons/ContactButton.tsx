@@ -15,7 +15,7 @@ export default function ContactButton({
   if (!user) return;
   const contact = async () => {
     const res = await axios.post(
-      "http://localhost:3001/chats",
+      "process.env.BACKEND_URL/chats",
       { postId: id },
       { withCredentials: true }
     );
