@@ -11,7 +11,7 @@ import { calcDiscountedCents, formatMoney } from "@/utils/money";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  const res = await fetch(`process.env.BACKEND_URL/posts/${id}`, {
+  const res = await fetch(`process.env.NEXT_PUBLIC_BACKEND_URL/posts/${id}`, {
     next: { revalidate: 120, tags: [`post-${id}`] },
     credentials: "include",
   }).then((res) => res.json());

@@ -7,7 +7,8 @@ export default function GoogleAuthButton() {
       type="button"
       className="rounded-md border hover:bg-bg border-border p-2 flex items-center"
       onClick={() =>
-        (window.location.href = "process.env.BACKEND_URL/auth/google")
+        (window.location.href =
+          "process.env.NEXT_PUBLIC_BACKEND_URL/auth/google")
       }
     >
       <FcGoogle size={24} />

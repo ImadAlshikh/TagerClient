@@ -22,7 +22,7 @@ export default function page() {
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
       const res = await axios.post(
-        "process.env.BACKEND_URL/users/login",
+        "process.env.NEXT_PUBLIC_BACKEND_URL/users/login",
         data,
         {
           signal: ctrl.signal,

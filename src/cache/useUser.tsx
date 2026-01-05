@@ -6,9 +6,12 @@ export const useUser = () => {
     queryKey: ["user"],
     queryFn: async () => {
       try {
-        const res = await axios.get("process.env.BACKEND_URL/users/profile", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "process.env.NEXT_PUBLIC_BACKEND_URL/users/profile",
+          {
+            withCredentials: true,
+          }
+        );
         if (!res.data.success) {
           return null;
         }

@@ -18,7 +18,7 @@ export default function ReportButton({
         const text = messageRef.current.value;
         if (!text) return setShowError(true);
         const res = await axios.post(
-          "process.env.BACKEND_URL/reports/",
+          "process.env.NEXT_PUBLIC_BACKEND_URL/reports/",
           { text, reportedId },
           { withCredentials: true }
         );

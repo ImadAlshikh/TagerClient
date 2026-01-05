@@ -17,7 +17,7 @@ export default function page() {
         setLoading(true);
         console.log(user.id);
         const res = await axios.get(
-          `process.env.BACKEND_URL/posts/by-user/${user.id}`
+          `process.env.NEXT_PUBLIC_BACKEND_URL/posts/by-user/${user.id}`
         );
         console.log(res);
         setLoading(false);
