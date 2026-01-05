@@ -15,9 +15,9 @@ export default function page() {
       if (!user) return;
       (async () => {
         setLoading(true);
-        console.log(user.id);
+        console.log(user.id)
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/by-user/${user.id}`
+          `http://localhost:3001/posts/by-user/${user.id}`
         );
         console.log(res);
         setLoading(false);

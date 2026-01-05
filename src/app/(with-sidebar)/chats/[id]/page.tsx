@@ -15,8 +15,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { data: user } = useUser();
   const { data, isLoading, refetch } = useChat(id);
-  useChatSocket(id, user?.id, (msg: any) => {
-    console.log(msg);
+  useChatSocket(id, (msg: any) => {
     if (msg.senderId !== user?.id) {
       setMessges((prev) => [...prev, msg]);
     }
@@ -90,7 +89,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       ]);
       messageInputRef.current.value = "";
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chats/send`,
+        "http://localhost:3001/chats/send",
         {
           postId: postId,
           chatId: id,

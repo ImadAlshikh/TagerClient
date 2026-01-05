@@ -1,11 +1,13 @@
+import { useUser } from "@/cache/useUser";
 import { socket } from "@/socket/client";
 import { useEffect } from "react";
 
 export const useChatSocket = (
   chatId: string,
-  userId: string,
   onMessage: (msg: any) => void
 ) => {
+  const { data: user } = useUser();
+  const userId = user?.id;
   useEffect(() => {
     if (!userId || !chatId) return;
     const onConnect = () => {
@@ -13,10 +15,11 @@ export const useChatSocket = (
       socket.emit("join-chat", { chatId, userId });
     };
 
-    socket.on("connect", onConnect);
     socket.on("new-msg", onMessage);
     if (socket.connected) {
       onConnect();
+    } else {
+      socket.on("connect", onConnect);
     }
 
     return () => {

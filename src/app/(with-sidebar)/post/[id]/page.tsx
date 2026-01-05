@@ -11,13 +11,10 @@ import { calcDiscountedCents, formatMoney } from "@/utils/money";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`,
-    {
-      next: { revalidate: 120, tags: [`post-${id}`] },
-      credentials: "include",
-    }
-  ).then((res) => res.json());
+  const res = await fetch(`http://localhost:3001/posts/${id}`, {
+    next: { revalidate: 120, tags: [`post-${id}`] },
+    credentials: "include",
+  }).then((res) => res.json());
   if (!res?.success) return notFound();
   const post: PostType = res.data;
 
@@ -43,7 +40,7 @@ export default async function page({ params }: { params: { id: string } }) {
               </h2>
               <ReportButton reportedId={post?.id} />
             </div>
-            <h3 className="px-1 w-[70%] text-gray-500">{post.description}</h3>
+            <h3 className="px-1 w-[70%] text-gray">{post.description}</h3>
           </div>
 
           <div className="flex justify-end   items-center flex-wrap">
@@ -52,18 +49,18 @@ export default async function page({ params }: { params: { id: string } }) {
                 src={post?.owner?.picture?.secureUrl || "/userPlaceholder.png"}
                 className="rounded-full bg-border w-6 aspect-square"
               />
-              <div className="text-gray-500">
+              <div className="text-gray">
                 {post?.owner?.name}
                 {post?.owner?.surname ? ` ${post.owner.surname}` : ""}
               </div>
             </div>
-            <div className="time flex text-gray-500 items-center gap-1 flex-1">
+            <div className="time flex text-gray items-center gap-1 flex-1">
               <MdAccessTime size={20} />
-              <span className="text-gray-500">
+              <span className="text-gray">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
-            <div className="time flex items-center text-gray-500 gap-1 flex-1">
+            <div className="time flex items-center text-gray gap-1 flex-1">
               <TbCategory2 size={20} />
               <span className="text-inherit">{post.categoryName}</span>
             </div>
@@ -73,7 +70,7 @@ export default async function page({ params }: { params: { id: string } }) {
                   <div className="price text-accent-green text-xs">
                     {post.discount}%
                   </div>
-                  <div className="price text-gray-500 text-xs line-through">
+                  <div className="price text-gray text-xs line-through">
                     {formatMoney(post.price)}
                   </div>
                   <div className="price text-primary font-semibold">

@@ -21,14 +21,10 @@ export default function page() {
       const ctrl = new AbortController();
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`,
-        data,
-        {
-          signal: ctrl.signal,
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post("http://localhost:3001/users/login", data, {
+        signal: ctrl.signal,
+        withCredentials: true,
+      });
       if (!res.data.success) {
         return setError({
           title: "Login Error",
@@ -117,10 +113,10 @@ export default function page() {
             >
               you haven't account yet? signin
             </a>
-            <div className="flex items-center gap-2 text-gray-500">
-              <div className="bg-gray-500 flex-1 h-[0.3px]" />
+            <div className="flex items-center gap-2 text-gray">
+              <div className="bg-gray flex-1 h-[0.3px]" />
               <span className="text-inherit">Or continuo with</span>
-              <div className="bg-gray-500 flex-1 h-[0.3px]" />
+              <div className="bg-gray flex-1 h-[0.3px]" />
             </div>
             <GoogleAuthButton />
           </div>

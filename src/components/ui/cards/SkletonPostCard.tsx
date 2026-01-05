@@ -34,14 +34,14 @@ export default function SkeletonPostCard({ isWide }: { isWide?: boolean }) {
               <div className="author-img bg-gray-300 rounded-full animate-pulse size-6" />
               <div className="bg-gray-300 w-20 h-3 animate-pulse rounded-md"></div>
             </div>
-            <div className="time flex text-sm font-light text-gray-500 items-center">
+            <div className="time flex text-sm font-light text-gray items-center">
               <MdAccessTime size={18} className="animate-pulse" />
               <div className="bg-gray-300 w-20 h-3 animate-pulse rounded-md"></div>
             </div>
             <div
               className={`category ${
                 isWide ? "flex" : "hidden"
-              } text-sm font-light text-gray-500 items-center`}
+              } text-sm font-light text-gray items-center`}
             >
               <TbCategory2 size={18} className="animate-pulse" />
               <div className="bg-gray-300 w-20 h-3 animate-pulse rounded-md"></div>

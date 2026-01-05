@@ -9,7 +9,7 @@ export function usePosts() {
     queryKey: ["posts"],
     queryFn: async ({ pageParam }) => {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts?limit=${LIMIT}&cursor=${pageParam}`
+        `http://localhost:3001/posts?limit=${LIMIT}&cursor=${pageParam}`
       );
       return res.data.data;
     },
