@@ -46,12 +46,12 @@ export default function ChatCard({
         <div className="title text-accent-green font-medium">{title}</div>
         {lastMessage && (
           <div className="w-[70%] flex items-end gap-5">
-            <div className="last-msg max-w-[50%] text-gray-500 wrap-break-word line-clamp-1">
+            <div className="last-msg max-w-[50%] text-gray wrap-break-word line-clamp-1">
               {isLastMessageFromYou ? "you" : user.name}
               {": "}
               {lastMessage?.text}
             </div>
-            <span className="text-gray-500 text-[9px]">
+            <span className="text-gray text-[9px]">
               {new Date(lastMessage?.created_at).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -66,7 +66,7 @@ export default function ChatCard({
             alt=""
             className="w-10 border  border-accent-green  rounded-full aspect-square"
           />
-          <div className="text-gray-500">
+          <div className="text-gray">
             {user.name} {user.surame !== "null" && user.surame}
           </div>
         </div>
