@@ -6,7 +6,7 @@ export const useChats = () => {
     queryKey: ["chats"],
     queryFn: async () => {
       const res = await axios.get(
-        `process.env.NEXT_PUBLIC_BACKEND_URL/chats/by-user`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chats/by-user`,
         {
           withCredentials: true,
         }
