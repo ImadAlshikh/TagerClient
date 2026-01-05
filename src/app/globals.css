@@ -10,7 +10,6 @@
   --color-card-bg: #ffffff; /* خلفية الكارد */
   --color-text: #1f2937; /* نصوص رئيسية */
   --color-border: #e5e7eb; /* الحدود والفواصل */
-  --color-gray: var(--color-gray-500);
   /* Accent / Call to Action */
   --color-accent-red: var(--color-red-500); /* errrors */
   --color-accent-orange: #f97316; /* أزرار CTA وعروض */
@@ -19,7 +18,7 @@
   --color-bg-dark: #111827;
   --color-text-dark: #f9fafb;
   /* Fonts */
-  --font-inter: var(--font-inter);
+  --font-roboto: var(--font-roboto);
 }
 
 @layer base {

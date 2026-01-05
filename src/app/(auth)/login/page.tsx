@@ -117,10 +117,10 @@ export default function page() {
             >
               you haven't account yet? signin
             </a>
-            <div className="flex items-center gap-2 text-gray">
-              <div className="bg-gray flex-1 h-[0.3px]" />
+            <div className="flex items-center gap-2 text-gray-500">
+              <div className="bg-gray-500 flex-1 h-[0.3px]" />
               <span className="text-inherit">Or continuo with</span>
-              <div className="bg-gray flex-1 h-[0.3px]" />
+              <div className="bg-gray-500 flex-1 h-[0.3px]" />
             </div>
             <GoogleAuthButton />
           </div>

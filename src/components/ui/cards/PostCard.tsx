@@ -32,7 +32,7 @@ export default function PostCard({
       <div className="flex flex-col min-h-full grow justify-between">
         <div className="flex flex-col">
           <h3 className="title font-medium text-accent-green">{post.title}</h3>
-          <div className="description text-gray max-w-full wrap-break-word line-clamp-2">
+          <div className="description text-gray-500 max-w-full wrap-break-word line-clamp-2">
             {post.description}
           </div>
         </div>
@@ -44,30 +44,30 @@ export default function PostCard({
                 src={post.owner?.picture?.secureUrl || "./userPlaceholder.png"}
                 className="author-img bg-border rounded-full aspect-square w-6"
               />
-              <div className="text-sm font-light text-gray text-nowrap truncate ">
+              <div className="text-sm font-light text-gray-500 text-nowrap truncate ">
                 {post.owner!.name!}{" "}
                 {post.owner?.surname !== "null" && post.owner?.surname}
               </div>
             </div>
-            <div className="time flex text-sm font-light text-gray items-center flex-1">
+            <div className="time flex text-sm font-light text-gray-500 items-center flex-1">
               <MdAccessTime size={18} />
-              <span className="text-gray">
+              <span className="text-gray-500">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
             <div
               className={`category ${
                 isWide ? "flex" : "hidden"
-              } text-sm font-light text-gray items-center`}
+              } text-sm font-light text-gray-500 items-center`}
             >
               <TbCategory2 size={18} />
-              <span className="text-gray">{post.categoryName}</span>
+              <span className="text-gray-500">{post.categoryName}</span>
             </div>
           </div>
           <div className="price flex flex-col items-end justify-batween place-self-end flex-1">
             {post.discount ? (
               <>
-                <div className="price text-gray text-xs line-through">
+                <div className="price text-gray-500 text-xs line-through">
                   {formatMoney(post.price)}
                 </div>
                 <div className="price text-primary font-semibold">

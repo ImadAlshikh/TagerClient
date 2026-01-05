@@ -74,9 +74,9 @@ export default function Sidebar() {
       </aside>
       <div
         onClick={() => setShowSideBar(false)}
-        className={`transition-all ${
+        className={`${
           showSideBar && isSmallScreen ? "fixed" : "hidden"
-        } inset-0  bg-black/60  z-9`}
+        } inset-0  bg-black/60 z-9`}
       >
         hello
       </div>

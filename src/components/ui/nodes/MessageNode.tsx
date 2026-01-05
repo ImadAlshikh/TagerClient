@@ -28,14 +28,12 @@ export default function MessageNode({
           }
         `}
       >
-        <div className={`leading-relaxed ${isOwner && "text-white"}`}>
-          {text}
-        </div>
+        <div className={`leading-relaxed ${isOwner&&"text-white"}`}>{text}</div>
 
         <div
           className={`
             text-[10px]  text-right
-            ${isOwner ? "text-gray-200/80" : "text-gray"}
+            ${isOwner ? "text-gray-200/80" : "text-gray-500"}
           `}
         >
           {new Date(time).toLocaleTimeString([], {
