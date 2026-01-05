@@ -18,7 +18,7 @@ export default function ReportButton({
         const text = messageRef.current.value;
         if (!text) return setShowError(true);
         const res = await axios.post(
-          "${process.env.NEXT_PUBLIC_BACKEND_URL}/reports/",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reports/`,
           { text, reportedId },
           { withCredentials: true }
         );
@@ -32,7 +32,7 @@ export default function ReportButton({
   return (
     <div>
       <HiOutlineExclamationCircle
-        className="cursor-pointer"
+        className='cursor-pointer'
         size={22}
         strokeWidth={2}
         onClick={() => setShowMadal((prev) => !prev)}
@@ -42,32 +42,32 @@ export default function ReportButton({
           !showModal && "hidden"
         } fixed flex flex-col items-center gap-4 bg-white rounded-lg shadow top-1/2 left-1/2 -translate-1/2`}
       >
-        <span className="font-bold text-red-500">Report</span>
-        <div className="w-full flex flex-col">
+        <span className='font-bold text-red-500'>Report</span>
+        <div className='w-full flex flex-col'>
           <span>message</span>
           <textarea
-            name="message"
-            id="message"
+            name='message'
+            id='message'
             rows={3}
             maxLength={100}
             ref={messageRef}
-            placeholder="Message"
-            className="border border-border resize-none rounded-md w-full p-2"
+            placeholder='Message'
+            className='border border-border resize-none rounded-md w-full p-2'
           ></textarea>
           <div className={`text-red-500 text-sm ${!showError && "hidden"}`}>
             *message text is required
           </div>
         </div>
-        <div className="flex w-full justify-end gap-2">
+        <div className='flex w-full justify-end gap-2'>
           <button
             onClick={() => setShowMadal(false)}
-            className="rounded-full text-center w-fit px-4 py-1 bg-border hover:bg-[#d6d6d6]"
+            className='rounded-full text-center w-fit px-4 py-1 bg-border hover:bg-[#d6d6d6]'
           >
             Cancel
           </button>
           <button
             onClick={submitReport}
-            className="rounded-full text-center w-fit px-4 py-1 bg-primary hover:bg-primary-dark text-white"
+            className='rounded-full text-center w-fit px-4 py-1 bg-primary hover:bg-primary-dark text-white'
           >
             Report
           </button>

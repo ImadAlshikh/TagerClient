@@ -90,7 +90,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       ]);
       messageInputRef.current.value = "";
       const res = await axios.post(
-        "${process.env.NEXT_PUBLIC_BACKEND_URL}/chats/send",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chats/send`,
         {
           postId: postId,
           chatId: id,
@@ -111,26 +111,26 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col">
-        <div className="head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1">
+      <div className='flex flex-col'>
+        <div className='head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1'>
           <BiSolidLeftArrow size={18} onClick={() => router.push("/chats")} />
           {userData.name ? (
             <>
               <img
                 src={userData.picture || "/userPlaceholder.png"}
-                className="size-8 bg-border rounded-full"
+                className='size-8 bg-border rounded-full'
               />
               <div>{userData.name + " " + (userData?.surname ?? "")}</div>
             </>
           ) : (
             <>
-              <div className="size-8 bg-gray-300 rounded-full animate-pulse" />
-              <div className="w-24 h-4 rounded-md bg-gray-300 animate-pulse" />
+              <div className='size-8 bg-gray-300 rounded-full animate-pulse' />
+              <div className='w-24 h-4 rounded-md bg-gray-300 animate-pulse' />
             </>
           )}
         </div>
 
-        <div className="body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24">
+        <div className='body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24'>
           {messages?.length ? (
             <>
               {messages?.map((msg, i) => (
@@ -143,26 +143,26 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
               ))}
             </>
           ) : (
-            <div className="w-full grid place-content-center">
+            <div className='w-full grid place-content-center'>
               No there messages yet
             </div>
           )}
           <div ref={bottomRef}></div>
         </div>
 
-        <div className="foot fixed bottom-0 bg-white w-full md:max-w-[calc(100%-320px)] border-t border-border h-12 flex items-center gap-2 px-2">
+        <div className='foot fixed bottom-0 bg-white w-full md:max-w-[calc(100%-320px)] border-t border-border h-12 flex items-center gap-2 px-2'>
           <input
-            type="text"
+            type='text'
             ref={messageInputRef}
-            placeholder="Enter a message"
-            className="flex-1 h-full px-4 py-2 focus:outline-border"
+            placeholder='Enter a message'
+            className='flex-1 h-full px-4 py-2 focus:outline-border'
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
             onClick={sendMessage}
-            className="send bg-primary hover:bg-primary-dark p-2 rounded-lg"
+            className='send bg-primary hover:bg-primary-dark p-2 rounded-lg'
           >
-            <IoMdSend color="white" size={22} />
+            <IoMdSend color='white' size={22} />
           </button>
         </div>
       </div>

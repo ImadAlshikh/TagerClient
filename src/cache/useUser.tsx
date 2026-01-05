@@ -7,7 +7,7 @@ export const useUser = () => {
     queryFn: async () => {
       try {
         const res = await axios.get(
-          "${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`,
           {
             withCredentials: true,
           }
