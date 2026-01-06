@@ -15,12 +15,13 @@ export default function MessageNode({
     >
       <div
         className={`
-          max-w-[75%]
-          break-words
+          break-anywhere
+          wrap-anywhere
           whitespace-pre-wrap
           overflow-hidden
           rounded-2xl py-1 px-3 text-sm
           shadow-sm
+          max-w-1/2
           ${
             isOwner
               ? "bg-primary text-white rounded-br-none"

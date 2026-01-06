@@ -1,10 +1,15 @@
 "use client";
 import { useUser } from "@/cache/useUser";
+import { queryClient } from "@/providers/QueryProvider";
 import { socket } from "@/socket/client";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 import { useEffect } from "react";
+
+console.log("store from socket", useNotificationStore.getState());
 
 export const UseNotificationSocket = () => {
   const { data: user } = useUser();
+  const setNotification = useNotificationStore((s) => s.setNotification);
   const userId = user?.id;
   useEffect(() => {
     if (!userId) return;
@@ -21,7 +26,11 @@ export const UseNotificationSocket = () => {
     }
 
     const onNotification = (notif: any) => {
-      console.log("new notif:", notif);
+      if (!notif) return;
+      notif = JSON.parse(notif);
+      setNotification(notif);
+      queryClient.refetchQueries({ queryKey: ["chats"] });
+      queryClient.refetchQueries({ queryKey: ["chat", notif?.chat?.id] });
     };
 
     socket.on("notification", onNotification);

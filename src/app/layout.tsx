@@ -6,6 +6,7 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import UsePathChange from "@/hooks/usePathChange";
 import { SocketProvider } from "@/providers/SocketProvider";
 import { UseNotificationSocket } from "@/hooks/useNotificationSocket";
+import NotificationProvider from "@/providers/NotificationProvider";
 
 export const metadata: Metadata = {
   title: "Tager",
@@ -25,12 +26,13 @@ export default function RootLayout({
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </head>
       <body
-        className={`w-full min-h-full flex flex-col overflow-x-hidden  relative bg-bg ${interFont.className}`}
+        className={`w-full min-h-full flex flex-col overflow-x-hidden! max-w-full relative bg-bg ${interFont.className}`}
       >
         <UsePathChange />
         <SocketProvider>
           <QueryProvider>
             <UseNotificationSocket />
+            <NotificationProvider />
             <Header />
             <main className={`mt-14 h-full`}>{children}</main>
           </QueryProvider>

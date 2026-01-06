@@ -44,7 +44,7 @@ export default function MessageCard({
 
   return (
     <div
-      className={`message bg-white border border-border p-2 rounded-md flex flex-col fixed -left-full bottom-8 min-w-50 max-w-180! z-250 transition-all duration-${duration} ${
+      className={`message bg-white border border-border p-2 rounded-md flex flex-col fixed -left-full bottom-8 min-w-50 max-w-180!  text-wrap z-250 transition-all duration-${duration} ${
         show && "left-2"
       }`}
     >

@@ -3,7 +3,7 @@ import axios from "axios";
 import { use, useRef, useEffect, useState, useLayoutEffect } from "react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
 import { IoMdSend } from "react-icons/io";
-import { io } from "socket.io-client";
+import { queryClient } from "@/providers/QueryProvider";
 import MessageNode from "@/components/ui/nodes/MessageNode";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import { BiSolidLeftArrow } from "react-icons/bi";
@@ -15,6 +15,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { data: user } = useUser();
   const { data, isLoading, refetch } = useChat(id);
+
   useChatSocket(id, (msg: any) => {
     if (msg.senderId !== user?.id) {
       setMessges((prev) => [...prev, msg]);
@@ -43,36 +44,31 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   >([]);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (bottomRef.current)
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    queryClient.invalidateQueries({ queryKey: ["chats"] });
+    const refetchMessagesInteval = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: ["chat", id] });
+    }, 1000);
+    return () => clearInterval(refetchMessagesInteval);
+  }, [id]);
+
   useLayoutEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    // queryClient.invalidateQueries({ queryKey: ["chat", id] });
+    queryClient.invalidateQueries({ queryKey: ["chats"] });
   }, [messages]);
-
-  // useEffect(() => {
-  //   if (!user || !id) return;
-  //   socket.emit("join-chat", { chatId: id, userId: user!.id });
-
-  //   const listener = (msg: any) => {
-  //     if (msg.senderId !== user?.id) {
-  //       setMessges((prev) => [...prev, msg]);
-  //     }
-  //   };
-
-  //   socket.on("new-msg", listener);
-
-  //   return () => {
-  //     socket.off("new-msg", listener);
-  //     socket.emit("leave-chat", id);
-  //   };
-  // }, [id, user]);
 
   useLayoutEffect(() => {
     (async () => {
       setMessges(data?.messages);
     })();
     return () => {};
-  }, [isLoading]);
+  }, [isLoading, data]);
+
   const sendMessage = async () => {
     if (messageInputRef.current) {
       const text = messageInputRef.current.value.trim();
@@ -104,7 +100,6 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       setMessges((prev) =>
         prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg))
       );
-      refetch();
     }
   };
 
@@ -129,7 +124,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
           )}
         </div>
 
-        <div className='body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24'>
+        <div className='body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24 max-w-full'>
           {messages?.length ? (
             <>
               {messages?.map((msg, i) => (

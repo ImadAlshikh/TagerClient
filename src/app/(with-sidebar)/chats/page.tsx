@@ -25,8 +25,8 @@ export default function page() {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col gap-2 p-4">
-        <span className="font-medium text-text text-xl">Chats</span>
+      <div className='flex flex-col gap-2 p-4'>
+        <span className='font-medium text-text text-xl'>Chats</span>
         {chats?.length ? (
           chats?.map((chat: any) => (
             <ChatCard
@@ -51,15 +51,15 @@ export default function page() {
             />
           ))
         ) : isLoading ? (
-          <div className="text-primary w-full h-[calc(100vh-150px)] font-bold text-2xl grid place-content-center">
+          <div className='text-primary w-full h-[calc(100vh-150px)] font-bold text-2xl grid place-content-center'>
             Loading...
           </div>
         ) : (
-          <div className="text-primary w-full h-[calc(100vh-140px)] grid place-content-center">
-            <div className="font-bold text-2xl text-primary">No Chat Found</div>
+          <div className='text-primary w-full h-[calc(100vh-140px)] grid place-content-center'>
+            <div className='font-bold text-2xl text-primary'>No Chat Found</div>
             <Link
               href={"/"}
-              className="bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto"
+              className='bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto'
             >
               Home page
             </Link>

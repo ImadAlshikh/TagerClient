@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
-type MessageType = {
+type NotificationType = {
   text: string;
   sender: { name: string; surname?: string; picture?: string };
 } | null;
-type MessageStore = {
-  message: MessageType;
-  setMessage: (msg: MessageType) => void;
-  closeMessage: () => void;
+type NotificationStore = {
+  notification: NotificationType;
+  setNotification: (notif: NotificationType) => void;
+  closeNotification: () => void;
 };
 
-export const useNotificationStore = create<MessageStore>((set) => ({
-  message: null,
-  setMessage: (msg: any) => set({ message: msg }),
-  closeMessage: () => set({ message: null }),
+export const useNotificationStore = create<NotificationStore>((set) => ({
+  notification: null,
+  setNotification: (notif: any) => set({ notification: notif }),
+  closeNotification: () => set({ notification: null }),
 }));
