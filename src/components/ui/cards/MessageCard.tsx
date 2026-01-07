@@ -38,7 +38,7 @@ export default function MessageCard({
     setShow(true);
     setTimeout(() => {
       setShow(false);
-    }, duration*3);
+    }, duration * 3);
     setTimeout(onClose, duration * 4);
   }, []);
 
@@ -52,7 +52,7 @@ export default function MessageCard({
         {iconMap[messageType]}
         <div className={`text-inherit text-lg font-semibold`}>{title}</div>
       </div>
-      <div className="text-wrap text-gray-600 max-w-full px-1">{body}</div>
+      <div className='text-wrap text-gray-600 max-w-full px-1'>{body}</div>
     </div>
   );
 }

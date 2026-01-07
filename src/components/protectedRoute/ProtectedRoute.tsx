@@ -14,10 +14,12 @@ export default function ProtectedRoute({
     if (!isLoading && !user) router.push("/login");
     return () => {};
   }, [user, router]);
+
   if (isLoading)
     return (
-      <div className="text-primary w-full h-full font-bold text-2xl grid place-content-center">
-        Loading...{" "}
+      <div className='text-primary w-full overflow-hidden h-[calc(100vh-56px)] font-bold text-2xl grid place-content-center place-items-center gap-8 animate-pulse'>
+        <img src='/logo/textColor-logo.png' alt='' className='size-32 ' />
+        <div>Loading</div>
       </div>
     );
   return <>{children}</>;

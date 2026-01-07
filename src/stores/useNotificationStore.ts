@@ -3,6 +3,10 @@ import { create } from "zustand";
 type NotificationType = {
   text: string;
   sender: { name: string; surname?: string; picture?: string };
+  chat: any;
+  post: any;
+  user: any;
+  created_at: any;
 } | null;
 type NotificationStore = {
   notification: NotificationType;

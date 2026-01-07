@@ -28,6 +28,7 @@ export const UseNotificationSocket = () => {
     const onNotification = (notif: any) => {
       if (!notif) return;
       notif = JSON.parse(notif);
+      console.log("new notif:", notif);
       setNotification(notif);
       queryClient.refetchQueries({ queryKey: ["chats"] });
       queryClient.refetchQueries({ queryKey: ["chat", notif?.chat?.id] });

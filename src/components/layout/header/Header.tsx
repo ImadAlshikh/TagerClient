@@ -16,8 +16,11 @@ export default function Header() {
   return (
     <header className='select-none fixed z-50 h-14 w-full bg-white overflow-x-clip  border-b p-2 text-text border-border'>
       <div className='header-container container mx-auto flex justify-between items-center '>
-        <Link href={"/"} className='text-primary font-bold text-2xl'>
-          Tager
+        <Link href={"/"} className='text-primary font-bold text-2xl flex'>
+          <img src='/logo/primary-logo.png' alt='' className='size-8' />
+          <span className='text-inherit -translate-x-2.5 translate-y-0.5'>
+            ager
+          </span>
         </Link>
         <div className='flex items-center gap-1'>
           <SearchBar />

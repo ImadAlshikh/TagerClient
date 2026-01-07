@@ -22,7 +22,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
     }
   });
   const userData =
-    user?.id === data?.userId
+    user?.id === data?.user.id
       ? {
           name: data?.post.owner.name,
           surname: data?.post.owner.surname,
@@ -49,8 +49,8 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     queryClient.invalidateQueries({ queryKey: ["chats"] });
     const refetchMessagesInteval = setInterval(() => {
-      queryClient.invalidateQueries({ queryKey: ["chat", id] });
-    }, 1000);
+      // queryClient.invalidateQueries({ queryKey: ["chat", id] });
+    }, 5000);
     return () => clearInterval(refetchMessagesInteval);
   }, [id]);
 

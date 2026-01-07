@@ -19,6 +19,7 @@ export default function NotificationCard({ notif }: { notif: any }) {
     }, duration * 4);
 
     return () => {
+      setShow(false);
       clearTimeout(hideTimeout);
       clearTimeout(closeTimeout);
     };
@@ -33,8 +34,8 @@ export default function NotificationCard({ notif }: { notif: any }) {
       }`}
     >
       <div className={`flex items-center  gap-1`}>
-        <div className={`text-inherit text-lg font-semibold line-clamp-1`}>
-          {notif?.text}
+        <div className={`text-text text-lg font-semibold line-clamp-1`}>
+          {notif?.senderUser.name} {notif.senderUser.surname}
         </div>
       </div>
       <div className='text-wrap text-gray-600 max-w-full px-1 line-clamp-2'>
