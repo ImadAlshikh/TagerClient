@@ -18,7 +18,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   useChatSocket(id, (msg: any) => {
     if (msg.senderId !== user?.id) {
-      setMessges((prev) => [...prev, msg]);
+      setMessages((prev) => [...prev, msg]);
     }
   });
   const userData =
@@ -39,7 +39,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   if (!postId) return notFound();
   const messageInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const [messages, setMessges] = useState<
+  const [messages, setMessages] = useState<
     { tempId?: string; text: string; senderId: string; created_at: string }[]
   >([]);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -48,15 +48,11 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
     if (bottomRef.current)
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     queryClient.invalidateQueries({ queryKey: ["chats"] });
-    const refetchMessagesInteval = setInterval(() => {
-      // queryClient.invalidateQueries({ queryKey: ["chat", id] });
-    }, 5000);
-    return () => clearInterval(refetchMessagesInteval);
   }, [id]);
 
   useLayoutEffect(() => {
     if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      // bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
     // queryClient.invalidateQueries({ queryKey: ["chat", id] });
     queryClient.invalidateQueries({ queryKey: ["chats"] });
@@ -64,7 +60,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   useLayoutEffect(() => {
     (async () => {
-      setMessges(data?.messages);
+      setMessages(data?.messages);
     })();
     return () => {};
   }, [isLoading, data]);
@@ -74,7 +70,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       const text = messageInputRef.current.value.trim();
       if (!text.length) return;
       const tempId = new Date().toISOString();
-      setMessges((prev) => [
+      setMessages((prev) => [
         ...prev,
         {
           tempId: tempId,
@@ -94,10 +90,10 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
         { withCredentials: true }
       );
       if (!res.data.success) {
-        setMessges((prev) => prev.filter((msg) => msg?.tempId !== tempId));
+        setMessages((prev) => prev.filter((msg) => msg?.tempId !== tempId));
         return;
       }
-      setMessges((prev) =>
+      setMessages((prev) =>
         prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg))
       );
     }
@@ -105,26 +101,33 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <ProtectedRoute>
-      <div className='flex flex-col'>
-        <div className='head border-b py-6 mb-2 px-2  bg-white sticky! top-14 border-border w-full h-10 flex items-center gap-1'>
-          <BiSolidLeftArrow size={18} onClick={() => router.push("/chats")} />
+      <div className="flex flex-col h-full">
+        <div className="head border-b py-6 mb-2 px-2 bg-white sticky top-[3.5rem] z-10 border-border w-full h-10 flex items-center gap-1 shadow-sm">
+          <button
+            onClick={() => router.push("/chats")}
+            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <BiSolidLeftArrow size={18} />
+          </button>
           {userData.name ? (
-            <>
+            <div className="flex items-center gap-2">
               <img
                 src={userData.picture || "/userPlaceholder.png"}
-                className='size-8 bg-border rounded-full'
+                className="size-8 bg-border rounded-full object-cover"
               />
-              <div>{userData.name + " " + (userData?.surname ?? "")}</div>
-            </>
+              <div className="font-semibold text-gray-800">
+                {userData.name + " " + (userData?.surname ?? "")}
+              </div>
+            </div>
           ) : (
-            <>
-              <div className='size-8 bg-gray-300 rounded-full animate-pulse' />
-              <div className='w-24 h-4 rounded-md bg-gray-300 animate-pulse' />
-            </>
+            <div className="flex items-center gap-2">
+              <div className="size-8 bg-gray-200 rounded-full animate-pulse" />
+              <div className="w-32 h-4 rounded-md bg-gray-200 animate-pulse" />
+            </div>
           )}
         </div>
 
-        <div className='body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24 max-w-full'>
+        <div className="body grow overflow-y-auto flex flex-col gap-1 px-2 pb-24 max-w-full">
           {messages?.length ? (
             <>
               {messages?.map((msg, i) => (
@@ -137,27 +140,29 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
               ))}
             </>
           ) : (
-            <div className='w-full grid place-content-center'>
-              No there messages yet
+            <div className="w-full h-full flex items-center justify-center text-gray-500">
+              No messages yet
             </div>
           )}
           <div ref={bottomRef}></div>
         </div>
 
-        <div className='foot fixed bottom-0 bg-white w-full md:max-w-[calc(100%-320px)] border-t border-border h-12 flex items-center gap-2 px-2'>
-          <input
-            type='text'
-            ref={messageInputRef}
-            placeholder='Enter a message'
-            className='flex-1 h-full px-4 py-2 focus:outline-border'
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          />
-          <button
-            onClick={sendMessage}
-            className='send bg-primary hover:bg-primary-dark p-2 rounded-lg'
-          >
-            <IoMdSend color='white' size={22} />
-          </button>
+        <div className="foot sticky bottom-0 bg-white w-full border-t border-border p-3 flex items-center gap-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              ref={messageInputRef}
+              placeholder="Type a message..."
+              className="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+            <button
+              onClick={sendMessage}
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors"
+            >
+              <IoMdSend size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </ProtectedRoute>

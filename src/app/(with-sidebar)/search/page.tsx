@@ -1,25 +1,22 @@
-import axios from "axios";
+"use client";
+import React, { Suspense } from "react";
 import { SearchParams } from "next/dist/server/request/search-params";
-import PostCard from "@/components/ui/cards/PostCard";
-import type { PostType } from "@/utils/validator";
-import React from "react";
-import { div } from "motion/react-client";
+import { usePosts } from "@/cache/usePosts";
+import PostsContainer from "@/components/layout/containers/PostsContainer";
+import { useSearchParams } from "next/navigation";
 
-export default async function page({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  let posts;
-  const { q } = await searchParams;
-  const searchQuery = Array.isArray(q) ? q : q ? [q] : [];
-  try {
-    const res = await axios.get(
-      `http://localhost:3001/posts/search?query=${searchQuery}`
-    );
-    posts = res.data.data;
-    console.log(posts);
-  } catch (error) {}
+function Page() {
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  console.log(q);
+  let searchQuery = Array.isArray(q) ? q : q ? [q] : [];
+  const { data, fetchNextPage, isLoading, isFetching } = usePosts({
+    searchQuery: searchQuery.join(" "),
+    limit: 2,
+  });
+
+  const posts = data?.pages.flatMap((page) => page.posts);
+  const postsCount = data?.pages.flatMap((page) => page)[0].postsCount;
 
   return (
     <div className='flex w-full gap-4 p-4'>
@@ -31,12 +28,28 @@ export default async function page({
           </h2>
           <div className='flex'>order by:</div>
         </div>
-        <div className='w-full flex flex-wrap gap-1 justify-center '>
-          {posts?.map((post: PostType) => (
-            <PostCard post={post} key={post.id} />
-          ))}
-        </div>
+        <PostsContainer
+          showMore={fetchNextPage}
+          posts={posts}
+          postsCount={postsCount}
+          loading={isLoading || isFetching}
+        />{" "}
       </div>
     </div>
+  );
+}
+
+export default function SuspensedPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='text-primary w-full overflow-hidden h-[calc(100vh-56px)] font-bold text-2xl grid place-content-center place-items-center gap-8 animate-pulse'>
+          <img src='/logo/textColor-logo.png' alt='' className='size-32 ' />
+          <div>Loading</div>
+        </div>
+      }
+    >
+      <Page />
+    </Suspense>
   );
 }

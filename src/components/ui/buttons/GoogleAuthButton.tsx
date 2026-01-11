@@ -11,7 +11,7 @@ export default function GoogleAuthButton() {
       }
     >
       <FcGoogle size={24} />
-      <span className="grow">Login With Google</span>
+      <span className="grow">Sign in with Google</span>
     </button>
   );
 }

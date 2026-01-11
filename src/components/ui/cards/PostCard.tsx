@@ -19,11 +19,11 @@ export default function PostCard({
       <div className="relative min-w-36! size-36!">
         <img
           src={post?.picture?.secureUrl ?? "/postPlaceholder.svg"}
-          className="img max-h-full! bg-border rounded-md overflow-hidden  size-36 object-cover"
+          className="img max-h-full! bg-white rounded-md overflow-hidden  size-36 object-cover"
         />
         {post.discount ? (
           <div className="absolute top-0  right-0 text-center bg-accent-green  px-2 rounded-md text-sm text-white">
-            {post?.discount}%
+            +{post?.discount}%
           </div>
         ) : null}
 
@@ -37,30 +37,30 @@ export default function PostCard({
           </div>
         </div>
 
-        <div className="flex  w-full items-end justify-between  flex-wrap  py-2">
-          <div className="flex gap-4 items-center">
-            <div className="author flex items-center gap-1 flex-1">
+        <div className="flex  w-full items-end justify-between  flex-wrap  py-2 gap-y-2">
+          <div className="flex gap-2 items-center flex-wrap mr-auto">
+            <div className="author flex items-center gap-1 max-w-[150px]">
               <img
                 src={post.owner?.picture?.secureUrl || "./userPlaceholder.png"}
-                className="author-img bg-border rounded-full aspect-square w-6"
+                className="author-img bg-border shrink-0 rounded-full aspect-square w-6"
               />
-              <div className="text-sm font-light text-gray text-nowrap truncate ">
+              <div className="text-sm font-light text-gray truncate">
                 {post.owner!.name!}{" "}
                 {post.owner?.surname !== "null" && post.owner?.surname}
               </div>
             </div>
-            <div className="time flex text-sm font-light text-gray items-center flex-1">
-              <MdAccessTime size={18} />
-              <span className="text-gray">
+            <div className="time flex text-sm font-light text-gray items-center shrink-0">
+              <MdAccessTime size={18} className="mr-1" />
+              <span className="text-gray text-xs">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
             <div
               className={`category ${
                 isWide ? "flex" : "hidden"
-              } text-sm font-light text-gray items-center`}
+              } text-sm font-light text-gray items-center shrink-0`}
             >
-              <TbCategory2 size={18} />
+              <TbCategory2 size={18} className="mr-1" />
               <span className="text-gray">{post.categoryName}</span>
             </div>
           </div>

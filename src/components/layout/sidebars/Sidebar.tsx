@@ -52,19 +52,19 @@ export default function Sidebar() {
         ref={sidebarRef}
         className={`side-bar ${
           isSmallScreen && "h-full"
-        } absolute md:relative md:block  duration-150 transition-all select-none p-4  flex-col ltr:border-l rtl:border-r z-10 border-border bg-white w-80! min-h-[calc(100vh-56px)] ltr: translate-x-0 ${
+        } absolute md:relative md:block  duration-150 transition-all select-none p-4  flex-col ltr:border-l rtl:border-r z-500 border-border bg-white w-80! min--80 min-h-[calc(100vh-56px)] ltr: translate-x-0 ${
           isSmallScreen && !showSidebar && "ltr:-translate-x-full"
         }`}
       >
-        <div className='sticky top-18'>
-          <Link href={"/"} className='text-primary font-bold text-xl'>
+        <div className="sticky top-18">
+          <Link href={"/"} className="text-primary font-bold text-xl">
             Tager
           </Link>
           {sections.map((section, i) => (
             <Link
               key={i}
               href={section.url}
-              className='px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-border'
+              className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-border"
             >
               {section.icon}
               <span>{section.name}</span>
@@ -76,10 +76,8 @@ export default function Sidebar() {
         onClick={() => setShowSidebar(false)}
         className={`transition-all ${
           showSidebar && isSmallScreen ? "fixed" : "hidden"
-        } inset-0  bg-black/60  z-9`}
-      >
-        hello
-      </div>
+        } inset-0  bg-black/60  z-499`}
+      ></div>
     </>
   );
 }

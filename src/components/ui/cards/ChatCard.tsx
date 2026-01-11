@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 export default function ChatCard({
   chatId,
@@ -23,16 +22,15 @@ export default function ChatCard({
   return (
     <Link
       href={`/chats/${chatId}?postId=${postId}`}
-      className="w-full rounded-md flex gap-4 bg-white border border-border  p-2 hover:scale-101  relative transition-all group duration-250"
+      className="max-w-full rounded-md flex gap-4 bg-white border border-border  p-2 hover:scale-101 relative transition-all group duration-250"
     >
       <div className="relative aspect-square! min-h-22 max-w-22">
         <img
           src={picture?.secureUrl || "./postPlaceholder.svg"}
           alt=""
-          className="aspect-square! w-full rounded-md border border-accent-green"
+          className="aspect-square!  w-full rounded-md border border-accent-green"
         />
       </div>
-
       <div
         className={`${
           !unReadedMessages && "hidden"
@@ -41,17 +39,16 @@ export default function ChatCard({
         {unReadedMessages}
       </div>
 
-      {/* <div className="flex flex-col w-full justify-"> */}
       <div className="flex flex-col w-full justify-between">
         <div className="title text-accent-green font-medium">{title}</div>
         {lastMessage && (
-          <div className="w-[70%] flex items-end gap-5">
-            <div className="last-msg max-w-[50%] text-gray wrap-break-word line-clamp-1">
+          <div className="flex items-end justify-start gap-5">
+            <div className="last-msg max-w-[50%] text-gray wrap-anywhere line-clamp-1">
               {isLastMessageFromYou ? "you" : user.name}
               {": "}
               {lastMessage?.text}
             </div>
-            <span className="text-gray text-[9px]">
+            <span className="text-gray text-[9px] flex-q">
               {new Date(lastMessage?.created_at).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -71,7 +68,6 @@ export default function ChatCard({
           </div>
         </div>
       </div>
-      {/* </div> */}
     </Link>
   );
 }

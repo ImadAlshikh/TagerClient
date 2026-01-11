@@ -25,8 +25,8 @@ export default function page() {
 
   return (
     <ProtectedRoute>
-      <div className='flex flex-col gap-2 p-4'>
-        <span className='font-medium text-text text-xl'>Chats</span>
+      <div className='flex flex-col gap-2 p-4 max-w-full'>
+        <span className='font-bold text-text text-2xl'>Chats</span>
         {chats?.length ? (
           chats?.map((chat: any) => (
             <ChatCard

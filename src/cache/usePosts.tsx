@@ -2,14 +2,20 @@ import { PostType } from "@/utils/validator";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const LIMIT = 5;
-
-export function usePosts() {
+export function usePosts(
+  {
+    limit,
+    searchQuery,
+  }: {
+    limit?: number;
+    searchQuery?: string;
+  } = { limit: 10 }
+) {
   return useInfiniteQuery({
-    queryKey: ["posts"],
+    queryKey: ["posts", { limit, searchQuery }],
     queryFn: async ({ pageParam }) => {
       const res = await axios.get(
-        `http://localhost:3001/posts?limit=${LIMIT}&cursor=${pageParam}`
+        `http://localhost:3001/posts?limit=${limit}&cursor=${pageParam}&searchQuery=${searchQuery}`
       );
       return res.data.data;
     },

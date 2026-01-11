@@ -7,6 +7,7 @@ import TagNode from "@/components/ui/nodes/TagNode";
 import ReportButton from "@/components/ui/buttons/ReportButton";
 import { formatRelativeDate } from "@/utils/Date";
 import { calcDiscountedCents, formatMoney } from "@/utils/money";
+import RelatedPosts from "@/components/RelatedPosts";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -21,14 +22,14 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <div className="p-4">
       <div className="bg-white p-4 gap-4 rounded-md flex flex-col items-center md:flex-row md:items-start">
-        <div className="relative hover:scale-102 transition-all duration-250 md:size-60 aspect-square">
+        <div className="relative bg-white hover:scale-102 transition-all duration-250 md:size-60 aspect-square">
           <img
             src={post.picture?.secureUrl ?? "/postPlaceholder.svg"}
-            className="rounded-md aspect-square bg-border "
+            className="rounded-md bg-white aspect-square bg-border "
           />
           {post.discount ? (
             <div className="absolute top-0 right-0 text-center bg-accent-green px-2  rounded-md text-sm text-white">
-              {post?.discount}%
+              +{post?.discount}%
             </div>
           ) : null}
         </div>
@@ -56,7 +57,7 @@ export default async function page({ params }: { params: { id: string } }) {
             </div>
             <div className="time flex text-gray items-center gap-1 flex-1">
               <MdAccessTime size={20} />
-              <span className="text-gray">
+              <span className="text-gray text-nowrap">
                 {formatRelativeDate(post.created_at!)}
               </span>
             </div>
@@ -98,6 +99,10 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+      <RelatedPosts
+        category={post.categoryName || ""}
+        currentPostId={post.id!}
+      />
     </div>
   );
 }

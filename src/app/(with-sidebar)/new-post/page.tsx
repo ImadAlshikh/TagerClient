@@ -2,15 +2,16 @@
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { postSchema } from "@/utils/validator";
 import axios from "axios";
 import { calcDiscountedCents, formatMoney, toCents } from "@/utils/money";
 import { useUser } from "@/cache/useUser";
 import { useRouter } from "next/navigation";
+import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 
 const typeOptions: { value: string; label: string }[] = [
-  { value: "", label: "-- Select --" },
+  { value: "", label: "-- Select Category --" },
   { value: "vehicles", label: "Vehicles – Cars, Motorcycles, Trucks" },
   { value: "real_estate", label: "Real Estate – Rent & Sale" },
   { value: "electronics", label: "Electronics – TVs, Audio, Devices" },
@@ -32,23 +33,42 @@ const typeOptions: { value: string; label: string }[] = [
   { value: "business", label: "Business & Commercial Equipment" },
 ];
 
-export default function page() {
+export default function NewPostPage() {
   const { data: user } = useUser();
-  const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imagePreview, setImagePreview] = useState<string>(
-    "./postPlaceholder.svg"
-  );
+  const router = useRouter();
+
+  // State
   const [loading, setLoading] = useState<boolean>(false);
-  const [priceCents, setPriceCents] = useState<number>(0);
   const [errorFields, setErrorFields] = useState<
     { path: string; message: string }[]
   >([]);
-  const [error, setError] = useState<string>();
-  const router = useRouter();
+  const [error, setError] = useState<string>("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Form State
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [categoryName, setCategoryName] = useState("");
+  const [price, setPrice] = useState<number | "">("");
+  const [discount, setDiscount] = useState<number | "">("");
+  const [tags, setTags] = useState("");
+
+  // Derived State
+  const [priceCents, setPriceCents] = useState(0);
+  const [discountedCents, setDiscountedCents] = useState(0);
+
+  useEffect(() => {
+    const p = typeof price === "number" ? price : 0;
+    const d = typeof discount === "number" ? discount : 0;
+    const pCents = toCents(p);
+    setPriceCents(pCents);
+    setDiscountedCents(calcDiscountedCents(pCents, d));
+  }, [price, discount]);
 
   const handleDropFile = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     const droppedFile = e.dataTransfer.files[0];
     if (
       !droppedFile ||
@@ -70,29 +90,44 @@ export default function page() {
     setImagePreview(preview);
   };
 
-  const submitPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!formRef.current || !user) return null;
-    const formData = new FormData(formRef.current);
-    formData.set("price", priceCents.toString());
-    var data = Object.fromEntries(formData.entries());
-    const parsedData = postSchema.safeParse({
-      ...data,
-      ownerId: user.id,
-      discount: Number(data.discount),
-      price: Number(data.price),
-      tags: (data.tags as string).trim(),
-      categoryName: (data.categoryName as string).toLowerCase(),
-    });
-    if (!parsedData.success) {
-      const errors: { path: string; message: string }[] =
-        parsedData.error.issues.map((issue) => ({
-          path: issue.path[0] as string,
-          message: issue.message,
-        }));
-      setLoading(false);
+  const submitPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
 
-      return setErrorFields(errors);
+    setErrorFields([]);
+    setError("");
+
+    const formData = new FormData();
+    if (fileInputRef.current?.files?.[0]) {
+      formData.append("picture", fileInputRef.current.files[0]);
     }
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("categoryName", categoryName);
+    formData.append("price", priceCents.toString());
+    formData.append("discount", (discount || 0).toString());
+    formData.append("tags", tags);
+
+    // Validation
+    const parsedData = postSchema.safeParse({
+      title,
+      description,
+      categoryName: categoryName.toLowerCase(),
+      price: Number(price),
+      discount: Number(discount || 0),
+      tags: tags.trim(),
+      ownerId: user.id,
+    });
+
+    if (!parsedData.success) {
+      const errors = parsedData.error.issues.map((issue) => ({
+        path: issue.path[0] as string,
+        message: issue.message,
+      }));
+      setErrorFields(errors);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await axios.post("http://localhost:3001/posts/", formData, {
@@ -103,273 +138,352 @@ export default function page() {
       });
 
       if (!res.data.success) {
-        return setError(res.data.error || "Invalid data");
+        setLoading(false);
+        setError(res.data.error || "Invalid data");
+        return;
       }
-      setLoading(false);
       router.push(`/post/${res.data.data.id}`);
     } catch (e: any) {
       setLoading(false);
-
-      return setError(e.response.data.error || "Invalid data");
+      setError(
+        e.response?.data?.error || "An error occurred while creating the post"
+      );
     }
+  };
+
+  const getFieldError = (fieldName: string) => {
+    return errorFields.find((err) => err.path === fieldName)?.message;
   };
 
   return (
     <ProtectedRoute>
-      <div
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDropFile}
-        className="flex flex-col gap-2 p-4"
-      >
-        <div className="flex items-center gap-1 px-2">
-          <Link href={"/"}>
-            <FaArrowLeft size={18} />
+      <div className="flex flex-col gap-6 p-4 md:p-8 w-full">
+        <div className="flex items-center gap-3">
+          <Link
+            href={"/"}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <FaArrowLeft size={20} className="text-gray-600" />
           </Link>
-          <span className="font-medium text-text text-xl">New Post</span>
+          <h1 className="font-bold text-gray-900 text-2xl">
+            Create New Post
+          </h1>
         </div>
 
         <form
-          ref={formRef}
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-          onChange={(e) => {
-            const form = e.currentTarget;
-            const price = Number(
-              (form.elements.namedItem("price") as HTMLInputElement).value || 0
-            );
-            const discount = Number(
-              (form.elements.namedItem("discount") as HTMLInputElement).value ||
-                0
-            );
-            const priceCents = toCents(price);
-            const discountedCents = calcDiscountedCents(priceCents, discount);
-            setPriceCents(priceCents);
-
-            document.getElementById("price-preview")!.textContent =
-              formatMoney(priceCents);
-            document.getElementById("discount-preview")!.textContent =
-              discount + "%";
-            document.getElementById("discountedPrice-preview")!.textContent =
-              formatMoney(discountedCents);
-          }}
+          onSubmit={submitPost}
+          className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
         >
-          <div className="bg-white p-4 rounded-md gap-4 flex flex-col md:flex-row items-center md:items-start">
-            <div className="rounded-md relative group  aspect-square! size-full md:size-60 h-full flex flex-col justify-center">
-              <input
-                type="file"
-                name="picture"
-                id="picture"
-                ref={fileInputRef}
-                accept="image/*"
-                onChange={handleImagePreview}
-                className="hidden"
-              />
-              <div className="absolute bg-black opacity-0 group-hover:opacity-35 transition-opacity duration-250  w-full h-full"></div>
-              <button
-                onClick={() => fileInputRef?.current?.click()}
-                className="bg-black opacity-0 group-hover:opacity-80 transition-opacity duration-250 absolute text-white rounded-full px-2 py-1 self-center left-1/2 top-1/2 -translate-1/2"
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left Column - Image Upload */}
+            <div className="md:col-span-4 lg:col-span-3 space-y-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Upload Photo
+              </label>
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDrop={handleDropFile}
+                className="relative aspect-square w-full rounded-xl border-2 border-dashed border-gray-300 hover:border-primary/50 hover:bg-gray-50 transition-all group cursor-pointer overflow-hidden bg-gray-50 flex flex-col items-center justify-center text-center"
+                onClick={() => !imagePreview && fileInputRef.current?.click()}
               >
-                Choose
-              </button>
-              <img
-                src={imagePreview}
-                draggable={false}
-                className="select-none h-full object-cover"
-              />
-              {fileInputRef.current?.value && (
-                <div
-                  onClick={() => {
-                    setImagePreview("./postPlaceholder.svg");
-                    if (fileInputRef.current) {
-                      fileInputRef.current.value = "";
-                    }
-                  }}
-                  className="text-center w-full! hover:text-primary cursor-pointer absolute top-full"
-                >
-                  Delete
-                </div>
-              )}
+                <input
+                  type="file"
+                  name="picture"
+                  id="picture"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  onChange={handleImagePreview}
+                  className="hidden"
+                />
+
+                {imagePreview ? (
+                  <>
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          fileInputRef.current?.click();
+                        }}
+                        className="bg-white/90 text-sm font-semibold px-4 py-2 rounded-full hover:bg-white transition-colors"
+                      >
+                        Change Photo
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setImagePreview(null);
+                          if (fileInputRef.current)
+                            fileInputRef.current.value = "";
+                        }}
+                        className="bg-red-500/90 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <FiTrash2 size={18} />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="p-4 flex flex-col items-center gap-2 text-gray-400">
+                    <div className="bg-white p-3 rounded-full shadow-sm">
+                      <FiUploadCloud size={24} className="text-primary" />
+                    </div>
+                    <div>
+                      <span className="text-primary font-medium">
+                        Click to upload
+                      </span>
+                      <br />
+                      <span className="text-xs">or drag and drop</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 text-center">
+                Supported formats: JPG, PNG, WEBP
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full md:flex-2">
-              <div className="title flex flex-col col-span-2">
-                <label htmlFor="title" className="font-bold">
-                  Title*
+
+            {/* Right Column - Form Fields */}
+            <div className="md:col-span-8 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+              {/* Title */}
+              <div className="col-span-2">
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Title <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="title"
                   id="title"
-                  placeholder="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. 2020 MacBook Pro 13-inch"
                   maxLength={50}
-                  className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
+                  className={`w-full px-4 py-2.5 rounded-lg border ${
+                    getFieldError("title")
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                  } outline-none focus:ring-4 transition-all`}
                 />
-                {errorFields.filter((error) => error.path === "title") && (
-                  <span className="text-sm text-red-500">
-                    {
-                      errorFields.find((error) => error.path === "title")
-                        ?.message
-                    }
-                  </span>
+                {getFieldError("title") && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {getFieldError("title")}
+                  </p>
                 )}
               </div>
-              <div className="description flex flex-col col-span-2 relative">
-                <label htmlFor="description" className="font-bold">
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  id="description"
-                  placeholder="Description"
-                  onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                    const target = e.currentTarget;
-                    const div = document.getElementById("dl") as HTMLDivElement;
-                    if (div)
-                      div.innerText = target.value.length.toString() + "/500";
-                  }}
-                  maxLength={500}
-                  rows={3}
-                  className="px-2 py-2 ml-1 resize-none outline-text border border-border rounded-md focus:outline-2"
-                />
 
-                <div id="dl" className="absolute bottom-0 right-1 text-sm">
-                  0/500
-                </div>
-              </div>
-              <div className="categoryName flex flex-col col-span-2">
-                <label htmlFor="categoryName" className="font-bold">
-                  Category*
+              {/* Category */}
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="categoryName"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Category <span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="categoryName"
                   id="categoryName"
-                  className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
+                  value={categoryName}
+                  onChange={(e) => setCategoryName(e.target.value)}
+                  className={`w-full px-4 py-2.5 rounded-lg border ${
+                    getFieldError("categoryName")
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                  } outline-none focus:ring-4 transition-all bg-white`}
                 >
-                  {typeOptions.map(({ value, label }, index) => (
-                    <option key={index} value={value}>
+                  {typeOptions.map(({ value, label }) => (
+                    <option key={value} value={value} disabled={value === ""}>
                       {label}
                     </option>
                   ))}
                 </select>
-                {errorFields.filter(
-                  (error) => error.path === "categoryName"
-                ) && (
-                  <span className="text-sm text-red-500">
-                    {
-                      errorFields.find((error) => error.path === "categoryName")
-                        ?.message
-                    }
-                  </span>
+                {getFieldError("categoryName") && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {getFieldError("categoryName")}
+                  </p>
                 )}
               </div>
-              <div className="price flex flex-col">
-                <label htmlFor="price" className="font-bold">
-                  Price($)*
+
+              {/* Price */}
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="price"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Price ($) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
-                  name="price"
                   id="price"
+                  value={price}
+                  onChange={(e) =>
+                    setPrice(
+                      e.target.value === "" ? "" : Number(e.target.value)
+                    )
+                  }
                   min={0}
-                  placeholder="Price"
-                  className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
+                  placeholder="0.00"
+                  className={`w-full px-4 py-2.5 rounded-lg border ${
+                    getFieldError("price")
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                  } outline-none focus:ring-4 transition-all`}
                 />
-                {errorFields.filter((error) => error.path === "price") && (
-                  <span className="text-sm text-red-500">
-                    {
-                      errorFields.find((error) => error.path === "price")
-                        ?.message
-                    }
-                  </span>
+                {getFieldError("price") && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {getFieldError("price")}
+                  </p>
                 )}
               </div>
-              <div className="discount flex flex-col">
-                <label htmlFor="discount" className="font-bold">
-                  Discount(0-100%)
+
+              {/* Discount */}
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="discount"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Discount (%)
                 </label>
                 <input
                   type="number"
-                  name="discount"
                   id="discount"
+                  value={discount}
+                  onChange={(e) =>
+                    setDiscount(
+                      e.target.value === "" ? "" : Number(e.target.value)
+                    )
+                  }
                   min={0}
                   max={100}
-                  placeholder="Discount"
-                  className="px-2 py-2 ml-1 outline-text border border-border rounded-md focus:outline-2"
+                  placeholder="0"
+                  className={`w-full px-4 py-2.5 rounded-lg border ${
+                    getFieldError("discount")
+                      ? "border-red-500 focus:ring-red-200"
+                      : "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                  } outline-none focus:ring-4 transition-all`}
                 />
-                {errorFields.filter((error) => error.path === "discount") && (
-                  <span className="text-sm text-red-500">
-                    {
-                      errorFields.find((error) => error.path === "discount")
-                        ?.message
-                    }
-                  </span>
+                {getFieldError("discount") && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {getFieldError("discount")}
+                  </p>
                 )}
               </div>
-              <div className="tags flex flex-col col-span-2">
-                <label htmlFor="tags" className="font-bold">
-                  Tags
-                  <span className="text-sm font-normal">(space saparated)</span>
+
+              {/* Description */}
+              <div className="col-span-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Description
                 </label>
-                <textarea
-                  name="tags"
+                <div className="relative">
+                  <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Describe your item in detail..."
+                    maxLength={500}
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all resize-none"
+                  />
+                  <div className="absolute right-2 bottom-2 text-xs text-gray-400 bg-white/80 px-1 rounded">
+                    {description.length}/500
+                  </div>
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div className="col-span-2">
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-semibold text-gray-700 mb-1"
+                >
+                  Tags{" "}
+                  <span className="font-normal text-gray-400 text-xs ml-1">
+                    (Space separated)
+                  </span>
+                </label>
+                <input
+                  type="text"
                   id="tags"
-                  placeholder="Tags"
-                  rows={3}
-                  className="px-2 py-2 ml-1 resize-none outline-text border border-border rounded-md focus:outline-2"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder="laptop apple macbook electronics"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
-              <div className="flex justify-between items-center col-span-2">
-                <div className="flex items-center gap-1">
-                  <div className="flex flex-col">
-                    <div
-                      id="price-preview"
-                      className="font-bold text-text text-sm line-through"
-                    >
-                      0$
-                    </div>
-                    <div
-                      id="discount-preview"
-                      className="font-bold text-accent-green text-sm "
-                    >
-                      0%
-                    </div>
-                  </div>
-                  <div
-                    id="discountedPrice-preview"
-                    className="font-bold text-primary text-lg"
-                  >
-                    Free
-                  </div>
-                </div>
+            </div>
+          </div>
 
-                <div className="flex justify-end gap-2 pt-2">
-                  <div className="flex items-center gap-0.5 ">
-                    <span>cost:5</span>
-                    <img src="/coin.png" className="size-5" draggable="false" />
-                  </div>
-                  <Link
-                    href={"/"}
-                    type="button"
-                    className="bg-border items-center flex  hover:bg-[#d6d6d6] font-bold px-4 rounded-full py-1  col-start-1"
-                  >
-                    Cancel
-                  </Link>
-                  <button
-                    onClick={(e) => submitPost(e)}
-                    type="button"
-                    disabled={loading}
-                    className="bg-primary hover:bg-primary-dark disabled:bg-border disabled:cursor-not-allowed disabled:text-text  text-white font-bold px-8 rounded-full py-1  col-start-2"
-                  >
-                    Post
-                  </button>
-                  {error && (
-                    <span className="text-accent-red text-sm absolute bottom-3 right-8 ">
-                      {error}
+          {/* Footer / Summary */}
+          <div className="bg-gray-50 p-6 md:px-8 border-t border-gray-200">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              {/* Price Preview */}
+              <div className="flex items-center gap-4 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">
+                    Final Price
+                  </span>
+                  <div className="flex items-baseline gap-2">
+                    {Number(discount) > 0 && (
+                      <>
+                        <span className="text-sm text-gray-400 line-through decoration-red-400">
+                          {formatMoney(priceCents)}
+                        </span>
+                        <span className="text-xs font-bold text-red-500 bg-red-50 px-1.5 rounded">
+                          -{discount}%
+                        </span>
+                      </>
+                    )}
+                    <span className="text-xl font-bold text-gray-900">
+                      {priceCents === 0 ? "Free" : formatMoney(discountedCents)}
                     </span>
-                  )}
+                  </div>
                 </div>
               </div>
+
+              {/* Actions */}
+              <div className="flex items-center gap-4 w-full md:w-auto justify-end">
+                <div className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-600 bg-white px-3 py-1.5 rounded-full border border-gray-200">
+                  <span>Post Cost: 5</span>
+                  <img
+                    src="/coin.png"
+                    className="size-4"
+                    draggable="false"
+                    alt="coin"
+                  />
+                </div>
+
+                <Link
+                  href="/"
+                  className="px-6 py-2.5 rounded-full text-gray-600 font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </Link>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 md:flex-none px-8 py-2.5 rounded-full bg-primary text-white font-bold hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 active:scale-95"
+                >
+                  {loading ? "Posting..." : "Create Post"}
+                </button>
+              </div>
             </div>
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center border border-red-100 animate-in fade-in slide-in-from-top-1">
+                {error}
+              </div>
+            )}
           </div>
         </form>
       </div>
