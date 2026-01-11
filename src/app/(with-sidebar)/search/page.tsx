@@ -8,7 +8,6 @@ import { useSearchParams } from "next/navigation";
 function Page() {
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
-  console.log(q);
   let searchQuery = Array.isArray(q) ? q : q ? [q] : [];
   const { data, fetchNextPage, isLoading, isFetching } = usePosts({
     searchQuery: searchQuery.join(" "),

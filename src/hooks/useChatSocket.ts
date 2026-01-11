@@ -11,7 +11,6 @@ export const useChatSocket = (
   useEffect(() => {
     if (!userId || !chatId) return;
     const onConnect = () => {
-      console.log("connected", chatId, userId);
       socket.emit("join-chat", { chatId, userId });
     };
 

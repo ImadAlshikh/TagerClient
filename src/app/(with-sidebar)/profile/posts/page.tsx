@@ -15,11 +15,9 @@ export default function page() {
       if (!user) return;
       (async () => {
         setLoading(true);
-        console.log(user.id)
         const res = await axios.get(
           `http://localhost:3001/posts/by-user/${user.id}`
         );
-        console.log(res);
         setLoading(false);
         if (!res.data.success) {
           return setPosts(null);

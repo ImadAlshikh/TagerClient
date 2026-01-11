@@ -9,7 +9,6 @@ export const useChat = (chatId: string) => {
         withCredentials: true,
       });
       if (res.data.success) {
-        console.log(res.data);
         return res.data.data;
       }
     },

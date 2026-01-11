@@ -17,7 +17,6 @@ export default function Sidebar() {
   useEffect(() => {
     const resizeHandler = () => {
       setIsSmallScreen(window.innerWidth < 768);
-      console.log("sie:", window.innerWidth < 768);
     };
     resizeHandler();
     addEventListener("resize", resizeHandler);

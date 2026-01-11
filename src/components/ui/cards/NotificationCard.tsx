@@ -26,7 +26,6 @@ export default function NotificationCard({ notif }: { notif: any }) {
       clearTimeout(closeTimeout);
     };
   }, [notif]);
-  console.log("from card:", notif);
   return (
     <Link
       onClick={() => setShow(false)}

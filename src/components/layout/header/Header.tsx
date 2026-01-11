@@ -66,7 +66,6 @@ export default function Header() {
           <button
             type="button"
             onClick={(e) => {
-              console.log("its", showSidebar);
               e.stopPropagation();
               if (showSidebar) {
                 setShowSidebar(false);

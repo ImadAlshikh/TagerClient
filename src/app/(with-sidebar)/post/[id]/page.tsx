@@ -1,4 +1,5 @@
 import ContactButton from "@/components/ui/buttons/ContactButton";
+import EditButton from "@/components/ui/buttons/EditButton";
 import { MdAccessTime } from "react-icons/md";
 import { TbCategory2 } from "react-icons/tb";
 import { PostType } from "@/utils/validator";
@@ -87,7 +88,10 @@ export default async function page({ params }: { params: { id: string } }) {
               )}
             </div>
           </div>
-          <ContactButton id={id} ownerId={post.ownerId} />
+          <div className="flex justify-end gap-3 items-center flex-wrap">
+            <EditButton postId={id} ownerId={post.ownerId} />
+            <ContactButton id={id} ownerId={post.ownerId} />
+          </div>
 
           <div className="tags flex flex-col gap-2">
             <span className="font-semibold">Tags</span>

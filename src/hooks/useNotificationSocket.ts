@@ -5,7 +5,6 @@ import { socket } from "@/socket/client";
 import { useNotificationStore } from "@/stores/useNotificationStore";
 import { useEffect } from "react";
 
-console.log("store from socket", useNotificationStore.getState());
 
 export const UseNotificationSocket = () => {
   const { data: user } = useUser();
@@ -15,7 +14,7 @@ export const UseNotificationSocket = () => {
     if (!userId) return;
 
     const subscribe = () => {
-      console.log("subscribe user:", userId);
+
       socket.emit("subscribe-notification", userId);
     };
 
