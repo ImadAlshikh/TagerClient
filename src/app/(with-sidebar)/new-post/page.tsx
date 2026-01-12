@@ -10,28 +10,7 @@ import { useUser } from "@/cache/useUser";
 import { useRouter } from "next/navigation";
 import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 
-const typeOptions: { value: string; label: string }[] = [
-  { value: "", label: "-- Select Category --" },
-  { value: "vehicles", label: "Vehicles – Cars, Motorcycles, Trucks" },
-  { value: "real_estate", label: "Real Estate – Rent & Sale" },
-  { value: "electronics", label: "Electronics – TVs, Audio, Devices" },
-  { value: "mobiles", label: "Mobile Phones & Accessories" },
-  { value: "computers", label: "Computers – Laptops, Parts, Peripherals" },
-  { value: "fashion", label: "Fashion – Clothing, Shoes, Bags" },
-  { value: "beauty", label: "Beauty & Personal Care" },
-  { value: "furniture", label: "Furniture & Home Decor" },
-  { value: "home_appliances", label: "Home Appliances" },
-  { value: "pets", label: "Pets & Pet Supplies" },
-  { value: "services", label: "Services – Maintenance, Design, Cleaning" },
-  { value: "jobs", label: "Jobs – Full-time, Part-time, Freelance" },
-  { value: "sports", label: "Sports & Fitness Equipment" },
-  { value: "games", label: "Gaming – Consoles, PC, Accessories" },
-  { value: "collectibles", label: "Collectibles & Antiques" },
-  { value: "books", label: "Books & Educational Material" },
-  { value: "baby", label: "Baby & Kids Supplies" },
-  { value: "industrial", label: "Industrial Equipment & Tools" },
-  { value: "business", label: "Business & Commercial Equipment" },
-];
+import { POST_CATEGORIES } from "@/constants/categories";
 
 export default function NewPostPage() {
   const { data: user } = useUser();
@@ -165,9 +144,7 @@ export default function NewPostPage() {
           >
             <FaArrowLeft size={20} className="text-gray-600" />
           </Link>
-          <h1 className="font-bold text-gray-900 text-2xl">
-            Create New Post
-          </h1>
+          <h1 className="font-bold text-gray-900 text-2xl">Create New Post</h1>
         </div>
 
         <form
@@ -299,7 +276,7 @@ export default function NewPostPage() {
                       : "border-gray-200 focus:ring-primary/20 focus:border-primary"
                   } outline-none focus:ring-4 transition-all bg-white`}
                 >
-                  {typeOptions.map(({ value, label }) => (
+                  {POST_CATEGORIES.map(({ value, label }) => (
                     <option key={value} value={value} disabled={value === ""}>
                       {label}
                     </option>

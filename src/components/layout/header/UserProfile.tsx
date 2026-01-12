@@ -50,6 +50,7 @@ export default function UserProfile() {
         <div className="absolute p-2 z-10 left-1/2 -translate-x-1/2  bg-white border border-border rounded-md top-full">
           <Link
             href={"/profile"}
+            onClick={() => setShowMenu(false)}
             className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
             }`}
           >
@@ -58,6 +59,7 @@ export default function UserProfile() {
           </Link>
           <Link
             href={"/settings"}
+            onClick={() => setShowMenu(false)}
             className={`px-2 py-1 w-full flex items-center gap-1 rounded-md font-bold bg-white hover:bg-bg 
             }`}
           >
@@ -66,6 +68,7 @@ export default function UserProfile() {
           </Link>
           <div
             onClick={async () => {
+              setShowMenu(false);
               const res = await axios.delete(
                 "http://localhost:3001/users/logout",
                 {

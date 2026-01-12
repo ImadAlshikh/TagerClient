@@ -18,7 +18,7 @@ export default function Header() {
       <div className="header-container container mx-auto flex justify-between items-center ">
         <Link href={"/"} className="text-primary font-bold text-2xl flex">
           <img src="/logo/primary-logo.png" alt="" className="size-8" />
-          <span className="text-inherit -translate-x-2.5 translate-y-0.5">
+          <span className="text-inherit -translate-x-2.5 translate-y-0.5 hidden md:inline">
             ager
           </span>
         </Link>

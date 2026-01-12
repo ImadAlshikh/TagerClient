@@ -13,7 +13,7 @@ export default function SkeletonPostCard({ isWide }: { isWide?: boolean }) {
         <div className="flex flex-col gap-2">
           <h3
             className={`title font-semibold ${
-              isWide ? "w-74" : "w-55"
+              isWide ? "w-[80%]" : "w-[70%]"
             } h-3.5 bg-gray-300  rounded-md animate-pulse text-accent-green`}
           ></h3>
           <div className="flex flex-col gap-0.5">
@@ -21,7 +21,7 @@ export default function SkeletonPostCard({ isWide }: { isWide?: boolean }) {
               <h3
                 key={i}
                 className={`title font-semibold ${
-                  i === 2 ? "w-40" : "w-50"
+                  i === 2 ? "w-[40%]" : "w-[60%]"
                 } h-3 bg-gray-300  rounded-md animate-pulse text-accent-green`}
               ></h3>
             ))}
