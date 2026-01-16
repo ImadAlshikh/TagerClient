@@ -5,7 +5,7 @@ export default function GoogleAuthButton() {
   return (
     <button
       type="button"
-      className="rounded-md border hover:bg-bg border-border p-2 flex items-center"
+      className="rounded-md border hover:bg-bg border-border p-2 flex w-full items-center"
       onClick={() =>
         (window.location.href = "http://localhost:3001/auth/google")
       }

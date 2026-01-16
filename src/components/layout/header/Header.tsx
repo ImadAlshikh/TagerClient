@@ -52,7 +52,7 @@ export default function Header() {
                   </Link>
                   <span className="text-3xl">/</span>
                   <Link
-                    href={"/signin"}
+                    href={"/signup"}
                     type="button"
                     className="bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
                   >
