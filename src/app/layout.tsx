@@ -37,7 +37,7 @@ export default function RootLayout({
             <NotificationProvider />
             <Header />
             <main className={`mt-14 h-full`}>{children}</main>
-            <Footer />
+          
           </QueryProvider>
         </SocketProvider>
       </body>

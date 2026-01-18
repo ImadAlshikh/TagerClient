@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { FaGithub, FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
+import {
+  FaGithub,
+  FaTwitter,
+  FaLinkedin,
+  FaFacebook,
+  FaStripe,
+} from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
 export default function Footer() {
@@ -131,9 +137,15 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-text/60 text-sm">
-              © {currentYear} Tager. All rights reserved.
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p className="text-text/60 text-sm">
+                © {currentYear} Tager. All rights reserved.
+              </p>
+              <div className="flex items-center gap-2 text-text/60">
+                <span className="text-sm">Secured by</span>
+                <FaStripe size={32} className="text-[#6772e5]" />
+              </div>
+            </div>
             <div className="flex gap-6 text-sm">
               <Link
                 href="/privacy"

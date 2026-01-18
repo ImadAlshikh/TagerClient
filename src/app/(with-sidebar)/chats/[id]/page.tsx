@@ -52,9 +52,8 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
 
   useLayoutEffect(() => {
     if (bottomRef.current) {
-      // bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    // queryClient.invalidateQueries({ queryKey: ["chat", id] });
     queryClient.invalidateQueries({ queryKey: ["chats"] });
   }, [messages]);
 
@@ -87,14 +86,14 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
           chatId: id,
           text,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (!res.data.success) {
         setMessages((prev) => prev.filter((msg) => msg?.tempId !== tempId));
         return;
       }
       setMessages((prev) =>
-        prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg))
+        prev.map((msg) => (msg?.tempId === tempId ? res.data.data : msg)),
       );
     }
   };

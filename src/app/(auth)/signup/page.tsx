@@ -49,210 +49,207 @@ export default function SignUpPage() {
     } catch (error: any) {
       setLoading(false);
       setError(
-        error.response?.data?.error || "An error occurred during registration"
+        error.response?.data?.error || "An error occurred during registration",
       );
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-primary/10 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        {/* Left Side - Branding */}
-        <div className="hidden lg:flex flex-col justify-center items-center p-12">
-          <div className="w-full max-w-md">
-            <img
-              src="/signin.jpg"
-              alt="Sign up illustration"
-              className="w-full h-auto rounded-2xl shadow-2xl"
-            />
-            <div className="mt-8 text-center">
-              <h1 className="text-4xl font-bold text-gray-900 mb-3">
-                Join Us Today!
-              </h1>
-              <p className="text-lg text-gray-600">
-                Create an account and start your journey
-              </p>
+      <div className="w-full max-w-md">
+        <div className="text-center mb-10">
+          <Link href="/" className="inline-flex items-center gap-2 mb-8">
+            <div className="size-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/30">
+              T
             </div>
-          </div>
+            <span className="text-2xl font-bold text-gray-900 tracking-tight">
+              Tager
+            </span>
+          </Link>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+            Join Us Today
+          </h1>
+          <p className="text-gray-500">
+            Create an account and start your journey
+          </p>
         </div>
 
-        {/* Right Side - Signin Form */}
-        <div className="w-full max-w-md mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-10">
-            {/* Mobile Header */}
-            <div className="lg:hidden text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Get Started
-              </h2>
-              <p className="text-gray-600">Create your account</p>
+        <div className="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 p-8 md:p-10 backdrop-blur-xl">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50/50 border border-red-100 rounded-xl flex items-start gap-3">
+              <FiAlertCircle
+                className="text-red-600 mt-0.5 flex-shrink-0"
+                size={20}
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">
+                  Registration Failed
+                </p>
+                <p className="text-sm text-red-600/90 mt-1">{error}</p>
+              </div>
             </div>
+          )}
 
-            {/* Desktop Header */}
-            <div className="hidden lg:block mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Sign Up</h2>
-              <p className="text-gray-600">
-                Create your account to get started
-              </p>
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-                <FiAlertCircle
-                  className="text-red-600 mt-0.5 flex-shrink-0"
-                  size={20}
-                />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-red-800">
-                    Registration Failed
-                  </p>
-                  <p className="text-sm text-red-700 mt-1">{error}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Success Message */}
-            {success && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
-                <FiCheckCircle
-                  className="text-green-600 mt-0.5 flex-shrink-0"
-                  size={20}
-                />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-green-800">
-                    Account Created!
-                  </p>
-                  <p className="text-sm text-green-700 mt-1">
-                    Redirecting to your profile...
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Sign Up Form */}
-            <form onSubmit={handleSignUp} className="space-y-5">
-              {/* Name Field */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Full Name
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiUser className="text-gray-400" size={20} />
-                  </div>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    required
-                    disabled={loading}
-                    placeholder="John Doe"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors disabled:bg-gray-50 disabled:text-gray-500"
-                  />
-                </div>
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Email Address
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiMail className="text-gray-400" size={20} />
-                  </div>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    required
-                    disabled={loading}
-                    placeholder="you@example.com"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors disabled:bg-gray-50 disabled:text-gray-500"
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="text-gray-400" size={20} />
-                  </div>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    required
-                    minLength={8}
-                    disabled={loading}
-                    placeholder="Create a strong password"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors disabled:bg-gray-50 disabled:text-gray-500"
-                  />
-                </div>
-                <p className="mt-1.5 text-xs text-gray-500">
-                  Must be at least 8 characters long
+          {/* Success Message */}
+          {success && (
+            <div className="mb-6 p-4 bg-green-50/50 border border-green-100 rounded-xl flex items-start gap-3">
+              <FiCheckCircle
+                className="text-green-600 mt-0.5 flex-shrink-0"
+                size={20}
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-green-800">
+                  Account Created!
+                </p>
+                <p className="text-sm text-green-600/90 mt-1">
+                  Redirecting to your profile...
                 </p>
               </div>
+            </div>
+          )}
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading || success}
-                className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+          {/* Sign Up Form */}
+          <form onSubmit={handleSignUp} className="space-y-6">
+            {/* Name Field */}
+            <div className="space-y-2">
+              <label
+                htmlFor="name"
+                className="text-sm font-semibold text-gray-700"
               >
-                {loading
-                  ? "Creating Account..."
-                  : success
-                  ? "Success!"
-                  : "Create Account"}
-              </button>
-
-              {/* Sign In Link */}
-              <p className="text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link
-                  href="/signin"
-                  className="text-primary hover:text-primary-dark font-medium hover:underline"
-                >
-                  Sign in
-                </Link>
-              </p>
-
-              {/* Divider */}
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
+                Full Name
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400">
+                  <FiUser size={20} />
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-gray-500">
-                    Or continue with
-                  </span>
-                </div>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  disabled={loading}
+                  placeholder="John Doe"
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70"
+                />
               </div>
+            </div>
 
-              {/* Google Auth */}
-              <GoogleAuthButton />
-            </form>
-          </div>
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label
+                htmlFor="email"
+                className="text-sm font-semibold text-gray-700"
+              >
+                Email Address
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400">
+                  <FiMail size={20} />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  disabled={loading}
+                  placeholder="you@example.com"
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70"
+                />
+              </div>
+            </div>
 
-          {/* Footer Note */}
-          <p className="mt-6 text-center text-xs text-gray-500">
-            By creating an account, you agree to our Terms of Service and
-            Privacy Policy
-          </p>
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="text-sm font-semibold text-gray-700"
+              >
+                Password
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400">
+                  <FiLock size={20} />
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  required
+                  minLength={8}
+                  disabled={loading}
+                  placeholder="Create a strong password"
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70"
+                />
+              </div>
+              <p className="mt-1.5 text-xs text-gray-500 ml-1">
+                Must be at least 8 characters long
+              </p>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading || success}
+              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 px-4 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-primary/25 hover:shadow-primary/40 active:scale-[0.98]"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Creating Account...
+                </span>
+              ) : success ? (
+                <span className="flex items-center justify-center gap-2">
+                  <FiCheckCircle className="size-5" />
+                  Success!
+                </span>
+              ) : (
+                "Create Account"
+              )}
+            </button>
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-100"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white text-gray-500 font-medium">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            {/* Google Auth */}
+            <GoogleAuthButton />
+          </form>
+        </div>
+
+        {/* Sign In Link */}
+        <p className="mt-8 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            href="/signin"
+            className="text-primary hover:text-primary-dark font-semibold hover:underline decoration-2 underline-offset-2 transition-all"
+          >
+            Sign in
+          </Link>
+        </p>
+
+        {/* Footer Note */}
+        <div className="mt-8 flex justify-center gap-6 text-xs text-gray-400">
+          <Link href="/terms" className="hover:text-gray-600 transition-colors">
+            Terms
+          </Link>
+          <Link
+            href="/privacy"
+            className="hover:text-gray-600 transition-colors"
+          >
+            Privacy
+          </Link>
+          <Link href="/help" className="hover:text-gray-600 transition-colors">
+            Help
+          </Link>
         </div>
       </div>
     </div>
