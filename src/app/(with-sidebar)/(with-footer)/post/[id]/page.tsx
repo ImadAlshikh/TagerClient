@@ -13,10 +13,13 @@ import RelatedPosts from "@/components/RelatedPosts";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:3001/posts/${id}`, {
-    next: { revalidate: 120, tags: [`post-${id}`] },
-    credentials: "include",
-  }).then((res) => res.json());
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`,
+    {
+      next: { revalidate: 120, tags: [`post-${id}`] },
+      credentials: "include",
+    },
+  ).then((res) => res.json());
   if (!res?.success) return notFound();
   const post: PostType = res.data;
 
@@ -77,7 +80,7 @@ export default async function page({ params }: { params: { id: string } }) {
                   </div>
                   <div className="price text-primary font-semibold">
                     {formatMoney(
-                      calcDiscountedCents(post.price, post.discount!)
+                      calcDiscountedCents(post.price, post.discount!),
                     )}
                   </div>
                 </>
@@ -97,7 +100,7 @@ export default async function page({ params }: { params: { id: string } }) {
             <span className="font-semibold">Tags</span>
             <div className="flex gap-1 px-2 flex-wrap">
               {post.tags?.map((word: string, index: number) =>
-                word.length ? <TagNode key={index} category={word} /> : null
+                word.length ? <TagNode key={index} category={word} /> : null,
               )}
             </div>
           </div>

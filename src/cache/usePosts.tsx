@@ -19,11 +19,11 @@ export function usePosts({
     queryKey: ["posts", { limit, searchQuery, orderBy, orderDir, category }],
     queryFn: async ({ pageParam }) => {
       const res = await axios.get(
-        `http://localhost:3001/posts?limit=${limit}&cursor=${
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts?limit=${limit}&cursor=${
           pageParam ?? ""
         }&searchQuery=${searchQuery ?? ""}&orderBy=${orderBy ?? ""}&orderDir=${
           orderDir ?? ""
-        }&category=${category ?? ""}`
+        }&category=${category ?? ""}`,
       );
       return res.data.data;
     },

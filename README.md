@@ -190,7 +190,7 @@ npm run lint         # Run ESLint
 - `/new-post` - Create new post
 - `/profile` - User profile
 - `/profile/posts` - User's posts
-- `/credits` - Load credits
+- `/pricing` - Load credits
 - `/chats` - Chat list
 - `/chats/[id]` - Individual chat
 

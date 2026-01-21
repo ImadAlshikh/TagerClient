@@ -16,7 +16,7 @@ export default function page() {
       (async () => {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3001/posts/by-user/${user.id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/by-user/${user.id}`,
         );
         setLoading(false);
         if (!res.data.success) {

@@ -80,7 +80,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
       ]);
       messageInputRef.current.value = "";
       const res = await axios.post(
-        "http://localhost:3001/chats/send",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chats/send`,
         {
           postId: postId,
           chatId: id,

@@ -48,9 +48,12 @@ export default function EditPostPage({
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/posts/${id}`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`,
+          {
+            withCredentials: true,
+          },
+        );
         const post = res.data.data;
         if (post) {
           if (post.ownerId !== user.id) router.replace(`post/${post.id}`);
@@ -147,12 +150,16 @@ export default function EditPostPage({
 
     setLoading(true);
     try {
-      const res = await axios.put("http://localhost:3001/posts/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
         },
-        withCredentials: true,
-      });
+      );
 
       if (!res.data.success) {
         setLoading(false);
@@ -164,7 +171,7 @@ export default function EditPostPage({
     } catch (e: any) {
       setLoading(false);
       setError(
-        e.response?.data?.error || "An error occurred while updating the post"
+        e.response?.data?.error || "An error occurred while updating the post",
       );
     }
   };
@@ -338,7 +345,7 @@ export default function EditPostPage({
                   value={price}
                   onChange={(e) =>
                     setPrice(
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Number(e.target.value),
                     )
                   }
                   min={0}
@@ -370,7 +377,7 @@ export default function EditPostPage({
                   value={discount}
                   onChange={(e) =>
                     setDiscount(
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Number(e.target.value),
                     )
                   }
                   min={0}

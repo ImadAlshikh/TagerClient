@@ -15,9 +15,9 @@ export default function ContactButton({
   if (!user) return;
   const contact = async () => {
     const res = await axios.post(
-      "http://localhost:3001/chats",
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/chats`,
       { postId: id },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     if (res.data.success) {
       router.push(`/chats/${res.data.data}?postId=${id}`);

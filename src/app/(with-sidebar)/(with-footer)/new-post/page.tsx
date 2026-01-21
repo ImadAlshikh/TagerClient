@@ -109,12 +109,16 @@ export default function NewPostPage() {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:3001/posts/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
         },
-        withCredentials: true,
-      });
+      );
 
       if (!res.data.success) {
         setLoading(false);
@@ -125,7 +129,7 @@ export default function NewPostPage() {
     } catch (e: any) {
       setLoading(false);
       setError(
-        e.response?.data?.error || "An error occurred while creating the post"
+        e.response?.data?.error || "An error occurred while creating the post",
       );
     }
   };
@@ -303,7 +307,7 @@ export default function NewPostPage() {
                   value={price}
                   onChange={(e) =>
                     setPrice(
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Number(e.target.value),
                     )
                   }
                   min={0}
@@ -335,7 +339,7 @@ export default function NewPostPage() {
                   value={discount}
                   onChange={(e) =>
                     setDiscount(
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Number(e.target.value),
                     )
                   }
                   min={0}

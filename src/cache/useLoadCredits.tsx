@@ -11,9 +11,9 @@ export const useLoadCredits = () => {
   return useMutation({
     mutationFn: async ({ credits }: LoadCreditsParams) => {
       const res = await axios.post(
-        "http://localhost:3001/credits/load",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/credits/load`,
         { credits },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       return res.data;
     },

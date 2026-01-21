@@ -35,12 +35,12 @@ export default function ProfilePage() {
       setSaveButtonDisabled(true);
       const formData = new FormData(e.currentTarget);
       const res = await axios.put(
-        "http://localhost:3001/users/profile",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`,
         formData,
         {
           withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
       if (!res.data.success) {
         setError(res.data.message);
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                       </div>
 
                       <Link
-                        href="/credits"
+                        href="/pricing"
                         className="mt-4 w-full block text-center bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
                       >
                         Load Credits

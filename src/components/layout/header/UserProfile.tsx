@@ -70,10 +70,10 @@ export default function UserProfile() {
             onClick={async () => {
               setShowMenu(false);
               const res = await axios.delete(
-                "http://localhost:3001/users/logout",
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/logout`,
                 {
                   withCredentials: true,
-                }
+                },
               );
               if (res.data.success) {
                 queryClient.setQueryData(["user"], null);
