@@ -56,7 +56,7 @@ export default function PostsContainer({
           ))}
         </>
       ) : (
-        <div className="w-full h-full grid place-content-center text-primary text-2xl font-medium">
+        <div className="w-full h-full grid place-content-center text-gray-500">
           No post found
         </div>
       )}

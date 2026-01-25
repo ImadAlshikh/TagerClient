@@ -70,7 +70,7 @@ export default function CreditsPage() {
                   <div className="h-10 bg-gray-200 rounded w-full mt-auto" />
                 </div>
               ))
-            : packages?.map((pkg) => (
+            : packages?.map((pkg: PackageType) => (
                 <div
                   key={pkg.id}
                   className={`relative flex flex-col p-6 bg-white rounded-xl border transition-all duration-200 hover:shadow-lg ${
@@ -92,9 +92,11 @@ export default function CreditsPage() {
                       </h3>
                       <div className="mt-2 flex items-baseline gap-1">
                         <span className="text-3xl font-bold text-gray-900">
-                          ${pkg.price}
+                          ${pkg.price.unit_amount / 100}
                         </span>
-                        <span className="text-sm text-gray-500">USD</span>
+                        <span className="text-sm text-gray-500">
+                          {pkg.price.currency.toUpperCase()}
+                        </span>
                       </div>
                       <div className="text-sm font-medium text-primary mt-1">
                         {pkg.credits} Credits

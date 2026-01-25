@@ -7,8 +7,6 @@ import UsePathChange from "@/hooks/usePathChange";
 import { SocketProvider } from "@/providers/SocketProvider";
 import { UseNotificationSocket } from "@/hooks/useNotificationSocket";
 import NotificationProvider from "@/providers/NotificationProvider";
-import Footer from "@/components/layout/footer/Footer";
-
 export const metadata: Metadata = {
   title: "Tager",
   description: "Tager - Your Ultimate Marketplace for Buying and Selling",
@@ -37,7 +35,6 @@ export default function RootLayout({
             <NotificationProvider />
             <Header />
             <main className={`mt-14 h-full`}>{children}</main>
-          
           </QueryProvider>
         </SocketProvider>
       </body>

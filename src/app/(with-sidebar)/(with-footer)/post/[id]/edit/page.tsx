@@ -11,8 +11,8 @@ import { useRouter } from "next/navigation";
 import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 import { ImSpinner2 } from "react-icons/im";
 import { queryClient } from "@/providers/QueryProvider";
-
 import { POST_CATEGORIES } from "@/constants/categories";
+import { revalidatePost } from "@/app/actions/revalidatePost";
 
 export default function EditPostPage({
   params,
@@ -66,6 +66,7 @@ export default function EditPostPage({
           if (post.picture?.secureUrl) {
             setImagePreview(post.picture.secureUrl);
           }
+          revalidatePost(post.id);
         }
       } catch (e) {
         setError("Failed to load post data");
@@ -107,6 +108,27 @@ export default function EditPostPage({
     if (!file) return;
     const preview = URL.createObjectURL(file);
     setImagePreview(preview);
+  };
+
+  const handleDeleteImage = async () => {
+    if (!imagePreview) return;
+
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}/image`,
+        { withCredentials: true },
+      );
+
+      if (res.data.success) {
+        setImagePreview(null);
+        // Clear file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
+    } catch (error: any) {
+      setError(error.response?.data?.error || "Failed to delete image");
+    }
   };
 
   const submitPost = async (e: React.FormEvent) => {
@@ -166,7 +188,9 @@ export default function EditPostPage({
         setError(res.data.error || "Invalid data");
         return;
       }
-      queryClient.invalidateQueries({ queryKey: ["posts", id] });
+
+      // Invalidate React Query cache for client-side data
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.push(`/post/${id}`);
     } catch (e: any) {
       setLoading(false);
@@ -247,6 +271,17 @@ export default function EditPostPage({
                         className="bg-white/90 text-sm font-semibold px-4 py-2 rounded-full hover:bg-white transition-colors"
                       >
                         Change Photo
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteImage();
+                        }}
+                        className="bg-red-500/90 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-red-500 transition-colors flex items-center gap-2"
+                      >
+                        <FiTrash2 size={16} />
+                        Remove
                       </button>
                     </div>
                   </>

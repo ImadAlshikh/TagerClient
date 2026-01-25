@@ -11,11 +11,14 @@ import { useRouter } from "next/navigation";
 import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
 
 import { POST_CATEGORIES } from "@/constants/categories";
+import { usePrices } from "@/cache/usePrices";
 
 export default function NewPostPage() {
   const { data: user } = useUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { data: prices } = usePrices();
+  const cost = prices?.find((price) => price.key === "POST_CREATE")?.credits;
 
   // State
   const [loading, setLoading] = useState<boolean>(false);
@@ -435,7 +438,7 @@ export default function NewPostPage() {
               {/* Actions */}
               <div className="flex items-center gap-4 w-full md:w-auto justify-end">
                 <div className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-600 bg-white px-3 py-1.5 rounded-full border border-gray-200">
-                  <span>Post Cost: 5</span>
+                  <span>Post Cost: {cost}</span>
                   <img
                     src="/coin.png"
                     className="size-4"

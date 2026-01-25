@@ -12,7 +12,7 @@ import RelatedPosts from "@/components/RelatedPosts";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
-
+  if (!id) return;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`,
     {
@@ -29,7 +29,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <div className="relative bg-white hover:scale-102 transition-all duration-250 md:size-60 aspect-square">
           <img
             src={post.picture?.secureUrl ?? "/postPlaceholder.svg"}
-            className="rounded-md bg-white aspect-square bg-border "
+            className="rounded-md bg-white aspect-square"
           />
           {post.discount ? (
             <div className="absolute top-0 right-0 text-center bg-accent-green px-2  rounded-md text-sm text-white">

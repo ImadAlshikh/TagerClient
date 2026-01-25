@@ -101,7 +101,7 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <ProtectedRoute>
       <div className="flex flex-col h-full">
-        <div className="head border-b py-6 mb-2 px-2 bg-white sticky top-[3.5rem] z-10 border-border w-full h-10 flex items-center gap-1 shadow-sm">
+        <div className="head border-b py-6 mb-2 px-2 bg-white sticky top-14 z-10 border-border w-full h-10 flex items-center gap-1 shadow-sm">
           <button
             onClick={() => router.push("/chats")}
             className="p-1 hover:bg-gray-100 rounded-full transition-colors"

@@ -57,7 +57,7 @@ export default function page() {
           </div>
         ) : (
           <div className='text-primary w-full h-[calc(100vh-140px)] grid place-content-center'>
-            <div className='font-bold text-2xl text-primary'>No Chat Found</div>
+            <div className='font- text-gray-500'>No Chat Found</div>
             <Link
               href={"/"}
               className='bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto'

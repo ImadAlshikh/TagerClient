@@ -4,12 +4,13 @@ import axios from "axios";
 export type PackageType = {
   id: string;
   name: string;
-  description: string | null;
-  stripePriceId: string | null;
-  price: number;
-  discount: number | null;
   credits: number;
-  popular: boolean;
+  popular?: boolean;
+  description?: string;
+  price: {
+    unit_amount: number;
+    currency: string;
+  };
 };
 
 export function usePackages() {
