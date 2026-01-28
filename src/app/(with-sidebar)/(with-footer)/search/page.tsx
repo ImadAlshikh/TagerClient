@@ -68,7 +68,7 @@ function Page() {
                 ))}
               </select>
             </div>
-            <div className="hidden sm:block h-6 w-[1px] bg-gray-300"></div>
+            <div className="hidden sm:block h-6 w-px bg-gray-300"></div>
             <div className="flex items-center gap-2 flex-1 sm:flex-none">
               <span className="text-gray-600 text-sm whitespace-nowrap">
                 Order by:

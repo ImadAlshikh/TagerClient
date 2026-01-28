@@ -8,7 +8,7 @@ export default function SearchBar() {
     if (e.key === "Enter") {
       const value = e.currentTarget.value.trim();
       if (!value.length) {
-        return router.push("/");
+        return;
       }
       router.push(`/search?q=${value}`);
     }

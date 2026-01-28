@@ -13,6 +13,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { queryClient } from "@/providers/QueryProvider";
 import { POST_CATEGORIES } from "@/constants/categories";
 import { revalidatePost } from "@/app/actions/revalidatePost";
+import { usePrices } from "@/cache/usePrices";
 
 export default function EditPostPage({
   params,
@@ -23,6 +24,11 @@ export default function EditPostPage({
   const { data: user } = useUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { data: prices } = usePrices();
+
+  const promoteCost = prices?.find(
+    (price) => price.key === "POST_PROMOTE",
+  )?.credits;
 
   // State
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,6 +46,7 @@ export default function EditPostPage({
   const [price, setPrice] = useState<number | "">("");
   const [discount, setDiscount] = useState<number | "">("");
   const [tags, setTags] = useState("");
+  const [promoted, setPromoted] = useState(false);
 
   // Derived State
   const [priceCents, setPriceCents] = useState(0);
@@ -63,6 +70,7 @@ export default function EditPostPage({
           setPrice(post.price / 100);
           setDiscount(post.discount || "");
           setTags(post.tags.join(" "));
+          setPromoted(post.promoted || false);
           if (post.picture?.secureUrl) {
             setImagePreview(post.picture.secureUrl);
           }
@@ -149,6 +157,7 @@ export default function EditPostPage({
     formData.append("price", priceCents.toString());
     formData.append("discount", (discount || 0).toString());
     formData.append("tags", tags);
+    formData.append("promoted", promoted.toString());
 
     // Validation
     const parsedData = postSchema.safeParse({
@@ -183,8 +192,8 @@ export default function EditPostPage({
         },
       );
 
-      if (!res.data.success) {
-        setLoading(false);
+      if (!res.data.success) {//1b0fb8b87051.ngrok-free.app
+      https: setLoading(false);
         setError(res.data.error || "Invalid data");
         return;
       }
@@ -475,6 +484,27 @@ export default function EditPostPage({
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
+
+              {/* Promoted */}
+              <div className="col-span-2">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    id="promoted"
+                    checked={promoted}
+                    onChange={(e) => setPromoted(e.target.checked)}
+                    className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2 transition-all cursor-pointer"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-gray-700 group-hover:text-primary transition-colors">
+                      Promote this post
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      Promoted posts appear at the top of search results for 24h
+                    </span>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -507,6 +537,18 @@ export default function EditPostPage({
 
               {/* Actions */}
               <div className="flex items-center gap-4 w-full md:w-auto justify-end">
+                {promoted && (
+                  <div className="hidden md:flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/30">
+                    <span>Promote Cost: {promoteCost}</span>
+                    <img
+                      src="/coin.png"
+                      className="size-4"
+                      draggable="false"
+                      alt="coin"
+                    />
+                  </div>
+                )}
+
                 <Link
                   href={`/post/${id}`}
                   className="px-6 py-2.5 rounded-full text-gray-600 font-medium hover:bg-gray-200 transition-colors"

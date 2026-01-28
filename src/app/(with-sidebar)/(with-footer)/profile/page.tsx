@@ -22,7 +22,6 @@ export default function ProfilePage() {
 
   useLayoutEffect(() => {
     setImagePreview(user?.picture ?? "/userPlaceholder.png");
-    console.log("user:", user);
   }, [user]);
 
   useLayoutEffect(() => {
@@ -377,7 +376,7 @@ export default function ProfilePage() {
                   <table className="w-full text-sm text-left">
                     <thead className="bg-gray-50 text-gray-600 font-medium">
                       <tr>
-                        <th className="px-4 py-3 rounded-l-lg">Date</th>
+                        <th className="px-4 py-3 rounded-l-lg">Date, Time</th>
                         <th className="px-4 py-3">Reason</th>
                         <th className="px-4 py-3">Amount</th>
                         <th className="px-4 py-3 rounded-r-lg">Source</th>
@@ -387,7 +386,7 @@ export default function ProfilePage() {
                       {paymentHistory.map((log) => (
                         <tr key={log.id} className="hover:bg-gray-50">
                           <td className="px-4 py-3">
-                            {new Date(log.created_at).toLocaleDateString()}
+                            {new Date(log.created_at).toLocaleString()}
                           </td>
                           <td className="px-4 py-3 font-medium text-gray-900">
                             {log.reason.replace(/_/g, " ")}

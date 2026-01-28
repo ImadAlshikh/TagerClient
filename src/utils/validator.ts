@@ -36,6 +36,7 @@ export const postSchema = z.object({
   categoryName: z.string().nonempty(),
   saleType: z.enum(saleType).optional(),
   tags: z.any().optional(),
+  promoted: z.boolean().optional(),
   stock: z.number().optional(),
   status: z.enum(postStatus).optional(),
   country: z.string().optional(),
