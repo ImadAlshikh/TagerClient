@@ -37,7 +37,6 @@ export default function SignInPage() {
       }
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      router.push("/");
     } catch (error: any) {
       setLoading(false);
       setError(

@@ -3,6 +3,13 @@
     "add-post": "Add Post",
     "contact": "Contact",
     "edit": "Edit",
-    "report": "Report"
+    "report": "Report",
+    "reportDialog": {
+      "description": "Please describe the issue you're reporting",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe the issue...",
+      "messageRequired": "Message text is required",
+      "cancel": "Cancel"
+    }
   }
 }

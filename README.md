@@ -8,13 +8,14 @@ A modern, responsive marketplace frontend built with Next.js 16, featuring real-
 - **Language**: TypeScript
 - **UI Library**: React 19
 - **Styling**: Tailwind CSS v4
+- **Internationalization**: next-intl (Arabic/English)
 - **State Management**:
   - Zustand (global state)
   - TanStack Query (server state)
 - **Real-time**: Socket.IO Client
 - **HTTP Client**: Axios
 - **Form Validation**: Zod
-- **Icons**: Lucide React, React Icons
+- **Icons**: React Icons
 - **Animations**: Motion (Framer Motion)
 
 ## 📋 Prerequisites
@@ -160,6 +161,15 @@ src/
 - Filter by category
 - Sort by: newest, price (low-high, high-low)
 - Infinite scroll pagination
+
+### Internationalization
+
+- **Languages**: Arabic and English
+- **First Launch Dialog**: Automatic language selection on first visit
+- **localStorage Tracking**: Remembers language preference
+- **RTL Support**: Full right-to-left layout for Arabic
+- **Locale Routing**: Separate routes for each language (`/en/*`, `/ar/*`)
+- **Translation Files**: JSON-based message files for all UI text
 
 ## 🔧 Available Scripts
 

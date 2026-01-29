@@ -1,0 +1,11 @@
+{
+  "settings": {
+    "page-title": "الإعدادات",
+    "language": "اللغة",
+    "language-description": "اختر لغتك المفضلة",
+    "notifications": "الإشعارات",
+    "notifications-description": "تفعيل أو تعطيل الإشعارات",
+    "english": "English",
+    "arabic": "العربية"
+  }
+}

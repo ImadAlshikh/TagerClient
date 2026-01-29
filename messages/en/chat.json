@@ -3,6 +3,10 @@
     "chats": "Chats",
     "no-chats": "No chats available",
     "type-message": "Type a message...",
-    "send": "Send"
+    "send": "Send",
+    "loading": "Loading",
+    "no-chat-found": "No Chat Found",
+    "home-page": "Home page",
+    "no-messages-yet": "No messages yet"
   }
 }

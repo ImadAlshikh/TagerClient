@@ -20,10 +20,10 @@ export default function PostCard({
       href={`/post/${post.id}`}
       className={`flex gap-4 w-full max-h-50 ${post?.promoted ? "bg-linear-to-r from-[rgba(37,99,235,0.08)] to-white" : "bg-white"} border border-border rounded-md p-2 hover:scale-101 transition-all group duration-250`}
     >
-      <div className="relative min-w-36! size-36!">
+      <div className="relative size-36!">
         <img
           src={post?.picture?.secureUrl ?? "/postPlaceholder.svg"}
-          className="img max-h-full! bg-white rounded-md overflow-hidden  size-36 object-cover"
+          className="img bg-white rounded-md overflow-hidden size-36 object-cover"
         />
         {post.discount ? (
           <div className="absolute top-0  right-0 text-center bg-accent-green  px-2 rounded-md text-sm text-white">

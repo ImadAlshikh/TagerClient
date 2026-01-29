@@ -3,6 +3,13 @@
     "add-post": "إضافة منشور",
     "contact": "تواصل",
     "edit": "تعديل",
-    "report": "إبلاغ"
+    "report": "إبلاغ",
+    "reportDialog": {
+      "description": "يرجى وصف المشكلة التي تبلغ عنها",
+      "messageLabel": "الرسالة",
+      "messagePlaceholder": "صف المشكلة...",
+      "messageRequired": "نص الرسالة مطلوب",
+      "cancel": "إلغاء"
+    }
   }
 }

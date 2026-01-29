@@ -1,3 +1,11 @@
 {
-  "common": { "title": "Tager" }
+  "common": {
+    "title": "Tager",
+    "languageSelect": {
+      "title": "Choose Your Language",
+      "description": "Select your preferred language to continue",
+      "english": "English",
+      "arabic": "Arabic"
+    }
+  }
 }

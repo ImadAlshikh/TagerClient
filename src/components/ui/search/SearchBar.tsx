@@ -20,7 +20,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
         name="search"
         id="search"
         placeholder={`${placeholder}...`}
-        className="block w-[120px] md:w-auto px-2 py-1 rounded-full focus:outline-0 bg-transparent text-sm"
+        className="block w-[120px] md:w-auto px-3 py-1 rounded-full focus:outline-0 bg-transparent font-bold"
         onKeyDown={handleSearch}
       />
       <IoSearch

@@ -1,6 +1,12 @@
 "use client";
 import Link from "next/link";
-import { FaArrowLeft, FaEdit, FaCoins, FaGift } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaEdit,
+  FaCoins,
+  FaGift,
+} from "react-icons/fa";
 import { useLayoutEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -99,7 +105,14 @@ export default function ProfilePage() {
               href={"/"}
               className="hover:bg-gray-100 p-2 rounded-full transition-colors"
             >
-              <FaArrowLeft size={18} />
+              <FaArrowLeft
+                size={20}
+                className="hidden ltr:block text-gray-600"
+              />
+              <FaArrowRight
+                size={20}
+                className="hidden rtl:block text-gray-600"
+              />
             </Link>
             <h1 className="font-bold text-text text-2xl">{t("page-title")}</h1>
           </div>

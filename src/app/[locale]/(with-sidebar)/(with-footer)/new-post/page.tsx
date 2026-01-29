@@ -1,7 +1,7 @@
 "use client";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import React, { useRef, useState, useEffect } from "react";
 import { postSchema } from "@/utils/validator";
 import axios from "axios";
@@ -160,7 +160,7 @@ export default function NewPostPage() {
             href={"/"}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <FaArrowLeft size={20} className="text-gray-600" />
+            <FaArrowLeft size={20} className="hidden ltr:block text-gray-600" />
           </Link>
           <h1 className="font-bold text-gray-900 text-2xl">
             {t("page-title")}

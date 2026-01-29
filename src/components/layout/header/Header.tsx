@@ -5,8 +5,9 @@ import { CiMenuBurger } from "react-icons/ci";
 import Link from "next/link";
 import { useUser } from "@/cache/useUser";
 import { useSidebarStore } from "@/stores/useSidebarStore";
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { use, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatNumber } from "@/utils/formatNumber";
 
 export default function Header() {
   const showSidebar = useSidebarStore((s) => s.showSidebar);
@@ -14,16 +15,13 @@ export default function Header() {
   const toggleShowSidebar = useSidebarStore((s) => s.toggleShowSidebar);
   const { data: user, isLoading } = useUser();
   const t = useTranslations("header");
+  const locale = useLocale();
 
   return (
     <header className="select-none fixed z-501 h-14 w-full bg-white overflow-x-clip  border-b p-2 text-text border-border">
       <div className="header-container container mx-auto flex justify-between items-center ">
         <Link href={"/"} className="text-primary font-bold text-2xl flex">
-          <img
-            src="/logo/primary-logo.png"
-            alt=""
-            className="hidden ltr:block size-8"
-          />
+          <img src="/logo/primary-logo.png" alt="" className="size-8" />
           <span className="text-inherit -translate-x-2.5 translate-y-0.5 hidden md:inline">
             {t("title")}
           </span>
@@ -39,10 +37,15 @@ export default function Header() {
             <>
               {user?.id?.length ? (
                 <>
-                  <div className="flex items-center px-2 rounded-full bg-gray-50 gap-0.5">
+                  <div
+                    className={`flex ${locale == "ar" && "flex-row-reverse"} items-center px-2 rounded-full bg-gray-50 gap-0.5`}
+                  >
                     <img src="/coin.png" className="size-5 rounded-full" />
                     <span>
-                      {user.wallet?.freePoints + user.wallet?.paidPoints}
+                      {formatNumber(
+                        user.wallet?.freePoints + user.wallet?.paidPoints,
+                        locale,
+                      )}
                     </span>
                   </div>
                   <UserProfile />
@@ -56,11 +59,11 @@ export default function Header() {
                   >
                     {t("signin")}
                   </Link>
-                  <span className="text-3xl">/</span>
+                  <span className="hidden md:block text-3xl">/</span>
                   <Link
                     href={"/signup"}
                     type="button"
-                    className="min-w-fit bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
+                    className="hidden md:block min-w-fit bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
                   >
                     {t("signup")}
                   </Link>

@@ -1,5 +1,11 @@
 {
   "common": {
-    "title": "تاجر"
+    "title": "تاجر",
+    "languageSelect": {
+      "title": "اختر لغتك",
+      "description": "حدد لغتك المفضلة للمتابعة",
+      "english": "الإنجليزية",
+      "arabic": "العربية"
+    }
   }
 }

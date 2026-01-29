@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useChats } from "@/cache/useChats";
 import { useUser } from "@/cache/useUser";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
@@ -20,13 +21,14 @@ interface PostCardType {
 }
 
 export default function page() {
+  const t = useTranslations("chat");
   const { data: user, isLoading: userLoading } = useUser();
   const { data: chats, isLoading } = useChats();
 
   return (
     <ProtectedRoute>
-      <div className='flex flex-col gap-2 p-4 max-w-full'>
-        <span className='font-bold text-text text-2xl'>Chats</span>
+      <div className="flex flex-col gap-2 p-4 max-w-full">
+        <span className="font-bold text-text text-2xl">{t("chats")}</span>
         {chats?.length ? (
           chats?.map((chat: any) => (
             <ChatCard
@@ -51,18 +53,18 @@ export default function page() {
             />
           ))
         ) : isLoading ? (
-          <div className='text-primary w-full overflow-hidden h-[calc(100vh-56px)] font-bold text-2xl grid place-content-center place-items-center gap-8 animate-pulse'>
-            <img src='/logo/textColor-logo.png' alt='' className='size-32 ' />
-            <div>Loading</div>
+          <div className="text-primary w-full overflow-hidden h-[calc(100vh-56px)] font-bold text-2xl grid place-content-center place-items-center gap-8 animate-pulse">
+            <img src="/logo/textColor-logo.png" alt="" className="size-32 " />
+            <div>{t("loading")}</div>
           </div>
         ) : (
-          <div className='text-primary w-full h-[calc(100vh-140px)] grid place-content-center'>
-            <div className='font- text-gray-500'>No Chat Found</div>
+          <div className="text-primary w-full h-[calc(100vh-140px)] grid place-content-center">
+            <div className="font- text-gray-500">{t("no-chat-found")}</div>
             <Link
               href={"/"}
-              className='bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto'
+              className="bg-primary hover:bg-primary-dark text-white rounded-full px-4 py-1  mx-auto"
             >
-              Home page
+              {t("home-page")}
             </Link>
           </div>
         )}

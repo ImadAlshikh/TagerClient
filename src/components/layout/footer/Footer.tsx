@@ -57,10 +57,13 @@ export default function Footer() {
               <img
                 src="/logo/primary-logo.png"
                 alt="Tager Logo"
-                className="size-8"
+                className="hidden ltr:block size-8"
               />
-              <span className="text-inherit -translate-x-2.5 translate-y-0.5">
+              <span className="hidden ltr:block text-inherit -translate-x-2.5 translate-y-0.5">
                 ager
+              </span>
+              <span className="hidden rtl:block text-inherit -translate-x-2.5 translate-y-0.5">
+                تاجر
               </span>
             </Link>
             <p className="text-text/70 text-sm mb-4 max-w-sm">{t("tagline")}</p>

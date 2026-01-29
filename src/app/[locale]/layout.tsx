@@ -7,6 +7,7 @@ import { SocketProvider } from "@/providers/SocketProvider";
 import { UseNotificationSocket } from "@/hooks/useNotificationSocket";
 import NotificationProvider from "@/providers/NotificationProvider";
 import { NextIntlClientProvider } from "next-intl";
+import LanguageSelectDialog from "@/components/LanguageSelectDialog";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
   return (
@@ -33,6 +34,7 @@ export default async function RootLayout({
         className={`w-full min-h-full flex flex-col overflow-x-hidden! max-w-full relative bg-bg ${interFont.className}`}
       >
         <NextIntlClientProvider>
+          <LanguageSelectDialog />
           <UsePathChange />
           <SocketProvider>
             <QueryProvider>

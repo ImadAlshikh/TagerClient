@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import axios from "axios";
 import { use, useRef, useEffect, useState, useLayoutEffect } from "react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
@@ -6,13 +7,14 @@ import { IoMdSend } from "react-icons/io";
 import { queryClient } from "@/providers/QueryProvider";
 import MessageNode from "@/components/ui/nodes/MessageNode";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
-import { BiSolidLeftArrow } from "react-icons/bi";
+import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
 import { useChat } from "@/cache/useChat";
 import { useUser } from "@/cache/useUser";
 import { useChatSocket } from "@/hooks/useChatSocket";
 
 export default function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const t = useTranslations("chat");
   const { data: user } = useUser();
   const { data, isLoading, refetch } = useChat(id);
 
@@ -106,7 +108,8 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
             onClick={() => router.push("/chats")}
             className="p-1 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <BiSolidLeftArrow size={18} />
+            <BiSolidLeftArrow size={18} className="hidden ltr:block" />
+            <BiSolidRightArrow size={18} className="hidden rtl:block" />
           </button>
           {userData.name ? (
             <div className="flex items-center gap-2">
@@ -140,26 +143,26 @@ export default function page({ params }: { params: Promise<{ id: string }> }) {
             </>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-500">
-              No messages yet
+              {t("no-messages-yet")}
             </div>
           )}
           <div ref={bottomRef}></div>
         </div>
 
-        <div className="foot sticky bottom-0 bg-white w-full border-t border-border p-3 flex items-center gap-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div className="footer sticky bottom-0 bg-white w-full border-t border-border p-3 flex items-center gap-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
           <div className="relative flex-1">
             <input
               type="text"
               ref={messageInputRef}
-              placeholder="Type a message..."
+              placeholder={t("type-message")}
               className="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
             <button
               onClick={sendMessage}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors"
+              className="absolute ltr:right-1.5 rtl:left-1.5 top-1/2 -translate-y-1/2 p-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors"
             >
-              <IoMdSend size={18} />
+              <IoMdSend size={20} className="rtl:rotate-180" />
             </button>
           </div>
         </div>

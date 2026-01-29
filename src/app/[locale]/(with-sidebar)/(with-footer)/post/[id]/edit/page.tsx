@@ -1,7 +1,7 @@
 "use client";
 import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import React, { useRef, useState, useEffect, use } from "react";
 import { postSchema } from "@/utils/validator";
 import axios from "axios";
@@ -230,7 +230,11 @@ export default function EditPostPage({
             href={`/post/${id}`}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <FaArrowLeft size={20} className="text-gray-600" />
+            <FaArrowLeft size={20} className="hidden ltr:block text-gray-600" />
+            <FaArrowRight
+              size={20}
+              className="hidden rtl:block text-gray-600"
+            />
           </Link>
           <h1 className="font-bold text-gray-900 text-2xl">Edit Post</h1>
         </div>

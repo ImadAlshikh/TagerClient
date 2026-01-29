@@ -5,7 +5,7 @@ import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
 import Link from "next/link";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 export default function page() {
   const { data: user, isLoading: userLoading } = useUser();
 
@@ -37,7 +37,14 @@ export default function page() {
               href={"/profile"}
               className="hover:bg-gray-100 p-2 rounded-full transition-colors"
             >
-              <FaArrowLeft size={18} />
+              <FaArrowLeft
+                size={20}
+                className="hidden ltr:block text-gray-600"
+              />{" "}
+              <FaArrowRight
+                size={20}
+                className="hidden rtl:block text-gray-600"
+              />
             </Link>
             <h1 className="font-bold text-text text-2xl">My Posts</h1>
           </div>
