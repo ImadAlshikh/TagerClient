@@ -8,8 +8,10 @@ import {
   FaStripe,
 } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("footer");
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
@@ -61,10 +63,7 @@ export default function Footer() {
                 ager
               </span>
             </Link>
-            <p className="text-text/70 text-sm mb-4 max-w-sm">
-              Connect, share, and discover amazing content with Tager. Your
-              platform for meaningful conversations and creative expression.
-            </p>
+            <p className="text-text/70 text-sm mb-4 max-w-sm">{t("tagline")}</p>
             {/* Social Links */}
             <div className="flex gap-3">
               {socialLinks.map((social) => (
@@ -84,7 +83,7 @@ export default function Footer() {
 
           {/* Product Links */}
           <div>
-            <h3 className="font-semibold text-text mb-4">Product</h3>
+            <h3 className="font-semibold text-text mb-4">{t("product")}</h3>
             <ul className="space-y-2">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
@@ -92,7 +91,13 @@ export default function Footer() {
                     href={link.href}
                     className="text-text/70 hover:text-primary text-sm transition-colors duration-200"
                   >
-                    {link.name}
+                    {link.name === "Explore"
+                      ? t("explore")
+                      : link.name === "New Post"
+                        ? t("new-post")
+                        : link.name === "Chats"
+                          ? t("chats")
+                          : t("search")}
                   </Link>
                 </li>
               ))}
@@ -101,7 +106,7 @@ export default function Footer() {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-semibold text-text mb-4">Company</h3>
+            <h3 className="font-semibold text-text mb-4">{t("company")}</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
@@ -109,7 +114,13 @@ export default function Footer() {
                     href={link.href}
                     className="text-text/70 hover:text-primary text-sm transition-colors duration-200"
                   >
-                    {link.name}
+                    {link.name === "About Us"
+                      ? t("about-us")
+                      : link.name === "Careers"
+                        ? t("careers")
+                        : link.name === "Blog"
+                          ? t("blog")
+                          : t("contact")}
                   </Link>
                 </li>
               ))}
@@ -118,7 +129,7 @@ export default function Footer() {
 
           {/* Support Links */}
           <div>
-            <h3 className="font-semibold text-text mb-4">Support</h3>
+            <h3 className="font-semibold text-text mb-4">{t("support")}</h3>
             <ul className="space-y-2">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
@@ -126,7 +137,13 @@ export default function Footer() {
                     href={link.href}
                     className="text-text/70 hover:text-primary text-sm transition-colors duration-200"
                   >
-                    {link.name}
+                    {link.name === "Help Center"
+                      ? t("help-center")
+                      : link.name === "Privacy Policy"
+                        ? t("privacy-policy")
+                        : link.name === "Terms of Service"
+                          ? t("terms-of-service")
+                          : t("credits")}
                   </Link>
                 </li>
               ))}
@@ -139,10 +156,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4">
               <p className="text-text/60 text-sm">
-                © {currentYear} Tager. All rights reserved.
+                © {currentYear} Tager. {t("all-rights-reserved")}
               </p>
               <div className="flex items-center gap-2 text-text/60">
-                <span className="text-sm">Secured by</span>
+                <span className="text-sm">{t("secured-by")}</span>
                 <FaStripe size={32} className="text-[#6772e5]" />
               </div>
             </div>
@@ -151,19 +168,19 @@ export default function Footer() {
                 href="/privacy"
                 className="text-text/60 hover:text-primary transition-colors"
               >
-                Privacy
+                {t("privacy")}
               </Link>
               <Link
                 href="/terms"
                 className="text-text/60 hover:text-primary transition-colors"
               >
-                Terms
+                {t("terms")}
               </Link>
               <Link
                 href="/cookies"
                 className="text-text/60 hover:text-primary transition-colors"
               >
-                Cookies
+                {t("cookies")}
               </Link>
             </div>
           </div>

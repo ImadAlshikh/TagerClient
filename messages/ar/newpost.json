@@ -1,0 +1,32 @@
+{
+  "newpost": {
+    "page-title": "إنشاء منشور جديد",
+    "upload-photo": "تحميل صورة",
+    "click-to-upload": "انقر للتحميل",
+    "drag-and-drop": "أو اسحب وأفلت",
+    "supported-formats": "الصيغ المدعومة: JPG, PNG, WEBP",
+    "change-photo": "تغيير الصورة",
+    "title": "العنوان",
+    "title-placeholder": "مثال: MacBook Pro 13 بوصة 2020",
+    "category": "الفئة",
+    "price": "السعر ($)",
+    "price-placeholder": "0.00",
+    "discount": "الخصم (%)",
+    "discount-placeholder": "0",
+    "description": "الوصف",
+    "description-placeholder": "صف العنصر الخاص بك بالتفصيل...",
+    "tags": "الوسوم",
+    "tags-hint": "(مفصولة بمسافات)",
+    "tags-placeholder": "لابتوب أبل ماك بوك إلكترونيات",
+    "promote-post": "ترويج هذا المنشور",
+    "promote-description": "تظهر المنشورات المروجة في أعلى نتائج البحث لمدة 24 ساعة",
+    "final-price": "السعر النهائي",
+    "free": "مجاني",
+    "post-cost": "تكلفة المنشور:",
+    "promote-cost": "تكلفة الترويج:",
+    "cancel": "إلغاء",
+    "create-post": "إنشاء منشور",
+    "posting": "جاري النشر...",
+    "required": "*"
+  }
+}

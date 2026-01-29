@@ -6,24 +6,30 @@ import Link from "next/link";
 import { useUser } from "@/cache/useUser";
 import { useSidebarStore } from "@/stores/useSidebarStore";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function Header() {
   const showSidebar = useSidebarStore((s) => s.showSidebar);
   const setShowSidebar = useSidebarStore((s) => s.setShowSidebar);
   const toggleShowSidebar = useSidebarStore((s) => s.toggleShowSidebar);
   const { data: user, isLoading } = useUser();
+  const t = useTranslations("header");
 
   return (
     <header className="select-none fixed z-501 h-14 w-full bg-white overflow-x-clip  border-b p-2 text-text border-border">
       <div className="header-container container mx-auto flex justify-between items-center ">
         <Link href={"/"} className="text-primary font-bold text-2xl flex">
-          <img src="/logo/primary-logo.png" alt="" className="size-8" />
+          <img
+            src="/logo/primary-logo.png"
+            alt=""
+            className="hidden ltr:block size-8"
+          />
           <span className="text-inherit -translate-x-2.5 translate-y-0.5 hidden md:inline">
-            ager
+            {t("title")}
           </span>
         </Link>
         <div className="flex items-center gap-1">
-          <SearchBar />
+          <SearchBar placeholder={t("search")} />
           {isLoading ? (
             <div className="flex items-center">
               <div className="h-6 w-10 bg-gray-50 animate-pulse rounded-full"></div>
@@ -46,17 +52,17 @@ export default function Header() {
                   <Link
                     href={"/signin"}
                     type="button"
-                    className="bg-primary hover:bg-primary-dark text-white rounded-full px-3 py-1 font-bold flex-1"
+                    className="min-w-fit bg-primary hover:bg-primary-dark border border-primary text-white rounded-full px-3 py-1 font-bold flex-1"
                   >
-                    Signin
+                    {t("signin")}
                   </Link>
                   <span className="text-3xl">/</span>
                   <Link
                     href={"/signup"}
                     type="button"
-                    className="bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
+                    className="min-w-fit bg-white hover:bg-bg border border-primary text-primary font-bold flex-1 rounded-full px-3 py-1 "
                   >
-                    Signup
+                    {t("signup")}
                   </Link>
                 </div>
               )}

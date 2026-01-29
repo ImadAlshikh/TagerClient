@@ -1,0 +1,32 @@
+{
+  "newpost": {
+    "page-title": "Create New Post",
+    "upload-photo": "Upload Photo",
+    "click-to-upload": "Click to upload",
+    "drag-and-drop": "or drag and drop",
+    "supported-formats": "Supported formats: JPG, PNG, WEBP",
+    "change-photo": "Change Photo",
+    "title": "Title",
+    "title-placeholder": "e.g. 2020 MacBook Pro 13-inch",
+    "category": "Category",
+    "price": "Price ($)",
+    "price-placeholder": "0.00",
+    "discount": "Discount (%)",
+    "discount-placeholder": "0",
+    "description": "Description",
+    "description-placeholder": "Describe your item in detail...",
+    "tags": "Tags",
+    "tags-hint": "(Space separated)",
+    "tags-placeholder": "laptop apple macbook electronics",
+    "promote-post": "Promote this post",
+    "promote-description": "Promoted posts appear at the top of search results for 24h",
+    "final-price": "Final Price",
+    "free": "Free",
+    "post-cost": "Post Cost:",
+    "promote-cost": "Promote Cost:",
+    "cancel": "Cancel",
+    "create-post": "Create Post",
+    "posting": "Posting...",
+    "required": "*"
+  }
+}

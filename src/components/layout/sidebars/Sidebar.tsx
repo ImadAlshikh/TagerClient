@@ -7,13 +7,14 @@ import { CgProfile } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 import Link from "next/link";
 import { useSidebarStore } from "@/stores/useSidebarStore";
+import { useTranslations } from "next-intl";
 
 export default function Sidebar() {
   const sidebarRef = useRef<HTMLElement | null>(null);
   const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
   const showSidebar = useSidebarStore((s) => s.showSidebar);
   const setShowSidebar = useSidebarStore((s) => s.setShowSidebar);
-
+  const t = useTranslations("sidebar");
   useEffect(() => {
     const resizeHandler = () => {
       setIsSmallScreen(window.innerWidth < 768);
@@ -38,11 +39,11 @@ export default function Sidebar() {
     icon?: ReactElement;
     color?: string;
   }[] = [
-    { url: "/new-post", name: "New Post", icon: <FiPlus size={18} /> },
-    { url: "/explore", name: "Explore", icon: <MdExplore size={18} /> },
-    { url: "/chats", name: "Chats", icon: <IoChatbubblesSharp size={18} /> },
-    { url: "/settings", name: "Settings", icon: <IoMdSettings size={18} /> },
-    { url: "/profile", name: "Profile", icon: <CgProfile size={18} /> },
+    { url: "/new-post", name: "new-post", icon: <FiPlus size={18} /> },
+    { url: "/explore", name: "explore", icon: <MdExplore size={18} /> },
+    { url: "/chats", name: "chats", icon: <IoChatbubblesSharp size={18} /> },
+    { url: "/settings", name: "settings", icon: <IoMdSettings size={18} /> },
+    { url: "/profile", name: "profile", icon: <CgProfile size={18} /> },
   ];
 
   return (
@@ -51,13 +52,15 @@ export default function Sidebar() {
         ref={sidebarRef}
         className={`side-bar ${
           isSmallScreen && "h-full"
-        } absolute md:relative md:block  duration-150 transition-all select-none p-4  flex-col ltr:border-l rtl:border-r z-500 border-border bg-white w-80! min--80 min-h-[calc(100vh-56px)] ltr: translate-x-0 ${
-          isSmallScreen && !showSidebar && "ltr:-translate-x-full"
+        } absolute md:relative md:block  duration-150 transition-all select-none p-4  flex-col ltr:border-l rtl:border-r z-500 border-border bg-white w-80! min-h-[calc(100vh-56px)] translate-x-0 ${
+          isSmallScreen &&
+          !showSidebar &&
+          "ltr:-translate-x-full! rtl:translate-x-full!"
         }`}
       >
         <div className="sticky top-18">
           <Link href={"/"} className="text-primary font-bold text-xl">
-            Tager
+            {t("title")}
           </Link>
           {sections.map((section, i) => (
             <Link
@@ -66,7 +69,7 @@ export default function Sidebar() {
               className="px-2 py-1 flex items-center gap-1 rounded-md font-bold bg-white hover:bg-border"
             >
               {section.icon}
-              <span>{section.name}</span>
+              <span>{t(section.name)}</span>
             </Link>
           ))}
         </div>

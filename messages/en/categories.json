@@ -1,0 +1,30 @@
+{
+  "categories": {
+    "select-category": "-- Select Category --",
+    "all-categories": "All Categories",
+    "vehicles": "Vehicles",
+    "real-estate": "Real Estate",
+    "electronics": "Electronics",
+    "mobiles": "Mobile Phones & Accessories",
+    "computers": "Computers & Laptops",
+    "fashion": "Fashion & Clothing",
+    "beauty": "Beauty & Personal Care",
+    "furniture": "Furniture & Home Decor",
+    "home-appliances": "Home Appliances",
+    "pets": "Pets & Animals",
+    "services": "Services",
+    "jobs": "Jobs",
+    "sports": "Sports & Fitness",
+    "games": "Video Games & Consoles",
+    "collectibles": "Collectibles & Art",
+    "books": "Books, Movies & Music",
+    "baby": "Baby & Kids",
+    "industrial": "Heavy Equipment",
+    "business": "Business Equipment",
+    "tickets": "Tickets & Vouchers",
+    "education": "Education & Classes",
+    "food": "Food & Drinks",
+    "hobbies": "Hobbies & Crafts",
+    "other": "Other"
+  }
+}

@@ -4,6 +4,8 @@ import { MdAccessTime } from "react-icons/md";
 import { TbCategory2 } from "react-icons/tb";
 import { formatRelativeDate } from "@/utils/Date";
 import { formatMoney, calcDiscountedCents } from "@/utils/money";
+import { useTranslations } from "next-intl";
+
 export default function PostCard({
   post,
   isWide,
@@ -11,6 +13,7 @@ export default function PostCard({
   post: PostType;
   isWide?: boolean;
 }) {
+  const t = useTranslations("cards");
   console.log(post);
   return (
     <Link
@@ -29,7 +32,7 @@ export default function PostCard({
         ) : null}
         {post.promoted ? (
           <div className="absolute bottom-0  right-0 text-center bg-yellow-500  px-2 rounded-md text-sm text-white">
-            premium
+            {t("premium")}
           </div>
         ) : null}
 

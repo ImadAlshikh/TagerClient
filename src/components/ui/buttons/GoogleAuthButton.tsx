@@ -1,7 +1,11 @@
 "use client";
 import { FcGoogle } from "react-icons/fc";
 
-export default function GoogleAuthButton() {
+export default function GoogleAuthButton({
+  placeholder,
+}: {
+  placeholder: string;
+}) {
   return (
     <button
       type="button"
@@ -11,7 +15,7 @@ export default function GoogleAuthButton() {
       }
     >
       <FcGoogle size={24} />
-      <span className="grow">Sign in with Google</span>
+      <span className="grow">{placeholder}</span>
     </button>
   );
 }

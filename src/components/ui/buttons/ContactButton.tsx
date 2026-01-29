@@ -2,6 +2,7 @@
 import { useUser } from "@/cache/useUser";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function ContactButton({
   id,
@@ -12,6 +13,7 @@ export default function ContactButton({
 }) {
   const { data: user } = useUser();
   const router = useRouter();
+  const t = useTranslations("buttons");
   if (!user) return;
   const contact = async () => {
     const res = await axios.post(
@@ -29,7 +31,7 @@ export default function ContactButton({
       onClick={contact}
       className="bg-primary select-none self-end hover:bg-primary-dark px-8 py-1 rounded-full text-center text-white cursor-pointer"
     >
-      Contact
+      {t("contact")}
     </button>
   );
 }

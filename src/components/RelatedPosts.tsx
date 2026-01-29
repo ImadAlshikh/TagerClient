@@ -3,6 +3,7 @@
 import { usePosts } from "@/cache/usePosts";
 import PostCard from "@/components/ui/cards/PostCard";
 import { PostType } from "@/utils/validator";
+import { useTranslations } from "next-intl";
 
 export default function RelatedPosts({
   category,
@@ -11,6 +12,7 @@ export default function RelatedPosts({
   category: string;
   currentPostId: string;
 }) {
+  const t = useTranslations("post");
   const { data, isLoading } = usePosts({ searchQuery: category, limit: 5 });
 
   const posts = data?.pages
@@ -21,7 +23,7 @@ export default function RelatedPosts({
 
   return (
     <div className="flex flex-col gap-4 mt-8">
-      <h3 className="text-xl font-bold">Related Posts</h3>
+      <h3 className="text-xl font-bold">{t("related-posts")}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {isLoading
           ? Array.from({ length: 3 }).map((_, i) => (

@@ -23,6 +23,9 @@
 }
 
 @layer base {
+  * {
+    scrollbar-gutter: stable;
+  }
   *:not(svg):not(svg *) {
     color: var(--color-text);
   }

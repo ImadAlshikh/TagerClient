@@ -1,0 +1,11 @@
+{
+  "search": {
+    "results-for": "Search results for",
+    "category": "Category:",
+    "order-by": "Order by:",
+    "newest": "Newest",
+    "price-low-high": "Price: Low to High",
+    "price-high-low": "Price: High to Low",
+    "loading": "Loading"
+  }
+}

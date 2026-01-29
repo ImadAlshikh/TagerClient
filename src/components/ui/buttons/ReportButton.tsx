@@ -2,12 +2,14 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useTranslations } from "next-intl";
 
 export default function ReportButton({
   reportedId,
 }: {
   reportedId: string | undefined;
 }) {
+  const t = useTranslations("buttons");
   const [showModal, setShowMadal] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -42,7 +44,7 @@ export default function ReportButton({
           !showModal && "hidden"
         } fixed flex flex-col items-center gap-4 bg-white rounded-lg shadow top-1/2 left-1/2 -translate-1/2`}
       >
-        <span className="font-bold text-red-500">Report</span>
+        <span className="font-bold text-red-500">{t("report")}</span>
         <div className="w-full flex flex-col">
           <span>message</span>
           <textarea
@@ -69,7 +71,7 @@ export default function ReportButton({
             onClick={submitReport}
             className="rounded-full text-center w-fit px-4 py-1 bg-primary hover:bg-primary-dark text-white"
           >
-            Report
+            {t("report")}
           </button>
         </div>
       </div>

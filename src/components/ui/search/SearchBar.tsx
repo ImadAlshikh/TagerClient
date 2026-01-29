@@ -2,8 +2,9 @@
 import { useRouter } from "next/navigation";
 import { IoSearch } from "react-icons/io5";
 
-export default function SearchBar() {
+export default function SearchBar({ placeholder }: { placeholder: string }) {
   const router = useRouter();
+
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const value = e.currentTarget.value.trim();
@@ -18,7 +19,7 @@ export default function SearchBar() {
       <input
         name="search"
         id="search"
-        placeholder="Search..."
+        placeholder={`${placeholder}...`}
         className="block w-[120px] md:w-auto px-2 py-1 rounded-full focus:outline-0 bg-transparent text-sm"
         onKeyDown={handleSearch}
       />
