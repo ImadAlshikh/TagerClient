@@ -32,121 +32,122 @@ export default function SignInPage() {
 
       if (!res.data.success) {
         setError(res.data?.error || "Sign in failed");
-        setLoading(false);
         return;
       }
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      router.push("/profile");
     } catch (error: any) {
-      setLoading(false);
       setError(
-        error.response?.data?.error || "An error occurred during sign in",
+        error.response?.data?.message || "An error occurred during sign in",
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-primary/10 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <Link href="/" className="inline-flex items-center gap-2 mb-8">
-            <div className="size-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/30">
+    <div className='min-h-screen bg-gradient-to-br from-primary/5 via-white to-primary/10 flex items-center justify-center p-4'>
+      <div className='w-full max-w-md'>
+        <div className='text-center mb-10'>
+          <Link href='/' className='inline-flex items-center gap-2 mb-8'>
+            <div className='size-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/30'>
               T
             </div>
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">
+            <span className='text-2xl font-bold text-gray-900 tracking-tight'>
               Tager
             </span>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+          <h1 className='text-3xl font-bold text-gray-900 mb-2 tracking-tight'>
             {t("signin-heading")}
           </h1>
-          <p className="text-gray-500">{t("signin-subheading")}</p>
+          <p className='text-gray-500'>{t("signin-subheading")}</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 p-8 md:p-10 backdrop-blur-xl">
+        <div className='bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 p-8 md:p-10 backdrop-blur-xl'>
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50/50 border border-red-100 rounded-xl flex items-start gap-3">
+            <div className='mb-6 p-4 bg-red-50/50 border border-red-100 rounded-xl flex items-start gap-3'>
               <FiAlertCircle
-                className="text-red-600 mt-0.5 flex-shrink-0"
+                className='text-red-600 mt-0.5 flex-shrink-0'
                 size={20}
               />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-red-800">
+              <div className='flex-1'>
+                <p className='text-sm font-medium text-red-800'>
                   {t("signin-failed")}
                 </p>
-                <p className="text-sm text-red-600/90 mt-1">{error}</p>
+                <p className='text-sm text-red-600/90 mt-1'>{error}</p>
               </div>
             </div>
           )}
 
           {/* Signin Form */}
-          <form onSubmit={handleSignIn} className="space-y-6">
+          <form onSubmit={handleSignIn} className='space-y-6'>
             {/* Email Field */}
-            <div className="space-y-2">
+            <div className='space-y-2'>
               <label
-                htmlFor="email"
-                className="text-sm font-semibold text-gray-700"
+                htmlFor='email'
+                className='text-sm font-semibold text-gray-700'
               >
                 {t("email")}
               </label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400">
+              <div className='relative group'>
+                <div className='absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400'>
                   <FiMail size={20} />
                 </div>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  type='email'
+                  name='email'
+                  id='email'
                   required
                   disabled={loading}
                   placeholder={t("email-placeholder")}
-                  className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70"
+                  className='w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70'
                 />
               </div>
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
+            <div className='space-y-2'>
+              <div className='flex justify-between items-center'>
                 <label
-                  htmlFor="password"
-                  className="text-sm font-semibold text-gray-700"
+                  htmlFor='password'
+                  className='text-sm font-semibold text-gray-700'
                 >
                   {t("password")}
                 </label>
                 <Link
-                  href="/forgot-password"
-                  className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors"
+                  href='/forgot-password'
+                  className='text-xs font-semibold text-primary hover:text-primary-dark transition-colors'
                 >
                   {t("forgot-password")}
                 </Link>
               </div>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400">
+              <div className='relative group'>
+                <div className='absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none transition-colors group-focus-within:text-primary text-gray-400'>
                   <FiLock size={20} />
                 </div>
                 <input
-                  type="password"
-                  name="password"
-                  id="password"
+                  type='password'
+                  name='password'
+                  id='password'
                   required
                   disabled={loading}
                   placeholder={t("signin-password-placeholder")}
-                  className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70"
+                  className='w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-400 disabled:opacity-70'
                 />
               </div>
             </div>
 
             {/* Submit Button */}
             <button
-              type="submit"
+              type='submit'
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 px-4 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-primary/25 hover:shadow-primary/40 active:scale-[0.98]"
+              className='w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 px-4 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-primary/25 hover:shadow-primary/40 active:scale-[0.98]'
             >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className='flex items-center justify-center gap-2'>
+                  <span className='size-4 border-2 border-white/30 border-t-white rounded-full animate-spin' />
                   {t("signing-in")}
                 </span>
               ) : (
@@ -155,12 +156,12 @@ export default function SignInPage() {
             </button>
 
             {/* Divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-100"></div>
+            <div className='relative my-8'>
+              <div className='absolute inset-0 flex items-center'>
+                <div className='w-full border-t border-gray-100'></div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-medium">
+              <div className='relative flex justify-center text-sm'>
+                <span className='px-4 bg-white text-gray-500 font-medium'>
                   {t("or-continue-with")}
                 </span>
               </div>
@@ -172,28 +173,28 @@ export default function SignInPage() {
         </div>
 
         {/* Sign Up Link */}
-        <p className="mt-8 text-center text-sm text-gray-600">
+        <p className='mt-8 text-center text-sm text-gray-600'>
           {t("dont-have-account")}{" "}
           <Link
-            href="/signup"
-            className="text-primary hover:text-primary-dark font-semibold hover:underline decoration-2 underline-offset-2 transition-all"
+            href='/signup'
+            className='text-primary hover:text-primary-dark font-semibold hover:underline decoration-2 underline-offset-2 transition-all'
           >
             {t("create-account")}
           </Link>
         </p>
 
         {/* Footer Note */}
-        <div className="mt-8 flex justify-center gap-6 text-xs text-gray-400">
-          <Link href="/terms" className="hover:text-gray-600 transition-colors">
+        <div className='mt-8 flex justify-center gap-6 text-xs text-gray-400'>
+          <Link href='/terms' className='hover:text-gray-600 transition-colors'>
             {t("terms")}
           </Link>
           <Link
-            href="/privacy"
-            className="hover:text-gray-600 transition-colors"
+            href='/privacy'
+            className='hover:text-gray-600 transition-colors'
           >
             {t("privacy")}
           </Link>
-          <Link href="/help" className="hover:text-gray-600 transition-colors">
+          <Link href='/help' className='hover:text-gray-600 transition-colors'>
             {t("help")}
           </Link>
         </div>

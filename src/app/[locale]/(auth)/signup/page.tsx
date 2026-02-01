@@ -32,7 +32,7 @@ export default function SignUpPage() {
       const data = Object.fromEntries(formData.entries());
 
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/signin`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/signup`,
         data,
         {
           withCredentials: true,
