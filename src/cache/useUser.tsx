@@ -12,6 +12,7 @@ export const useUser = () => {
             withCredentials: true,
           },
         );
+        console.log(res);
         if (!res.data.success) {
           return null;
         }

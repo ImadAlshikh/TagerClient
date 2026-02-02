@@ -31,18 +31,20 @@ export default function SignInPage() {
       );
 
       if (!res.data.success) {
-        setError(res.data?.error || "Sign in failed");
+        setError(res.data?.error || res.data?.message || "Sign in failed");
+        setLoading(false);
         return;
       }
 
       queryClient.invalidateQueries({ queryKey: ["user"] });
       router.push("/profile");
     } catch (error: any) {
-      setError(
-        error.response?.data?.message || "An error occurred during sign in",
-      );
-    } finally {
       setLoading(false);
+      setError(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "An error occurred during sign in",
+      );
     }
   };
 
